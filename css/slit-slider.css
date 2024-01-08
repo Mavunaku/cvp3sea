@@ -89,10 +89,18 @@
 }
 
 #nav-arrows > a.sl-next:hover {
-	background-color: #009EE3;
-	border-color: #009EE3;
+	background-color: #006f00;
+	border-color: #046307;
 	color: #fff;
-}
+	opacity: 45%;
+	}
+
+	#nav-arrows > a.sl-prev:hover {
+		background-color: #006f00;
+		border-color: #046307;
+		color: #fff;
+		opacity: 45%;
+		}
 
 /* Custom navigation dots */
 
@@ -155,44 +163,56 @@
 }
 
 .bg-img-1 {
-	background-image: url(../img/slider/1.jpg);
+	background-image: url(../img/slider_Home/1.jpg);
 	opacity: 175%;
 }
 .bg-img-2 {
-	background-image: url(../img/slider/2.jpg);
+	background-image: url(../img/slider_Home/2.jpg);
 	opacity: 175%;
 }
 .bg-img-3 {
-	background-image: url(../img/slider/3.jpg);
+	background-image: url(../img/slider_Home/3.jpg);
 	
 }
 
 /*15 Orchard */
 .bg-img-15 {
-	background-image: url(../img/15Orchard/360a293e-ad2d-4dc5-b36e-b16d155a0988.jpg);
-	opacity: 175%;
+	background-image: url(../img/15Orchard/Johnson_City.jpg);
+	
 }
 .bg-img-115 {
-	background-image: url(../img/15Orchard/bcabba68-92d8-44fb-841d-fccd6697dcc3.jpg);
-	opacity: 175%;
+	background-image: url(../img/15Orchard/2.jpg);
 }
 .bg-img-015 {
-	background-image: url(../img/15Orchard/dd122772-956b-4e1a-b6ec-b26bea5e8d5b.jpg);
-	
+	background-image: url(../img/15Orchard/3.jpg); 
 }
 
 /*67 GRAND BLVD */
 .bg-img-67 {
-	background-image: url(/img/67Grnad1FL/3093f87d-60c1-480d-b026-52b425f72b97.jpg);
-	opacity: 175%;
+	background-image: url(/img/67Grnad1FL/1.jpg);
+	opacity: 75%;
 }
 .bg-img-067 {
-	background-image: url(/img/67Grnad1FL/78d44225-0017-4a88-a2fa-6ddd2f231304.jpg);
-	opacity: 175%;
+	background-image: url(/img/67Grnad1FL/2.jpg);
+	opacity: 75%;
 }
 .bg-img-676 {
-	background-image: url(/img/67Grnad1FL/8503c04f-7c4c-492b-b32e-4fdd65530f03.jpg);
+	background-image: url(/img/67Grnad1FL/3.jpg);
+	opacity: 75%;
 	
+}
+
+/*Greek Peak */
+.bg-img-2112 {
+	background-image: url(/img/2112/1.jpg);
+	opacity: 75%;
+}
+.bg-img-02112 {
+	background-image: url(/img/2112/2.jpg);
+	opacity: 75%;
+}
+.bg-img-21120 {
+	background-image: url(/img/2112/3.jpg);
 }
 
 /* Animations for content elements */
@@ -220,7 +240,7 @@
 	-ms-animation: fadeOut 1s ease-in-out both;
 	animation: fadeOut 1s ease-in-out both;
 }
-.sl-trans-back-elems .caption-content span,,
+.sl-trans-back-elems .caption-content span,
 .sl-trans-back-elems .caption-content a {
 	-webkit-animation: fadeOut 1s linear both;
 	-moz-animation: fadeOut 1s linear both;
