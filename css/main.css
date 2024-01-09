@@ -583,40 +583,22 @@ h1.navbar-brand {
 /*=================================================================
 	Services
 ==================================================================*/
-/* #service {
-    background-image: url(/img/PARTNE.png); 
-    background-repeat: NO-repeat;
-    background-position: left bottom;
-    background-size: auto;
-    position: relative;
-    width: 85%;
-    height: 610px;
-    margin-left: auto;
-    margin-right: auto;
-    
-background-size:contain;
-} */
-
 #service15 {
     padding: 20px 0;
     background-image: url(/img/15Orchard/Artboard\ 4RELINDO\ AMENITIES\ LOGO_edited.webp), url();
-    background-position: left bottom, right bottom;
-    background-repeat: no-repeat, no-repeat;
+    background-position: left bottom, center;
+    background-repeat: no-repeat, repeat;
     background-size: auto, ;
-    position: relative;
-    width: 85%;
-    height: 610px;
-    
-background-size:contain;
-
 }
+
+
 
 #service67 {
     padding: 20px 0;
     background-image: url(/img/67Grnad1FL/bing.png), url();
     background-position: left bottom, center;
     background-repeat: no-repeat, repeat;
-    background-size: auto, %;
+    background-size: auto, ;
 }
 
 #service2112 {
@@ -1515,6 +1497,31 @@ textarea.form-control {
 
 
 /* Gallery */
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+} */
+
+.gallery15orch {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin: 15px 0;
+}
+
+.gallery15orch img {
+    flex-wrap: wrap;
+    width: 320px;
+    height: 320px;
+    margin: 10px 0;
+}
+
 .gallery15 {
     background: rgb(185, 165, 133);
     background: -moz-linear-gradient(-45deg, rgba(40,52,59,1) 0%, rgba(40,52,59,1) 5%, rgba(40,52,59,1) 5%, rgba(40,52,59,1) 31%, rgba(130,140,149,1) 83%, rgba(181,189,200,1) 98%);
@@ -1524,6 +1531,7 @@ textarea.form-control {
     color: var(--clr-light);
     text-align: center;
 }
+
 section {
     padding: 5em 2em;
 }
@@ -1532,12 +1540,8 @@ section {
     display: block;
 }
 
-.gallery15orch img {
+/* .gallery15orch img {
 
     max-width: 1024px;
     max-height: 682px;
-}
-
-/*MEET OUR TEAM*/
-
-
+} */
