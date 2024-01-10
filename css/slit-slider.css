@@ -164,11 +164,9 @@
 
 .bg-img-1 {
 	background-image: url(../img/slider_Home/1.jpg);
-	opacity: 175%;
 }
 .bg-img-2 {
 	background-image: url(../img/slider_Home/2.jpg);
-	opacity: 175%;
 }
 .bg-img-3 {
 	background-image: url(../img/slider_Home/3.jpg);
@@ -200,6 +198,17 @@
 	background-image: url(/img/67Grnad1FL/3.jpg);
 	opacity: 75%;
 	
+}
+
+/*67 GRAND BLVD 2ND FL*/
+.bg-img-672 {
+	background-image: url(/img/67Grnad1FL/1.jpg);
+}
+.bg-img-0672 {
+	background-image: url(/img/67Grnad1FL/2.jpg);
+}
+.bg-img-6762 {
+	background-image: url(/img/2FL/IMG_0766.jpg);	
 }
 
 /*Greek Peak */

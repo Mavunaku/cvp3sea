@@ -591,8 +591,6 @@ h1.navbar-brand {
     background-size: auto, ;
 }
 
-
-
 #service67 {
     padding: 20px 0;
     background-image: url(/img/67Grnad1FL/bing.png), url();
@@ -603,10 +601,10 @@ h1.navbar-brand {
 
 #service2112 {
     padding: 20px 0;
-    background-image: url(/img/2112/ski.png), url(/img/2112/10gr2112foramenities.png);
+    background-image: url(/img/2112/snowback.png), url();
     background-position: left bottom, right bottom;
     background-repeat: no-repeat, no-repeat;
-    background-size: auto, auto;
+    background-size: 30%, auto;
 }
 
 .service-icon {
