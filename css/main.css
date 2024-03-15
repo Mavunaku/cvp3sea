@@ -600,7 +600,6 @@ h1.navbar-brand {
 }
 
 #service2112 {
-    padding: 20px 0;
     background-image: url(/img/2112/snowback.png), url();
     background-position: left bottom, right bottom;
     background-repeat: no-repeat, no-repeat;
@@ -1197,6 +1196,7 @@ textarea.form-control {
 }
 
 @media only screen and (min-device-width: 400px)
+
 /*============================================================
 	Tablet (Portrait) Design for a width of 768px
 ==============================================================*/
@@ -1224,7 +1224,6 @@ textarea.form-control {
     .service-item {
         margin-bottom: 50px;
     }
-
 /* portfolio */
 
 
