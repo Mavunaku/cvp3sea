@@ -1201,10 +1201,10 @@ textarea.form-control {
 	Tablet (Portrait) Design for a width of 768px
 ==============================================================*/
 
-@media (min-width: 768px) and (max-width: 979px) {
+/* @media (min-width: 768px) and (max-width: 979px) { */
 
 /* home slider  */
-    .caption-content h2 {
+     .caption-content h2 {
         font-size: 40px;
     }
 
@@ -1224,6 +1224,7 @@ textarea.form-control {
     .service-item {
         margin-bottom: 50px;
     }
+}
 /* portfolio */
 
 
@@ -1253,7 +1254,6 @@ textarea.form-control {
     .contact-form {
         margin-bottom: 50px;
     }
-}
 
 
 /*============================================================
