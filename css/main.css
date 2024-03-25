@@ -567,23 +567,17 @@ h1.navbar-brand {
     font-size: 13px;
     margin-left: 135px;
 }
-
 #greekpeak {
     background-image: url(/img/2112/nobackgreekp.png);
     background-repeat: no-repeat;
-    /* background-position: right bottom 95px; */
+    background-position: right bottom 95px;
     background-size: 38%;
-    width: 100%;
-    height: auto;
 }
 
 #greekpeak2 {
     background-image: url(/img/2112/Greekpeak_no_bg-1.png);
     background-repeat: no-repeat;
-    background-size: 25%;
-    background-position:unset;
-    width: 100%;
-    height: auto;
+    background-position: right bottom 40px;
 }
 
 /*=================================================================
@@ -591,7 +585,7 @@ h1.navbar-brand {
 ==================================================================*/
 #service15 {
     padding: 20px 0;
-    background-image: url(/img/15Orchard/Artboard\ 4RELINDO\ AMENITIES\ LOGO_edited.webp);
+    background-image: url(/img/15Orchard/Artboard\ 4RELINDO\ AMENITIES\ LOGO_edited.webp), url();
     background-position: left bottom, center;
     background-repeat: no-repeat, repeat;
     background-size: auto, ;
