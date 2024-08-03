@@ -366,6 +366,8 @@ h1.navbar-brand {
     font-weight: 500;
     margin-bottom: 25px;
     text-transform: uppercase;
+    text-shadow: 0px 0px 10px black
+    
 }
 
 .caption-content > span {
@@ -373,6 +375,7 @@ h1.navbar-brand {
     font-size: 24px;
     margin-bottom: 45px;
     text-transform: capitalize;
+    text-shadow: 0px 0px 10px black
 }
 
 .caption-content p {
@@ -678,8 +681,8 @@ figcaption.mask {
     bottom: -126px;
     color: #fff;
     padding: 25px;
-    position: absolute;
-    width: 100%;
+    /* position: absolute;
+    width: 100%; */
     text-align: left;
     
     -webkit-transition: all 0.4s ease 0s;
