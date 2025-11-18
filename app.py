@@ -1,15 +1,18 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import smtplib
 from email.mime.text import MIMEText
 import os
 
+# Initialize Flask app and enable CORS
 app = Flask(__name__)
+CORS(app)  # allow requests from any origin
 
+# Email settings
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 SMTP_USER = os.getenv("SMTP_USER")
 SMTP_PASS = os.getenv("SMTP_PASS")
-
 RECIPIENTS = os.getenv("RECIPIENTS").split(",")
 
 @app.route("/send-message", methods=["POST"])
