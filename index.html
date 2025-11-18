@@ -541,12 +541,12 @@
 						</div>
 						
 						<div class="col-md-7 contact-form wow animated fadeInLeft">
-							<form action="https://cvp3sea.onrender.com/send-message" method="POST">
+							<form id="contactForm" action="https://cvp3sea.onrender.com/send-message" method="POST">
 								<div class="input-field">
-									<input type="text" name="name" class="form-control" placeholder="Your Name...">
+									<input type="text" name="name" class="form-control" placeholder="Your Name..." required>
 								</div>
 								<div class="input-field">
-									<input type="email" name="email" class="form-control" placeholder="Your Email...">
+									<input type="email" name="email" class="form-control" placeholder="Your Email..." required>
 								</div>
 								<!--
 								<div class="input-field">
@@ -554,7 +554,7 @@
 								</div>
 								-->
 								<div class="input-field">
-									<textarea name="message" class="form-control" placeholder="Messages..."></textarea>
+									<textarea name="message" class="form-control" placeholder="Messages..." required></textarea>
 								</div>
 								<button type="submit" id="submit" class="btn btn-blue btn-effect">Send</button>
 							</form>
@@ -576,6 +576,31 @@
 				</div>
 			</section>
 			<!-- end Contact section -->
+
+			<!--JS fetch to handle submission-->
+			<script>
+document.getElementById("contactForm").addEventListener("submit", async function(e) {
+    e.preventDefault(); // prevent default form submission
+    const form = e.target;
+    const data = new FormData(form);
+    try {
+        const res = await fetch(form.action, {
+            method: "POST",
+            body: data
+        });
+        if (res.ok) {
+            alert("Message sent successfully!");
+            form.reset();
+        } else {
+            alert("Error sending message. Try again.");
+        }
+    } catch (err) {
+        alert("Error sending message. Try again.");
+        console.error(err);
+    }
+});
+</script>
+
 		
 			<!--
 			<section id="google-map">
