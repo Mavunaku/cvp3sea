@@ -45,6 +45,19 @@
 		<!-- Modernizer Script for old Browsers -->
         <script src="js/modernizr-2.6.2.min.js"></script>
 
+		<!--emailjs script| emailjs-Account tab-API keywords-->
+		<script src="/js/emailjs.js"></script>
+		<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: "qXZyOoWHJJBUAo64B",
+      });
+   })();
+</script>
+
     </head>
 	
     <body id="body">
@@ -501,49 +514,49 @@
 			<!-- end Testimonial section -->
 			
 		<!-- Contact section -->
-		<section id="contact" >
-			<div class="container">
-				<div class="row">
-					
-					<div class="sec-title text-center wow animated fadeInDown">
-						<h2>Request more information today!</h2>
-						<p>Leave a Message</p>
+			<section id="contact" >
+				<div class="container">
+					<div class="row">
+						
+						<div class="sec-title text-center wow animated fadeInDown">
+							<h2>Request more information today!</h2>
+							<p>Leave a Message</p>
+						</div>
+						
+						<div class="col-md-7 contact-form wow animated fadeInLeft">
+								<div class="input-field">
+									<input type="text" id="name" name="name" class="form-control" placeholder="Your Name..." novalidate>
+								</div>
+								<div class="input-field">
+									<input type="email" id="email" class="form-control" placeholder="Your Email..." novalidate>
+								</div>
+								<!--
+								<div class="input-field">
+									<input type="text" name="subject" class="form-control" placeholder="Subject...">
+								</div>
+								-->
+								<div class="input-field">
+									<textarea id="message" class="form-control" placeholder="Messages..." novalidate></textarea>
+								</div>
+								<button type="submit" id="submit" class="btn btn-blue btn-effect" onclick="sendMail()">Send</button>
+						</div>
+						
+						<div class="col-md-5 wow animated fadeInRight">
+							<address class="contact-details">
+								<h3>Contact Us</h3>			
+								<p>We're here to help! 
+									<br>Fill out this form and we'll get back to you as soon as possible.</p>	
+									<br>		
+								<p><i class="fa fa-pencil"></i>CVP Properties 4.0<span>Binghamton, NY</span>
+								<p><i class="fa fa-phone"></i>Phone: (518) 405-9055 </p>
+								<!-- <p><i class="fa fa-envelope"></i>mavunaku@gmail.com</p> -->
+							</address>
+						</div>
+			
 					</div>
-					
-					<div class="col-md-7 contact-form wow animated fadeInLeft">
-						<form action="https://formsubmit.co/f5301a95ea27182a501d8bee1d34ce6f" method="POST">
-							<div class="input-field">
-								<input type="text" name="name" class="form-control" placeholder="Your Name...">
-							</div>
-							<div class="input-field">
-								<input type="email" name="email" class="form-control" placeholder="Your Email...">
-							</div>
-							<div class="input-field">
-								<input type="text" name="subject" class="form-control" placeholder="Subject...">
-							</div>
-							<div class="input-field">
-								<textarea name="message" class="form-control" placeholder="Messages..."></textarea>
-							</div>
-							<button type="submit" id="submit" class="btn btn-blue btn-effect">Send</button>
-						</form>
-					</div>
-					
-					<div class="col-md-5 wow animated fadeInRight">
-						<address class="contact-details">
-							<h3>Contact Us</h3>			
-							<p>We're here to help! 
-								<br>Fill out this form and we'll get back to you as soon as possible.</p>	
-								<br>		
-							<p><i class="fa fa-pencil"></i>CVP Properties 4.0<span>Binghamton, NY</span>
-							<p><i class="fa fa-phone"></i>Phone: (518) 405-9055 </p>
-							<!-- <p><i class="fa fa-envelope"></i>mavunaku@gmail.com</p> -->
-						</address>
-					</div>
-		
 				</div>
-			</div>
-		</section>
-		<!-- end Contact section -->
+			</section>
+			<!-- end Contact section -->
 	
 		<!--
 		<section id="google-map">

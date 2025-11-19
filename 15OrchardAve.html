@@ -43,6 +43,19 @@
 		<!-- Modernizer Script for old Browsers -->
         <script src="js/modernizr-2.6.2.min.js"></script>
 
+		<!--emailjs script| emailjs-Account tab-API keywords-->
+		<script src="/js/emailjs.js"></script>
+		<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: "qXZyOoWHJJBUAo64B",
+      });
+   })();
+</script>
+
     </head>
 	
     <body id="body">
@@ -474,24 +487,24 @@
 						<div class="sec-title text-center wow animated fadeInDown">
 							<h2>Request more information today!</h2>
 							<p>Leave a Message</p>
-						</div>						
+						</div>
 						
 						<div class="col-md-7 contact-form wow animated fadeInLeft">
-							<form action="https://formsubmit.co/f5301a95ea27182a501d8bee1d34ce6f" method="POST">
 								<div class="input-field">
-									<input type="text" name="name" class="form-control" placeholder="Your Name...">
+									<input type="text" id="name" name="name" class="form-control" placeholder="Your Name..." novalidate>
 								</div>
 								<div class="input-field">
-									<input type="email" name="email" class="form-control" placeholder="Your Email...">
+									<input type="email" id="email" class="form-control" placeholder="Your Email..." novalidate>
 								</div>
+								<!--
 								<div class="input-field">
 									<input type="text" name="subject" class="form-control" placeholder="Subject...">
 								</div>
+								-->
 								<div class="input-field">
-									<textarea name="message" class="form-control" placeholder="Messages..."></textarea>
+									<textarea id="message" class="form-control" placeholder="Messages..." novalidate></textarea>
 								</div>
-								<button type="submit" id="submit" class="btn btn-blue btn-effect">Send</button>
-							</form>
+								<button type="submit" id="submit" class="btn btn-blue btn-effect" onclick="sendMail()">Send</button>
 						</div>
 						
 						<div class="col-md-5 wow animated fadeInRight">

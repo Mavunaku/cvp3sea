@@ -20,8 +20,7 @@
 		<!-- Mobile Specific Meta -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
 		
-		<!-- CSS
-		================================================== -->
+		<!-- CSS================================================== -->
 		
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
 		
@@ -43,6 +42,19 @@
 
 		<!-- Modernizer Script for old Browsers -->
         <script src="js/modernizr-2.6.2.min.js"></script>
+
+		<!--emailjs script| emailjs-Account tab-API keywords-->
+		<script src="/js/emailjs.js"></script>
+		<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: "qXZyOoWHJJBUAo64B",
+      });
+   })();
+</script>
 
     </head>
 	
@@ -541,12 +553,11 @@
 						</div>
 						
 						<div class="col-md-7 contact-form wow animated fadeInLeft">
-							<form id="contactForm" action="https://cvp3sea.onrender.com/send-message" method="POST">
 								<div class="input-field">
-									<input type="text" name="name" class="form-control" placeholder="Your Name..." required>
+									<input type="text" id="name" class="form-control" placeholder="Your Name..." required>
 								</div>
 								<div class="input-field">
-									<input type="email" name="email" class="form-control" placeholder="Your Email..." required>
+									<input type="email" id="email" class="form-control" placeholder="Your Email..." required>
 								</div>
 								<!--
 								<div class="input-field">
@@ -554,9 +565,9 @@
 								</div>
 								-->
 								<div class="input-field">
-									<textarea name="message" class="form-control" placeholder="Messages..." required></textarea>
+									<textarea id="message" class="form-control" placeholder="Messages..." required></textarea>
 								</div>
-								<button type="submit" id="submit" class="btn btn-blue btn-effect">Send</button>
+								<button type="submit" id="submit" class="btn btn-blue btn-effect" onclick="sendMail()">Send</button>
 							</form>
 						</div>
 						
@@ -576,30 +587,6 @@
 				</div>
 			</section>
 			<!-- end Contact section -->
-
-			<!--JS fetch to handle submission-->
-			<script>
-document.getElementById("contactForm").addEventListener("submit", async function(e) {
-    e.preventDefault(); // prevent default form submission
-    const form = e.target;
-    const data = new FormData(form);
-    try {
-        const res = await fetch(form.action, {
-            method: "POST",
-            body: data
-        });
-        if (res.ok) {
-            alert("Message sent successfully!");
-            form.reset();
-        } else {
-            alert("Error sending message. Try again.");
-        }
-    } catch (err) {
-        alert("Error sending message. Try again.");
-        console.error(err);
-    }
-});
-</script>
 
 		
 			<!--
