@@ -88,6 +88,10 @@
 	<link rel="stylesheet" href="css/main.css">
 	<!-- Emerald Forest Light Theme -->
 	<link rel="stylesheet" href="css/emerald-forest-light.css">
+	<!-- Pro Slider Fix -->
+	<link rel="stylesheet" href="css/pro-slider-fix.css">
+	<!-- Slider Fix CSS -->
+	<link rel="stylesheet" href="css/pro-slider-fix.css">
 
 	<!-- Modernizer Script for old Browsers -->
 	<script src="js/modernizr-2.6.2.min.js"></script>
@@ -167,17 +171,17 @@
 
 				<div class="sl-slider">
 
-					<div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="-25"
+					<div class="sl-slide active" data-orientation="horizontal" data-slice1-rotation="-25"
 						data-slice2-rotation="-25" data-slice1-scale="2" data-slice2-scale="2">
 
 						<div class="bg-img bg-img-02112"></div>
 
 						<div class="slide-caption">
 							<div class="caption-content">
+								<!-- Standardized Caption Structure -->
 								<h1 class="animated fadeInDown">2112 Kypriotis Dr, Greek Peak Rentals</h1>
-								<h2 class="animated fadeInDown"
-									style="font-size: 20px; font-weight: 300; text-transform: none; margin-top: 10px;">
-									<i>Quality Housing Broome County — Luxury Mountain Resort Apartment</i>
+								<h2 class="animated fadeInDown">
+									Quality Housing Broome County — Luxury Mountain Resort Apartment
 								</h2>
 								<div class="hero-cta-group animated fadeInUp">
 									<a href="https://abnb.me/195NQrPoeGb" class="hero-btn-primary">Book on Airbnb</a>
@@ -194,8 +198,8 @@
 						<div class="bg-img bg-img-2112"></div>
 						<div class="slide-caption">
 							<div class="caption-content">
-								<h2>Peak of Adventure</h2>
-								<span><i>Experience the best of Greek Peak Mountain Resort</i></span>
+								<h1>Peak of Adventure</h1>
+								<h2>Experience the best of Greek Peak</h2>
 								<div class="hero-cta-group animated fadeInUp">
 									<a href="https://abnb.me/195NQrPoeGb" class="hero-btn-primary">Book Your Retreat</a>
 								</div>
@@ -210,8 +214,8 @@
 						<div class="bg-img bg-img-21120"></div>
 						<div class="slide-caption">
 							<div class="caption-content">
-								<h2>Plan Your Getaway</h2>
-								<span>Contact CVP Properties for more information on resort stays</span>
+								<h1>Plan Your Getaway</h1>
+								<h2>Contact CVP Properties for more information on your stays</h2>
 								<div class="hero-cta-group animated fadeInUp">
 									<a href="#contact" class="hero-btn-primary">Request Information</a>
 								</div>
@@ -328,7 +332,7 @@
 						<span>Outdoor Fire Pit</span>
 					</div>
 					<div class="amenity-card">
-						<i class="fa fa-billiards"></i>
+						<i class="fas fa-gamepad"></i>
 						<span>Pool Table & Games</span>
 					</div>
 					<div class="amenity-card">
@@ -595,7 +599,7 @@
 					</div>
 
 					<!-- Tenant Feedback Col -->
-					<div class="feedback-col wow animated fadeInRight">
+					<div class="feedback-col wow animated fadeInRight" data-wow-delay="0.2s">
 						<h3 class="combined-section-title">Guest Feedback</h3>
 						<div class="feedback-slider-container">
 							<!-- Slide 1 -->
@@ -605,7 +609,7 @@
 									<div class="clearfix">
 										<span>Sarah W.</span>
 										<p>"An incredible mountain retreat! The views are stunning and the pool table
-											was a hit. Highly recommend for a Greek Peak getaway."</p>
+											was a hit."</p>
 									</div>
 								</div>
 							</div>
@@ -615,8 +619,8 @@
 									<img src="img/otzyvyKID.png" alt="Guest 2">
 									<div class="clearfix">
 										<span>David L.</span>
-										<p>"Quiet, clean, and perfectly located. The workout space was a nice touch.
-											We'll definitely be back next season!"</p>
+										<p>"Quiet, clean, and perfectly located. The workout space was a nice touch."
+										</p>
 									</div>
 								</div>
 							</div>
@@ -625,6 +629,23 @@
 							<span class="dot active"></span>
 							<span class="dot"></span>
 						</div>
+					</div>
+
+					<!-- Yoga Enthusiasts Col (New) -->
+					<div class="yoga-col wow animated fadeInRight" data-wow-delay="0.4s">
+						<h3 class="combined-section-title">Yoga Enthusiasts</h3>
+						<a href="/yoga.html" class="discover-card">
+							<!-- Using same style placeholder image or specific yoga image -->
+							<img src="img/2112/Greekpeak_yoga.png" alt="Yoga Enthusiasts"
+								style="object-fit:cover; aspect-ratio:1/1;">
+							<div class="discover-card-text">Join the Flow</div>
+						</a>
+						<p>Explore our dedicated space or join local sessions for relaxation.</p>
+
+						<!-- Airbnb Placeholder Link (Commented Out) -->
+						<!-- <div style="margin-top:15px; font-size:13px; color:#888;">
+							<i class="fa fa-airbnb"></i> <a href="#" style="text-decoration:underline;">View Airbnb Experience</a>
+						</div> -->
 					</div>
 				</div>
 			</div>
@@ -699,8 +720,6 @@
 										AM - 6:00 PM</p>
 								</address>
 								<div style="margin-top: 30px;">
-									<h4 style="font-size: 16px; font-weight: 700; color: var(--clr-accent);">Follow Us
-									</h4>
 									<div class="footer-social" style="text-align: left; padding: 10px 0;">
 										<ul style="justify-content: flex-start; gap: 20px;">
 											<li><a href="https://abnb.me/195NQrPoeGb"><i

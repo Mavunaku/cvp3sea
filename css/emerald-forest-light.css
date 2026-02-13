@@ -679,13 +679,20 @@ h1.navbar-brand a {
 }
 
 .about-story-card img {
-  border: 3px solid var(--clr-primary-light);
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
   border-radius: 50%;
-  max-width: 90px;
-  height: auto;
+  border: 5px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  margin-bottom: 25px;
   display: inline-block;
-  margin-bottom: 16px;
-  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.about-story-card img:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  border-color: #ffffff;
 }
 
 .about-story-card .card-label {
@@ -891,15 +898,20 @@ figcaption.mask p {
   letter-spacing: 0.5px;
 }
 
-/* Side-by-side Discover + Feedback layout */
+/* Side-by-side Discover + Feedback + Yoga layout */
 .discover-feedback-row {
   display: flex;
-  gap: 30px;
+  gap: 20px;
   align-items: stretch;
+  flex-wrap: wrap;
 }
 
-.discover-col {
-  flex: 0 0 35%;
+.discover-col,
+.feedback-col,
+.yoga-col {
+  flex: 1;
+  min-width: 300px;
+  /* Ensure readability */
   text-align: center;
   background: var(--clr-card-bg);
   border-radius: var(--radius);
@@ -910,16 +922,6 @@ figcaption.mask p {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.feedback-col {
-  flex: 1;
-  text-align: center;
-  background: var(--clr-card-bg);
-  border-radius: var(--radius);
-  padding: 40px 24px;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid rgba(42, 157, 143, 0.08);
 }
 
 .combined-section-title {
@@ -1478,7 +1480,8 @@ figcaption.mask p {
   }
 
   .discover-col,
-  .feedback-col {
+  .feedback-col,
+  .yoga-col {
     flex: 1 1 100%;
     padding: 30px 20px;
   }
