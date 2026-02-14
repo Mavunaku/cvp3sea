@@ -30,7 +30,7 @@ export default function Home() {
             // But usually store persists in memory. Validating logic:
             loadFromDatabase(userId);
         }
-    }, []);
+    }, [loadFromDatabase, setUserId, userId]);
 
     return (
         <div className="flex-1 space-y-4 p-8 pt-6">

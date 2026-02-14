@@ -123,7 +123,7 @@ export async function loadUserData(userId: string): Promise<UserData> {
                 currentDepreciation: a.current_depreciation,
                 method: a.method,
                 convention: a.convention,
-                projectId: a.project_id,
+                // projectId: a.project_id, // Removed Duplicate
             })),
         };
     } catch (error) {

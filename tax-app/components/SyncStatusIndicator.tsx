@@ -5,7 +5,7 @@ import { Cloud, CloudOff, Check } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export function SyncStatusIndicator() {
-    const { isSyncing, lastSyncTime } = useStore();
+    const { isSyncing, lastSyncTime, syncError } = useStore();
     const [timeAgo, setTimeAgo] = useState('');
 
     useEffect(() => {
@@ -40,8 +40,9 @@ export function SyncStatusIndicator() {
         );
     }
 
+
     // Error State
-    const { syncError } = useStore();
+    // const { syncError } = useStore(); // Was conditional, moved to top
     if (syncError) {
         return (
             <div className="group relative flex items-center gap-2 px-3 py-1.5 bg-red-500/10 border border-red-500/20 rounded-full text-xs text-red-500 cursor-help">
