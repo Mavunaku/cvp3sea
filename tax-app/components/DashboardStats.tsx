@@ -243,7 +243,7 @@ export function DashboardStats() {
     );
 }
 
-
-function cn(...classes: (string | undefined | null | boolean)[]) {
-    return classes.filter(Boolean).join(" ");
+function cn(classes: string, condition?: string) {
+    return classes + (condition ? " " + condition : "");
 }
+

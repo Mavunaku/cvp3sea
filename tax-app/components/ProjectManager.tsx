@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useStore } from '@/store/useStore';
 import { Plus, Trash2, Edit2, X, Folder, Briefcase, ShieldAlert } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -21,7 +21,7 @@ export function ProjectManager() {
 
     if (!isOpen) return null;
 
-    const handleAddYear = (e?: React.MouseEvent | React.KeyboardEvent | React.FormEvent) => {
+    const handleAddYear = (e?: React.MouseEvent | React.KeyboardEvent) => {
         if (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -186,7 +186,7 @@ export function ProjectManager() {
                                             <label className="text-xs font-medium">Type</label>
                                             <select
                                                 value={newProjectType}
-                                                onChange={(e) => setNewProjectType(e.target.value as 'Property' | 'Client' | 'Generic')}
+                                                onChange={(e) => setNewProjectType(e.target.value as any)}
                                                 className="w-full px-2 py-1.5 text-sm border rounded"
                                             >
                                                 <option value="Property">Property</option>

@@ -160,6 +160,7 @@ export function LedgerTable({ type }: LedgerTableProps) {
                 </div>
             </div>
             <div className="flex items-center justify-end gap-2 text-muted-foreground text-xs">
+                {/* Import Placeholder */}
                 <button
                     className="hover:text-foreground transition-colors"
                     onClick={() => alert("Import Feature Coming Soon")}

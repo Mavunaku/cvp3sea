@@ -70,21 +70,19 @@ export function GroupedExpenseTable({ transactions, onUpdate, onDelete }: Groupe
 }
 
 // Sub-component for Collapsible Section
-interface PillarSectionProps {
-    pillar: string;
-    transactions: Transaction[];
-    subtotal: number;
-    onUpdate: (id: string, updates: Partial<Transaction>) => void;
-    onDelete: (id: string) => void;
-}
-
 function PillarSection({
     pillar,
     transactions,
     subtotal,
     onUpdate,
     onDelete
-}: PillarSectionProps) {
+}: {
+    pillar: string,
+    transactions: Transaction[],
+    subtotal: number,
+    onUpdate: (id: string, updates: Partial<Transaction>) => void;
+    onDelete: (id: string) => void;
+}) {
     const [isOpen, setIsOpen] = useState(true);
 
     return (

@@ -1,19 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export function StickyNote() {
     const [note, setNote] = useState('');
 
-    useEffect(() => {
-        const savedNote = localStorage.getItem('tax-app-sticky-note');
-        if (savedNote) setNote(savedNote);
-    }, []);
-
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const newValue = e.target.value;
         setNote(newValue);
-        localStorage.setItem('tax-app-sticky-note', newValue);
+        // TODO: Store in Supabase user_metadata or separate notes table
     };
 
     return (

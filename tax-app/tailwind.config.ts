@@ -68,12 +68,6 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        cvp: {
-          teal: '#2a9d8f',
-          'teal-dark': '#1a7a6e',
-          'deep-green': '#1b4332',
-          accent: '#264653',
-        },
       },
       borderRadius: {
         lg: "var(--radius)",

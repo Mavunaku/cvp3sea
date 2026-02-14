@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Lock, ShieldCheck, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useStore } from '@/store/useStore';
 
 export default function LoginPage() {
     const [password, setPassword] = useState('');
@@ -12,6 +13,7 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const router = useRouter();
+    const { setUserId, loadFromDatabase } = useStore();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -19,8 +21,23 @@ export default function LoginPage() {
         setError(false);
 
         if (password === 'admin123') {
-            document.cookie = "auth-token=true; path=/; max-age=86400";
-            router.push('/');
+            try {
+                // Set cookie for middleware
+                document.cookie = "auth-token=true; path=/; max-age=86400";
+
+                // Set userId and load data from Supabase
+                // We use a static UUID because the DB expects UUID type, not 'admin' string
+                const ADMIN_UUID = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+                setUserId(ADMIN_UUID);
+                await loadFromDatabase(ADMIN_UUID);
+
+                // Redirect to dashboard
+                router.push('/');
+            } catch (err) {
+                console.error('Failed to load user data:', err);
+                setError(true);
+                setLoading(false);
+            }
         } else {
             setError(true);
             setLoading(false);
@@ -41,7 +58,7 @@ export default function LoginPage() {
         >
             {/* Interactive Parallax Background Image */}
             <div
-                className="absolute inset-0 z-0 transition-transform duration-75 ease-out scale-110"
+                className="absolute inset-0 z-0 transition-transform duration-75 agreement-out scale-110"
                 style={{
                     backgroundImage: 'url("https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2070&auto=format&fit=crop")',
                     backgroundSize: 'cover',

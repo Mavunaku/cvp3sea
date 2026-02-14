@@ -38,6 +38,7 @@ export interface Transaction {
     principal?: number; // Portion of amount that is principal
     // Phase 4 Fields
     projectId?: string;
+    projectName?: string; // Mapped from DB for inference
 }
 
 export interface Project {

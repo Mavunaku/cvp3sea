@@ -8,18 +8,41 @@ import { AnalyticsCharts } from "@/components/AnalyticsCharts";
 import { ProfitabilityRanking } from "@/components/ProfitabilityRanking";
 import { ProjectSwitcher } from "@/components/ProjectSwitcher";
 import { TaxTips } from "@/components/TaxTips";
+import { SyncStatusIndicator } from "@/components/SyncStatusIndicator";
+
+import { useEffect } from 'react';
+import { useStore } from '@/store/useStore';
 
 export default function Home() {
+    const { loadFromDatabase, userId, setUserId } = useStore();
+
+    useEffect(() => {
+        // Data Persistence: Reload if missing (e.g. on refresh)
+        const ADMIN_UUID = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+
+        // Always try to load on mount if we're supposed to be logged in
+        // Since we ignore real auth for now, we force the admin user
+        if (!userId || userId === 'admin') {
+            setUserId(ADMIN_UUID);
+            loadFromDatabase(ADMIN_UUID);
+        } else {
+            // Even if userId is set, maybe data is stale?
+            // But usually store persists in memory. Validating logic:
+            loadFromDatabase(userId);
+        }
+    }, []);
+
     return (
         <div className="flex-1 space-y-4 p-8 pt-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0">
                 <div className="space-y-1">
                     <Breadcrumbs />
                     <h2 className="text-3xl font-bold tracking-tight text-sage-900 dark:text-sage-100">
-                        Dashboard
+                        Dashboard (FIXED VERSION)
                     </h2>
                 </div>
                 <div className="flex items-center space-x-2">
+                    <SyncStatusIndicator />
                     <ProjectSwitcher />
                     <ExportButton />
                 </div>

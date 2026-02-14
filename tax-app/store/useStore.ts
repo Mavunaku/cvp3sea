@@ -1,16 +1,32 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { Transaction, Asset, Project } from '@/types';
+import { Transaction, Asset } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
+import { supabase } from '@/lib/supabase';
+import { Project } from '@/types';
+import { loadUserData, syncAllData, deleteTransaction as dbDeleteTransaction, deleteAsset as dbDeleteAsset, deleteProject as dbDeleteProject } from '@/lib/database';
 
 interface AppState {
     transactions: Transaction[];
     assets: Asset[];
     projects: Project[];
-    years: string[];
+    years: string[]; // List of Year Folders (e.g. "2025", "2026")
 
+    // User State
+    userId: string | null;
+    isLoading: boolean;
+    isSyncing: boolean;
+    syncError: string | null; // Added to track sync failures
+    lastSyncTime: Date | null;
+
+    // Selection State
     selectedYear: string | null;
     selectedProjectId: string | null;
+
+    // Actions
+    setUserId: (userId: string | null) => void;
+    loadFromDatabase: (userId: string) => Promise<void>;
+    syncToDatabase: () => Promise<void>;
 
     addTransaction: (transaction: Omit<Transaction, 'id'>) => void;
     addTransactions: (transactions: Omit<Transaction, 'id'>[]) => void;
@@ -49,13 +65,82 @@ export const useStore = create<AppState>()(
             assets: [],
             projects: [],
             years: [],
+            userId: null,
+            isLoading: false,
+            isSyncing: false,
+            syncError: null,
+            lastSyncTime: null,
             selectedYear: null,
             selectedProjectId: null,
+
+            setUserId: (userId) => set({ userId }),
+
+            loadFromDatabase: async (userId: string) => {
+                set({ isLoading: true });
+                try {
+                    const data = await loadUserData(userId);
+
+                    // Safety Check: If remote is empty but local has data, preserve local
+                    // This handles cases where RLS blocks writes but reads return empty
+                    if (
+                        data.transactions.length === 0 &&
+                        data.projects.length === 0 &&
+                        data.assets.length === 0
+                    ) {
+                        const state = get();
+                        if (state.transactions.length > 0 || state.projects.length > 0) {
+                            console.warn('Remote empty, local has data. Preserving local data (Offline/RLS protection).');
+                            set({ isLoading: false, userId }); // Just update metadata
+                            // Optionally trigger a sync attempt?
+                            // setTimeout(() => get().syncToDatabase(), 1000); 
+                            return;
+                        }
+                    }
+
+                    set({
+                        years: data.years,
+                        projects: data.projects,
+                        transactions: data.transactions,
+                        assets: data.assets,
+                        userId,
+                        isLoading: false,
+                    });
+                } catch (error: any) {
+                    console.error('Failed to load data:', error);
+                    set({ syncError: error.message || 'Failed to load data' });
+                    // Do not clear state on error
+                } finally {
+                    set({ isLoading: false });
+                }
+            },
+
+            syncToDatabase: async () => {
+                const state = get();
+                if (!state.userId) return;
+
+                set({ isSyncing: true });
+                set({ isSyncing: true, syncError: null }); // Clear previous sync error
+                try {
+                    await syncAllData(state.userId, {
+                        years: state.years,
+                        projects: state.projects,
+                        transactions: state.transactions,
+                        assets: state.assets,
+                    });
+                    set({ isSyncing: false, lastSyncTime: new Date(), syncError: null });
+                } catch (error: any) {
+                    console.error('Failed to sync data:', error);
+                    set({ syncError: error.message || 'Failed to sync data' });
+                } finally {
+                    set({ isSyncing: false });
+                }
+            },
 
             addTransaction: (transaction) =>
                 set((state) => {
                     let finalProjectId = transaction.projectId || state.selectedProjectId;
                     let newProjects = state.projects;
+                    let finalProjectName = '';
 
                     if (!finalProjectId) {
                         const activeYear = state.selectedYear || new Date().getFullYear().toString();
@@ -63,6 +148,7 @@ export const useStore = create<AppState>()(
 
                         if (generalProject) {
                             finalProjectId = generalProject.id;
+                            finalProjectName = generalProject.name;
                         } else {
                             const newGeneral: Project = {
                                 id: uuidv4(),
@@ -72,16 +158,40 @@ export const useStore = create<AppState>()(
                             };
                             newProjects = [...state.projects, newGeneral];
                             finalProjectId = newGeneral.id;
+                            finalProjectName = newGeneral.name;
+
+                            // Background create project
+                            supabase.from('projects').upsert([{
+                                id: newGeneral.id,
+                                name: newGeneral.name,
+                                type: newGeneral.type,
+                                year_id: newGeneral.yearId,
+                                user_id: state.userId
+                            }]).then(({ error }) => {
+                                if (error) console.error("Auto-created General project failed:", error);
+                            });
                         }
+                    } else {
+                        // Lookup name
+                        const existing = newProjects.find(p => p.id === finalProjectId);
+                        finalProjectName = existing ? existing.name : 'Unknown';
                     }
 
-                    return {
+                    const newState = {
                         projects: newProjects,
                         transactions: [
                             ...state.transactions,
-                            { ...transaction, id: uuidv4(), projectId: finalProjectId },
+                            {
+                                ...transaction,
+                                id: uuidv4(),
+                                projectId: finalProjectId,
+                                projectName: finalProjectName // Added
+                            },
                         ],
                     };
+
+                    setTimeout(() => get().syncToDatabase(), 0);
+                    return newState;
                 }),
 
             addTransactions: (newTransactions) =>
@@ -89,181 +199,211 @@ export const useStore = create<AppState>()(
                     const activeYear = state.selectedYear || new Date().getFullYear().toString();
                     let currentProjects = [...state.projects];
 
-                    const processedTransactions = newTransactions.map(t => {
-                        let finalProjectId = t.projectId || state.selectedProjectId;
+                    let generalProject = currentProjects.find(p => p.yearId === activeYear && p.name === 'General');
+                    if (!generalProject) {
+                        const newId = uuidv4();
+                        generalProject = {
+                            id: newId,
+                            name: 'General',
+                            type: 'Generic',
+                            yearId: activeYear
+                        };
+                        currentProjects.push(generalProject);
 
-                        if (!finalProjectId) {
-                            const generalProject = currentProjects.find(p => p.yearId === activeYear && p.name === 'General');
-                            if (generalProject) {
-                                finalProjectId = generalProject.id;
-                            } else {
-                                const newGeneral: Project = {
-                                    id: uuidv4(),
-                                    name: 'General',
-                                    type: 'Generic',
-                                    yearId: activeYear
-                                };
-                                currentProjects.push(newGeneral);
-                                finalProjectId = newGeneral.id;
-                            }
-                        }
-                        return { ...t, id: uuidv4(), projectId: finalProjectId };
+                        // Background create
+                        supabase.from('projects').upsert([{
+                            id: newId,
+                            name: 'General',
+                            type: 'Generic',
+                            year_id: activeYear,
+                            user_id: state.userId
+                        }]).then();
+                    }
+
+                    const transactionsWithIds = newTransactions.map(t => {
+                        const pid = t.projectId || generalProject!.id;
+                        const proj = currentProjects.find(p => p.id === pid);
+                        return {
+                            ...t,
+                            id: uuidv4(),
+                            projectId: pid,
+                            projectName: proj ? proj.name : 'Unknown' // Added
+                        };
                     });
 
-                    return {
+                    const newState = {
                         projects: currentProjects,
-                        transactions: [...state.transactions, ...processedTransactions]
+                        transactions: [...state.transactions, ...transactionsWithIds],
                     };
+
+                    setTimeout(() => get().syncToDatabase(), 0);
+                    return newState;
                 }),
 
             editTransaction: (id, updates) =>
-                set((state) => ({
-                    transactions: state.transactions.map((t) =>
-                        t.id === id ? { ...t, ...updates } : t
-                    ),
-                })),
+                set((state) => {
+                    // If projectId changed, update projectName
+                    let extraUpdates = {};
+                    if (updates.projectId) {
+                        const proj = state.projects.find(p => p.id === updates.projectId);
+                        extraUpdates = { projectName: proj ? proj.name : 'Unknown' };
+                    }
+
+                    const newState = {
+                        transactions: state.transactions.map((t) =>
+                            t.id === id ? { ...t, ...updates, ...extraUpdates } : t
+                        ),
+                    };
+                    setTimeout(() => get().syncToDatabase(), 0);
+                    return newState;
+                }),
+
             deleteTransaction: (id) =>
-                set((state) => ({
-                    transactions: state.transactions.filter((t) => t.id !== id),
-                })),
+                set((state) => {
+                    dbDeleteTransaction(id).catch(console.error);
+                    return {
+                        transactions: state.transactions.filter((t) => t.id !== id),
+                    };
+                }),
 
             addAsset: (asset) =>
                 set((state) => {
-                    let finalProjectId = asset.projectId || state.selectedProjectId;
-                    let newProjects = state.projects;
+                    const newState = {
+                        assets: [...state.assets, { ...asset, id: uuidv4() }],
+                    };
+                    setTimeout(() => get().syncToDatabase(), 0);
+                    return newState;
+                }),
 
-                    if (!finalProjectId) {
-                        const activeYear = state.selectedYear || new Date().getFullYear().toString();
-                        const generalProject = state.projects.find(p => p.yearId === activeYear && p.name === 'General');
+            editAsset: (id, updates) =>
+                set((state) => {
+                    const newState = {
+                        assets: state.assets.map((a) => (a.id === id ? { ...a, ...updates } : a)),
+                    };
+                    setTimeout(() => get().syncToDatabase(), 0);
+                    return newState;
+                }),
 
-                        if (generalProject) {
-                            finalProjectId = generalProject.id;
-                        } else {
-                            const newGeneral: Project = {
-                                id: uuidv4(),
-                                name: 'General',
-                                type: 'Generic',
-                                yearId: activeYear
-                            };
-                            newProjects = [...state.projects, newGeneral];
-                            finalProjectId = newGeneral.id;
-                        }
-                    }
-
+            deleteAsset: (id) =>
+                set((state) => {
+                    dbDeleteAsset(id).catch(console.error);
                     return {
-                        projects: newProjects,
-                        assets: [
-                            ...state.assets,
-                            {
-                                ...asset,
-                                id: uuidv4(),
-                                projectId: finalProjectId,
-                                land: asset.land || 0,
-                                priorDepreciation: asset.priorDepreciation || 0,
-                                currentDepreciation: 0,
-                                method: 'MACRS',
-                                convention: 'HY'
-                            },
-                        ],
+                        assets: state.assets.filter((a) => a.id !== id),
                     };
                 }),
-            editAsset: (id, updates) =>
-                set((state) => ({
-                    assets: state.assets.map((a) =>
-                        a.id === id ? { ...a, ...updates } : a
-                    ),
-                })),
-            deleteAsset: (id) =>
-                set((state) => ({
-                    assets: state.assets.filter((a) => a.id !== id),
-                })),
 
             addProject: (project) =>
-                set((state) => ({
-                    projects: [...state.projects, { ...project, id: uuidv4() }]
-                })),
+                set((state) => {
+                    const newState = {
+                        projects: [...state.projects, { ...project, id: uuidv4() }],
+                    };
+                    setTimeout(() => get().syncToDatabase(), 0);
+                    return newState;
+                }),
+
             editProject: (id, updates) =>
-                set((state) => ({
-                    projects: state.projects.map(p => p.id === id ? { ...p, ...updates } : p)
-                })),
+                set((state) => {
+                    const newState = {
+                        projects: state.projects.map((p) => (p.id === id ? { ...p, ...updates } : p)),
+                    };
+                    setTimeout(() => get().syncToDatabase(), 0);
+                    return newState;
+                }),
+
             deleteProject: (id) =>
                 set((state) => {
+                    dbDeleteProject(id).catch(console.error);
                     return {
-                        projects: state.projects.filter(p => p.id !== id),
-                        transactions: state.transactions.filter(t => t.projectId !== id),
-                        assets: state.assets.filter(a => a.projectId !== id),
-                        selectedProjectId: state.selectedProjectId === id ? null : state.selectedProjectId
+                        projects: state.projects.filter((p) => p.id !== id),
+                        transactions: state.transactions.filter((t) => t.projectId !== id),
+                        assets: state.assets.filter((a) => a.projectId !== id),
                     };
                 }),
 
             addYear: (year) =>
-                set((state) => ({
-                    years: state.years.includes(year) ? state.years : [...state.years, year].sort().reverse()
-                })),
+                set((state) => {
+                    if (state.years.includes(year)) return state;
+                    const newState = {
+                        years: [...state.years, year],
+                    };
+                    setTimeout(() => get().syncToDatabase(), 0);
+                    return newState;
+                }),
+
             deleteYear: (year) =>
                 set((state) => {
-                    const projectsToDelete = state.projects.filter(p => p.yearId === year).map(p => p.id);
-                    return {
-                        years: state.years.filter(y => y !== year),
-                        projects: state.projects.filter(p => p.yearId !== year),
-                        transactions: state.transactions.filter(t =>
-                            !projectsToDelete.includes(t.projectId || '') &&
-                            !t.date.startsWith(year)
-                        ),
-                        assets: state.assets.filter(a =>
-                            !projectsToDelete.includes(a.projectId || '') &&
-                            !a.purchaseDate?.startsWith(year)
-                        ),
-                        selectedYear: state.selectedYear === year ? null : state.selectedYear,
-                        selectedProjectId: state.selectedProjectId && projectsToDelete.includes(state.selectedProjectId) ? null : state.selectedProjectId
+                    const projectsInYear = state.projects.filter(p => p.yearId === year);
+                    const projectIdsToDelete = projectsInYear.map(p => p.id);
+
+                    projectIdsToDelete.forEach(id => dbDeleteProject(id).catch(console.error));
+
+                    const newState = {
+                        years: state.years.filter((y) => y !== year),
+                        projects: state.projects.filter((p) => p.yearId !== year),
+                        transactions: state.transactions.filter((t) => !projectIdsToDelete.includes(t.projectId || '')),
+                        assets: state.assets.filter((a) => !projectIdsToDelete.includes(a.projectId || '')),
                     };
+
+                    setTimeout(() => get().syncToDatabase(), 0);
+                    return newState;
                 }),
 
             setSelectedYear: (year) => set({ selectedYear: year, selectedProjectId: null }),
             setSelectedProject: (projectId) => set({ selectedProjectId: projectId }),
 
             getSummary: () => {
-                const { transactions } = get();
-                const revenue = transactions
+                const state = get();
+                const revenue = state.transactions
                     .filter((t) => t.type === 'income')
                     .reduce((acc, t) => acc + t.amount, 0);
-                const expenses = transactions
+                const expenses = state.transactions
                     .filter((t) => t.type === 'expense')
                     .reduce((acc, t) => acc + t.amount, 0);
-                const nySourceIncome = transactions
+                const netProfit = revenue - expenses;
+                const taxRate = 0.153 + 0.25;
+                const taxLiability = netProfit > 0 ? netProfit * taxRate : 0;
+                const nySourceIncome = state.transactions
                     .filter((t) => t.type === 'income' && t.nySource)
                     .reduce((acc, t) => acc + t.amount, 0);
-                const netProfit = revenue - expenses;
-                const taxLiability = netProfit > 0 ? netProfit * (0.153 + 0.25) : 0;
 
-                return { revenue, expenses, netProfit, taxLiability, nySourceIncome };
-            },
-
-            importState: (newState) => {
-                set(newState);
-            },
-            exportState: () => {
-                const {
-                    transactions,
-                    assets,
-                    projects,
-                    years,
-                    selectedYear,
-                    selectedProjectId
-                } = get();
                 return {
-                    transactions,
-                    assets,
-                    projects,
-                    years,
-                    selectedYear,
-                    selectedProjectId
+                    revenue,
+                    expenses,
+                    netProfit,
+                    taxLiability,
+                    nySourceIncome,
+                };
+            },
+
+            importState: (importedState) => {
+                set({
+                    transactions: importedState.transactions || [],
+                    assets: importedState.assets || [],
+                    projects: importedState.projects || [],
+                    years: importedState.years || [],
+                });
+                setTimeout(() => get().syncToDatabase(), 0);
+            },
+
+            exportState: () => {
+                const state = get();
+                return {
+                    transactions: state.transactions,
+                    assets: state.assets,
+                    projects: state.projects,
+                    years: state.years,
                 };
             },
         }),
         {
             name: 'tax-app-storage',
             storage: createJSONStorage(() => localStorage),
+            partialize: (state) => ({
+                transactions: state.transactions,
+                assets: state.assets,
+                projects: state.projects,
+                years: state.years,
+                userId: state.userId,
+            }),
         }
-    )
-);
+    ));
