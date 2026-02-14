@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import { Transaction, Asset, Project } from '@/types';
+import { Transaction, Asset, Project, Entity } from '@/types';
 
 export interface UserData {
     years: string[];
@@ -46,8 +46,8 @@ export async function loadUserData(userId: string): Promise<UserData> {
             type: t.type,
             description: t.description,
             category: t.category,
-            status: t.status || 'Cleared', // Default to Cleared
-            entity: 'CVP', // Default Entity
+            status: (t.status || 'Cleared') as Transaction['status'], // Default to Cleared
+            entity: 'CVP' as Entity, // Default Entity
             projectId: t.project_id,
             projectName: t.project_name, // Mapped
             nySource: t.ny_source,
