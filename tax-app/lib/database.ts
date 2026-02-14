@@ -46,7 +46,8 @@ export async function loadUserData(userId: string): Promise<UserData> {
             type: t.type,
             description: t.description,
             category: t.category,
-            // status: t.status, // Removed
+            status: t.status || 'Cleared', // Default to Cleared
+            entity: 'CVP', // Default Entity
             projectId: t.project_id,
             projectName: t.project_name, // Mapped
             nySource: t.ny_source,
