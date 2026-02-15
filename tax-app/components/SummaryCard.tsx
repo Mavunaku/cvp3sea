@@ -66,7 +66,7 @@ export function SummaryCard() {
             </Card>
             <Card className="bg-rose-50/10 border-rose-100/50">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Total Deductible</CardTitle>
+                    <CardTitle className="text-sm font-medium">Your Write-offs</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold text-rose-600 font-mono">
@@ -79,7 +79,7 @@ export function SummaryCard() {
             </Card>
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Net Cash Profit</CardTitle>
+                    <CardTitle className="text-sm font-medium text-slate-900 leading-tight">Profit after Expenses</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className={cn("text-2xl font-bold font-mono", stats.netProfit >= 0 ? "text-slate-900 dark:text-slate-100" : "text-rose-600")}>

@@ -2,7 +2,7 @@
 
 import { useStore } from '@/store/useStore';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Lightbulb, TrendingUp, DollarSign } from 'lucide-react';
+import { Lightbulb, TrendingUp, DollarSign, Scale } from 'lucide-react';
 
 export function TaxTips() {
     const { projects, selectedProjectId } = useStore();
@@ -12,58 +12,46 @@ export function TaxTips() {
     const type = project?.type || 'Generic';
 
     const renderTips = () => {
-        switch (type) {
-            case 'Property':
-                return (
-                    <div className="space-y-4">
-                        <div className="flex gap-3">
-                            <div className="mt-1"><TrendingUp className="h-4 w-4 text-emerald-500" /></div>
-                            <div>
-                                <h4 className="font-semibold text-sm">Depreciation is Key</h4>
-                                <p className="text-xs text-muted-foreground">Don&apos;t forget to track all capital improvements (roof, HVAC). These are depreciated over 27.5 years, not deducted immediately.</p>
-                            </div>
-                        </div>
-                        <div className="flex gap-3">
-                            <div className="mt-1"><DollarSign className="h-4 w-4 text-amber-500" /></div>
-                            <div>
-                                <h4 className="font-semibold text-sm">Passive Loss Rules</h4>
-                                <p className="text-xs text-muted-foreground">Rental losses may be limited if your income &gt; $100k, unless you are a Real Estate Professional.</p>
-                            </div>
+        return (
+            <div className="space-y-5">
+                {/* 1. The #1 Rule */}
+                <div className="flex gap-4 items-start">
+                    <div className="p-2 bg-rose-100 dark:bg-rose-900/40 rounded-xl shrink-0"><Scale className="h-4 w-4 text-rose-600" /></div>
+                    <div>
+                        <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100">Separation of "Church & State"</h4>
+                        <p className="text-[11px] leading-relaxed text-muted-foreground mt-1">Never use one bank account for personal and business. It is the #1 audit trigger and makes your tax prep 100x harder.</p>
+                    </div>
+                </div>
+
+                {/* 2. Receipt Rule */}
+                <div className="flex gap-4 items-start">
+                    <div className="p-2 bg-blue-100 dark:bg-blue-900/40 rounded-xl shrink-0"><Scale className="h-4 w-4 text-blue-600" /></div>
+                    <div>
+                        <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100">The Digital Receipt Shield</h4>
+                        <p className="text-[11px] leading-relaxed text-muted-foreground mt-1">IRS accepts photos. Snap every repair or supply purchase immediately. Digital proof is your best shield in an audit.</p>
+                    </div>
+                </div>
+
+                {/* 3. Project Specific Strategy */}
+                {type === 'Property' ? (
+                    <div className="flex gap-4 items-start">
+                        <div className="p-2 bg-emerald-100 dark:bg-emerald-900/40 rounded-xl shrink-0"><TrendingUp className="h-4 w-4 text-emerald-600" /></div>
+                        <div>
+                            <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100">Depreciation (Free Money)</h4>
+                            <p className="text-[11px] leading-relaxed text-muted-foreground mt-1">Write off the building value over 27.5 years. It lowers your taxes even if your property value is actually rising.</p>
                         </div>
                     </div>
-                );
-            case 'Client': // Freelance
-                return (
-                    <div className="space-y-4">
-                        <div className="flex gap-3">
-                            <div className="mt-1"><TrendingUp className="h-4 w-4 text-blue-500" /></div>
-                            <div>
-                                <h4 className="font-semibold text-sm">Self-Employment Tax</h4>
-                                <p className="text-xs text-muted-foreground">Remember you owe ~15.3% SE tax on net profit. Track every business expense to lower this!</p>
-                            </div>
-                        </div>
-                        <div className="flex gap-3">
-                            <div className="mt-1"><DollarSign className="h-4 w-4 text-emerald-500" /></div>
-                            <div>
-                                <h4 className="font-semibold text-sm">Home Office Deduction</h4>
-                                <p className="text-xs text-muted-foreground">If you work from home exclusively for this client, calculating home office % can save thousands.</p>
-                            </div>
+                ) : (
+                    <div className="flex gap-4 items-start">
+                        <div className="p-2 bg-indigo-100 dark:bg-indigo-900/40 rounded-xl shrink-0"><DollarSign className="h-4 w-4 text-indigo-600" /></div>
+                        <div>
+                            <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100">Beat the "April Surprise"</h4>
+                            <p className="text-[11px] leading-relaxed text-muted-foreground mt-1">Set aside 30% of every payment for taxes. Paying quarterly prevents huge fees and stressful year-end bills.</p>
                         </div>
                     </div>
-                );
-            default:
-                return (
-                    <div className="space-y-4">
-                        <div className="flex gap-3">
-                            <div className="mt-1"><Lightbulb className="h-4 w-4 text-amber-500" /></div>
-                            <div>
-                                <h4 className="font-semibold text-sm">General Strategy</h4>
-                                <p className="text-xs text-muted-foreground">Keep business and personal funds separate. reconciling monthly ensures you never miss a deduction.</p>
-                            </div>
-                        </div>
-                    </div>
-                );
-        }
+                )}
+            </div>
+        );
     };
 
     return (

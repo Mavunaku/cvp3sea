@@ -1,34 +1,19 @@
 'use client';
 
-import { useStore } from '@/store/useStore';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useStore } from '@/store/useStore';
 
 export function AnalyticsCharts() {
-    const { transactions, projects, selectedYear } = useStore();
+    const { transactions, projects, selectedYear, selectedProjectId } = useStore();
 
-    // 1. Prepare Data: aggregate by Project
-    // If a year is selected, only show projects from that year?
-    // User asked for: "Global Performance Analytics Dashboard that aggregates data across all Folders and Projects"
-    // BUT "When I select a specific project ... filter to show only that project's data".
-    // So:
-    // - If Global: Show all projects (maybe filtered by selectedYear if set, or all years?) 
-    //   -> Let's show all projects in the selected year, or all if no year.
-    // - If Project Selected: Show only that project (single bar group? or breakdown by category?)
-    //   -> User said "Project Comparison Chart". If one project selected, comparison is moot. 
-    //   -> Maybe show Monthly breakdown for that project?
-
-    // Strategy:
-    // Global View -> Compare Projects.
-    // Project View -> Monthly Trend.
-
-    const { selectedProjectId } = useStore();
+    const formatCurrency = (value: number) =>
+        new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
 
     if (selectedProjectId) {
         // Single Project View: Monthly Trend
-        const projectTransactions = transactions.filter(t => t.projectId === selectedProjectId);
-        // Group by Month (YYYY-MM)
-        const monthlyData = projectTransactions.reduce((acc, t) => {
+        const projectTransactions = transactions.filter((t: any) => t.projectId === selectedProjectId);
+        const monthlyData = projectTransactions.reduce((acc: any, t: any) => {
             const month = t.date.substring(0, 7); // "2025-01"
             if (!acc[month]) acc[month] = { name: month, Income: 0, Expenses: 0, Net: 0 };
 
@@ -42,33 +27,46 @@ export function AnalyticsCharts() {
         const data = Object.values(monthlyData).sort((a: any, b: any) => a.name.localeCompare(b.name));
 
         return (
-            <Card className="col-span-4">
+            <Card className="col-span-4 border-slate-200 dark:border-slate-800 shadow-sm h-full flex flex-col">
                 <CardHeader>
-                    <CardTitle>Monthly Performance</CardTitle>
+                    <CardTitle className="text-lg font-bold tracking-tight">Monthly Performance</CardTitle>
                 </CardHeader>
-                <CardContent className="pl-2">
-                    <div className="h-[350px] w-full">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={data}>
-                                <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                                <XAxis dataKey="name" fontSize={12} tickLine={false} axisLine={false} />
-                                <YAxis
-                                    fontSize={12}
-                                    tickLine={false}
-                                    axisLine={false}
-                                    tickFormatter={(value) => `$${value}`}
-                                />
-                                <Tooltip
-                                    contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', borderRadius: '6px' }}
-                                    itemStyle={{ color: 'hsl(var(--foreground))' }}
-                                />
-                                <Legend />
-                                <Bar dataKey="Income" fill="#10b981" radius={[4, 4, 0, 0]} />
-                                <Bar dataKey="Expenses" fill="#f43f5e" radius={[4, 4, 0, 0]} />
-                                <Bar dataKey="Net" fill="#6366f1" radius={[4, 4, 0, 0]} />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </div>
+                <CardContent className="pl-2 flex-1 min-h-[350px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-slate-200 dark:stroke-slate-800" />
+                            <XAxis
+                                dataKey="name"
+                                fontSize={11}
+                                tickLine={false}
+                                axisLine={false}
+                                tickFormatter={(val) => {
+                                    const d = new Date(val + "-01");
+                                    return d.toLocaleDateString('en-US', { month: 'short' });
+                                }}
+                            />
+                            <YAxis
+                                fontSize={11}
+                                tickLine={false}
+                                axisLine={false}
+                                tickFormatter={(value) => `$${value}`}
+                            />
+                            <Tooltip
+                                contentStyle={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.96)',
+                                    borderColor: '#e2e8f0',
+                                    borderRadius: '12px',
+                                    fontSize: '12px',
+                                    boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)'
+                                }}
+                                formatter={(value: any) => [formatCurrency(value), ""]}
+                            />
+                            <Legend wrapperStyle={{ fontSize: '12px', fontWeight: 'bold', paddingTop: '10px' }} />
+                            <Bar dataKey="Income" fill="#10b981" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="Expenses" fill="#f43f5e" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="Net" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                    </ResponsiveContainer>
                 </CardContent>
             </Card>
         );
@@ -76,50 +74,55 @@ export function AnalyticsCharts() {
 
     // Global View: Compare Projects
     const relevantProjects = selectedYear
-        ? projects.filter(p => p.yearId === selectedYear)
+        ? projects.filter((p: any) => p.yearId === selectedYear)
         : projects;
 
-    const projectData = relevantProjects.map(p => {
-        const pTrans = transactions.filter(t => t.projectId === p.id);
-        const income = pTrans.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
-        const expense = pTrans.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+    const projectData = relevantProjects.map((p: any) => {
+        const pTrans = transactions.filter((t: any) => t.projectId === p.id);
+        const income = pTrans.filter((t: any) => t.type === 'income').reduce((sum: number, t: any) => sum + t.amount, 0);
+        const expense = pTrans.filter((t: any) => t.type === 'expense').reduce((sum: number, t: any) => sum + t.amount, 0);
         return {
             name: p.name,
             Income: income,
             Expenses: expense,
             Net: income - expense
         };
-    }).filter(d => d.Income > 0 || d.Expenses > 0); // Hide empty projects
+    }).filter((d: any) => d.Income > 0 || d.Expenses > 0);
 
     return (
-        <Card className="col-span-4">
+        <Card className="col-span-4 border-indigo-100 dark:border-indigo-900 shadow-md h-full flex flex-col">
             <CardHeader>
-                <CardTitle>Project Comparison {selectedYear ? `(${selectedYear})` : "(All Years)"}</CardTitle>
+                <CardTitle className="text-lg font-bold tracking-tight text-indigo-900 dark:text-indigo-400">
+                    Project Comparison {selectedYear ? `(${selectedYear})` : "(All Years)"}
+                </CardTitle>
             </CardHeader>
-            <CardContent className="pl-2">
-                <div className="h-[350px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={projectData}>
-                            <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                            <XAxis dataKey="name" fontSize={12} tickLine={false} axisLine={false} />
-                            <YAxis
-                                fontSize={12}
-                                tickLine={false}
-                                axisLine={false}
-                                tickFormatter={(value) => `$${value}`}
-                            />
-                            <Tooltip
-                                cursor={{ fill: 'transparent' }}
-                                contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', borderRadius: '6px' }}
-                                itemStyle={{ color: 'hsl(var(--foreground))' }}
-                            />
-                            <Legend />
-                            <Bar dataKey="Income" fill="#10b981" radius={[4, 4, 0, 0]} />
-                            <Bar dataKey="Expenses" fill="#f43f5e" radius={[4, 4, 0, 0]} />
-                            <Bar dataKey="Net" fill="#6366f1" radius={[4, 4, 0, 0]} />
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
+            <CardContent className="pl-2 flex-1 min-h-[350px]">
+                <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={projectData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-slate-200 dark:stroke-slate-800" />
+                        <XAxis dataKey="name" fontSize={11} tickLine={false} axisLine={false} />
+                        <YAxis
+                            fontSize={11}
+                            tickLine={false}
+                            axisLine={false}
+                            tickFormatter={(value) => `$${value}`}
+                        />
+                        <Tooltip
+                            contentStyle={{
+                                backgroundColor: 'rgba(255, 255, 255, 0.96)',
+                                borderColor: '#e2e8f0',
+                                borderRadius: '12px',
+                                fontSize: '12px',
+                                boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)'
+                            }}
+                            formatter={(value: any) => [formatCurrency(value), ""]}
+                        />
+                        <Legend wrapperStyle={{ fontSize: '12px', fontWeight: 'bold', paddingTop: '10px' }} />
+                        <Bar dataKey="Income" fill="#10b981" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="Expenses" fill="#f43f5e" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="Net" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                </ResponsiveContainer>
             </CardContent>
         </Card>
     );

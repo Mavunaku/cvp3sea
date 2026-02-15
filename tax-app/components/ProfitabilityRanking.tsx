@@ -23,10 +23,10 @@ export function ProfitabilityRanking() {
 
         const sortedCats = Object.entries(categoryTotals)
             .sort(([, a], [, b]) => b - a)
-            .slice(0, 5);
+            .slice(0, 3);
 
         return (
-            <Card className="col-span-3">
+            <Card className="h-full">
                 <CardHeader>
                     <CardTitle>Top Expenses</CardTitle>
                     <CardDescription>Highest spending categories</CardDescription>
@@ -73,10 +73,11 @@ export function ProfitabilityRanking() {
         };
     })
         .filter(p => p.income > 0) // Only rank revenue-generating projects
-        .sort((a, b) => b.margin - a.margin);
+        .sort((a, b) => b.margin - a.margin)
+        .slice(0, 3);
 
     return (
-        <Card className="col-span-3">
+        <Card className="h-full">
             <CardHeader>
                 <CardTitle>Top Performers</CardTitle>
                 <CardDescription>Ranked by Profit Margin</CardDescription>
