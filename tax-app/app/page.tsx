@@ -38,7 +38,7 @@ export default function Home() {
                 <div className="space-y-1">
                     <Breadcrumbs />
                     <h2 className="text-3xl font-bold tracking-tight text-sage-900 dark:text-sage-100">
-                        Dashboard (FIXED VERSION)
+                        Dashboard
                     </h2>
                 </div>
                 <div className="flex items-center space-x-2">

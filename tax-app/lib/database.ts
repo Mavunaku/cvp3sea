@@ -279,7 +279,7 @@ export async function syncAllData(userId: string, data: UserData) {
  * Delete a transaction from Supabase
  */
 export async function deleteTransaction(id: string) {
-    const { error } = await supabase.from('transactions').delete().eq('id', id);
+    const { error } = await supabase.from('ledger_entries').delete().eq('id', id);
     if (error) throw error;
 }
 
