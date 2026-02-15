@@ -17,8 +17,10 @@ export function LedgerTable({ type }: LedgerTableProps) {
         addTransaction,
         editTransaction,
         deleteTransaction,
+        projects,
         selectedYear,
-        selectedProjectId
+        selectedProjectId,
+        toggleAllNySource
     } = useStore();
 
     // Filter by Global Context (Project/Year)
@@ -48,11 +50,21 @@ export function LedgerTable({ type }: LedgerTableProps) {
         new Date(b.date).getTime() - new Date(a.date).getTime()
     );
 
+    // Select All Logic
+    const visibleTransactions = sortedTransactions;
+    const allNyChecked = visibleTransactions.length > 0 && visibleTransactions.every(t => t.nySource ?? true);
+    const someNyChecked = visibleTransactions.some(t => t.nySource ?? true) && !allNyChecked;
+
+    const handleToggleAllNy = () => {
+        const targetState = !allNyChecked;
+        toggleAllNySource(visibleTransactions.map(t => t.id), targetState);
+    };
+
     // Calculate Totals for Footer
     // Calculate Totals for Footer (Deductible for Expenses, Raw for Income)
     const totalAmount = type === 'income'
-        ? sortedTransactions.reduce((acc, t) => acc + (t.amount || 0), 0)
-        : sortedTransactions.reduce((acc, t) => {
+        ? sortedTransactions.filter(t => t.nySource ?? true).reduce((acc, t) => acc + (t.amount || 0), 0)
+        : sortedTransactions.filter(t => t.nySource ?? true).reduce((acc, t) => {
             const amount = t.amount || 0;
             if (t.pillar === 'Interest Expense') {
                 if (t.interest !== undefined) return acc + (t.interest || 0);
@@ -109,6 +121,21 @@ export function LedgerTable({ type }: LedgerTableProps) {
                                         <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground w-40">Category</th>
                                         <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground w-32">Pymnt Status</th>
                                         <th className="h-10 px-2 text-right align-middle font-medium text-muted-foreground w-24">Amount</th>
+                                        <th className="h-10 px-2 text-center align-middle font-medium text-muted-foreground w-12">
+                                            <div className="flex flex-col items-center gap-0.5">
+                                                <span className="text-[9px] uppercase font-bold opacity-70">NY</span>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={allNyChecked}
+                                                    ref={(el) => {
+                                                        if (el) el.indeterminate = someNyChecked;
+                                                    }}
+                                                    onChange={handleToggleAllNy}
+                                                    className="h-3.5 w-3.5 rounded border-sage-300 text-sage-600 focus:ring-sage-500 cursor-pointer"
+                                                    title="Toggle All NY"
+                                                />
+                                            </div>
+                                        </th>
                                     </>
                                 ) : (
                                     <>
@@ -117,6 +144,21 @@ export function LedgerTable({ type }: LedgerTableProps) {
                                         <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground w-40">Category</th>
                                         <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground w-32">Pymnt Status</th>
                                         <th className="h-10 px-2 text-right align-middle font-medium text-muted-foreground w-24">Amount</th>
+                                        <th className="h-10 px-2 text-center align-middle font-medium text-muted-foreground w-12">
+                                            <div className="flex flex-col items-center gap-0.5">
+                                                <span className="text-[9px] uppercase font-bold opacity-70">NY</span>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={allNyChecked}
+                                                    ref={(el) => {
+                                                        if (el) el.indeterminate = someNyChecked;
+                                                    }}
+                                                    onChange={handleToggleAllNy}
+                                                    className="h-3.5 w-3.5 rounded border-sage-300 text-sage-600 focus:ring-sage-500 cursor-pointer"
+                                                    title="Toggle All NY"
+                                                />
+                                            </div>
+                                        </th>
                                     </>
                                 )}
                                 <th className="h-10 px-2 align-middle font-medium text-muted-foreground w-12 text-center">Actions</th>
@@ -197,7 +239,7 @@ function SummaryFooter({
         <tfoot className="bg-muted/50 font-medium border-t">
             {/* Main Total Row */}
             <tr>
-                <td colSpan={5} className="p-2 text-right text-sm">
+                <td colSpan={6} className="p-2 text-right text-sm">
                     {type === 'expense' ? 'Deductible Total:' : 'Total Income:'}
                 </td>
                 <td className="p-2 text-right font-mono text-sm font-bold">
@@ -213,7 +255,7 @@ function SummaryFooter({
                     {/* Travels Breakdown Row */}
                     {travelsGross > 0 && (
                         <tr className="text-blue-600 border-t border-blue-100/20">
-                            <td colSpan={5} className="p-2 text-right text-sm">Travels Deductible:</td>
+                            <td colSpan={6} className="p-2 text-right text-sm">Travels Deductible:</td>
                             <td className="p-2 text-right font-mono font-bold text-sm leading-none">
                                 <div className="flex flex-col items-end">
                                     <span>${(travelsTotal || 0).toLocaleString()}</span>

@@ -44,13 +44,19 @@ export function SummaryCard() {
                 return acc + amount;
             }, 0);
 
-        const nySourceIncome = filteredTransactions
-            .filter(t => t.type === 'income' && t.nySource)
+        const nySourceRevenue = filteredTransactions
+            .filter(t => t.type === 'income' && (t.nySource ?? true))
             .reduce((acc, t) => acc + (t.amount || 0), 0);
+
+        const nySourceExpenses = filteredTransactions
+            .filter(t => t.type === 'expense' && (t.nySource ?? true))
+            .reduce((acc, t) => acc + (t.amount || 0), 0);
+
+        const nySourceIncome = nySourceRevenue - nySourceExpenses;
 
         const netProfit = revenue - expenses;
 
-        return { revenue, expenses, deductibleExpenses, netProfit, nySourceIncome };
+        return { revenue, expenses, deductibleExpenses, netProfit, nySourceIncome, nySourceRevenue, nySourceExpenses };
     }, [transactions, selectedYear, selectedProjectId, projects]);
 
     return (
@@ -89,12 +95,20 @@ export function SummaryCard() {
                 </CardContent>
             </Card>
             <Card className="bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium text-emerald-800 dark:text-emerald-300">NY Source Income</CardTitle>
+                <CardHeader className="flex flex-col space-y-0 pb-2">
+                    <CardTitle className="text-sm font-bold text-emerald-900 dark:text-emerald-300">NY Net Taxable Profit</CardTitle>
+                    <p className="text-[10px] text-emerald-700/70 dark:text-emerald-400/70 leading-tight italic">
+                        Income - Expenses reported to NY State
+                    </p>
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-400 font-mono">
                         ${(stats.nySourceIncome || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                    </div>
+                    <div className="flex gap-2 mt-1 opacity-60 text-[9px] font-bold uppercase tracking-tighter text-emerald-800 dark:text-emerald-400">
+                        <span>Inc: ${(stats.nySourceRevenue || 0).toLocaleString()}</span>
+                        <span>-</span>
+                        <span>Exp: ${(stats.nySourceExpenses || 0).toLocaleString()}</span>
                     </div>
                 </CardContent>
             </Card>

@@ -73,21 +73,56 @@ export function ExpenseRow({ transaction, onUpdate, onDelete }: ExpenseRowProps)
                     </select>
                     {/* Sub-category Selector */}
                     <div className="relative group/cat">
-                        <select
-                            value={transaction.category}
-                            onChange={(e) => onUpdate(transaction.id, { category: e.target.value })}
-                            className="h-7 w-full rounded border border-transparent bg-transparent px-1 py-0 text-xs text-muted-foreground focus:border-sage-500 focus:outline-none"
-                        >
-                            {(EXPENSE_PILLARS[transaction.pillar || 'General Business'] || []).map((cat) => (
-                                <option key={cat} value={cat}>{cat}</option>
-                            ))}
-                        </select>
-                        {transaction.category.includes('(50% Deductible)') && (
-                            <div className="absolute -top-3 right-0">
-                                <span className="text-[9px] font-black uppercase text-rose-500 bg-rose-50 border border-rose-200 px-1 rounded-sm shadow-sm whitespace-nowrap animate-pulse">
-                                    50% OFF
-                                </span>
+                        {transaction.pillar === 'Interest Expense' ? (
+                            <div className="flex flex-col gap-0.5 text-[9px] uppercase font-bold tracking-tight">
+                                <div className="flex justify-between gap-2 border-b border-sage-100/50 pb-0.5 mb-0.5">
+                                    <span className="opacity-50">Full Amount:</span>
+                                    <span className="font-mono">${(transaction.amount || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                                </div>
+                                <div className="flex justify-between gap-2 text-emerald-600 dark:text-emerald-400 border-b border-emerald-100/30 pb-0.5 mb-0.5">
+                                    <span>Interest (Deductible):</span>
+                                    <div className="flex items-center">
+                                        <span className="font-mono">$</span>
+                                        <EditableCell
+                                            value={transaction.interest ?? transaction.amount}
+                                            type="number"
+                                            onSave={(val) => onUpdate(transaction.id, { interest: Number(val) })}
+                                            className="h-3 p-0 min-w-[40px] font-mono text-right"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex justify-between gap-2 opacity-50">
+                                    <span>Principal:</span>
+                                    <div className="flex items-center">
+                                        <span className="font-mono">$</span>
+                                        <EditableCell
+                                            value={(transaction.amount || 0) - (transaction.interest ?? transaction.amount)}
+                                            type="number"
+                                            onSave={(val) => onUpdate(transaction.id, { interest: (transaction.amount || 0) - Number(val) })}
+                                            className="h-3 p-0 min-w-[40px] font-mono text-right"
+                                        />
+                                    </div>
+                                </div>
                             </div>
+                        ) : (
+                            <>
+                                <select
+                                    value={transaction.category}
+                                    onChange={(e) => onUpdate(transaction.id, { category: e.target.value })}
+                                    className="h-7 w-full rounded border border-transparent bg-transparent px-1 py-0 text-xs text-muted-foreground focus:border-sage-500 focus:outline-none"
+                                >
+                                    {(EXPENSE_PILLARS[transaction.pillar || 'General Business'] || []).map((cat) => (
+                                        <option key={cat} value={cat}>{cat}</option>
+                                    ))}
+                                </select>
+                                {transaction.category.includes('(50% Deductible)') && (
+                                    <div className="absolute -top-3 right-0">
+                                        <span className="text-[9px] font-black uppercase text-rose-500 bg-rose-50 border border-rose-200 px-1 rounded-sm shadow-sm whitespace-nowrap animate-pulse">
+                                            50% OFF
+                                        </span>
+                                    </div>
+                                )}
+                            </>
                         )}
                     </div>
                 </div>
@@ -146,13 +181,17 @@ export function ExpenseRow({ transaction, onUpdate, onDelete }: ExpenseRowProps)
 
                         if (!showTaxPrice) return null;
 
-                        return (
-                            <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 mt-0.5 leading-none">
-                                Deductible: ${(taxPrice ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                            </span>
-                        );
+                        return null; // Removed Deductible indicator
                     })()}
                 </div>
+            </td>
+            <td className="p-2 align-middle text-center">
+                <input
+                    type="checkbox"
+                    checked={transaction.nySource ?? true}
+                    onChange={(e) => onUpdate(transaction.id, { nySource: e.target.checked })}
+                    className="h-4 w-4 rounded border-sage-300 text-sage-600 focus:ring-sage-500 cursor-pointer"
+                />
             </td>
 
             {/* Actions */}

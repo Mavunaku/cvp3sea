@@ -88,7 +88,7 @@ function PillarSection({
     return (
         <>
             <tr className="bg-muted/30 hover:bg-muted/50 cursor-pointer border-b" onClick={() => setIsOpen(!isOpen)}>
-                <td colSpan={7} className="p-2">
+                <td colSpan={8} className="p-2">
                     <div className="flex items-center justify-between font-semibold text-sm">
                         <div className="flex items-center gap-2 text-foreground">
                             {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
@@ -111,7 +111,7 @@ function PillarSection({
             ))}
             {isOpen && transactions.length === 0 && (
                 <tr>
-                    <td colSpan={7} className="h-12 text-center text-xs text-muted-foreground italic border-b">
+                    <td colSpan={8} className="h-12 text-center text-xs text-muted-foreground italic border-b">
                         No expenses in {pillar} yet.
                     </td>
                 </tr>

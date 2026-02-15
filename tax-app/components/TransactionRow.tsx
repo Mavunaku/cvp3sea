@@ -88,6 +88,14 @@ export function TransactionRow({ transaction, onUpdate, onDelete }: TransactionR
                     className="justify-end font-mono"
                 />
             </td>
+            <td className="p-2 align-middle text-center">
+                <input
+                    type="checkbox"
+                    checked={transaction.nySource ?? true}
+                    onChange={(e) => onUpdate(transaction.id, { nySource: e.target.checked })}
+                    className="h-4 w-4 rounded border-sage-300 text-sage-600 focus:ring-sage-500 cursor-pointer"
+                />
+            </td>
             {/* Actions */}
             <td className="p-2 align-middle text-right">
                 <div className="flex items-center justify-end gap-2">

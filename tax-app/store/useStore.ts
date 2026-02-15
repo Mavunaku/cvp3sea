@@ -33,6 +33,7 @@ interface AppState {
     addTransactions: (transactions: Omit<Transaction, 'id'>[]) => void;
     editTransaction: (id: string, updates: Partial<Transaction>) => void;
     deleteTransaction: (id: string) => void;
+    toggleAllNySource: (ids: string[], enabled: boolean) => void;
 
     addAsset: (asset: Omit<Asset, 'id'>) => void;
     editAsset: (id: string, updates: Partial<Asset>) => void;
@@ -188,7 +189,8 @@ export const useStore = create<AppState>()(
                                 ...transaction,
                                 id: uuidv4(),
                                 projectId: finalProjectId,
-                                projectName: finalProjectName // Added
+                                projectName: finalProjectName,
+                                nySource: transaction.nySource ?? true
                             },
                         ],
                     };
@@ -230,7 +232,8 @@ export const useStore = create<AppState>()(
                             ...t,
                             id: uuidv4(),
                             projectId: pid,
-                            projectName: proj ? proj.name : 'Unknown' // Added
+                            projectName: proj ? proj.name : 'Unknown',
+                            nySource: t.nySource ?? true
                         };
                     });
 
@@ -267,6 +270,17 @@ export const useStore = create<AppState>()(
                     return {
                         transactions: state.transactions.filter((t) => t.id !== id),
                     };
+                }),
+
+            toggleAllNySource: (ids, enabled) =>
+                set((state) => {
+                    const newState = {
+                        transactions: state.transactions.map((t) =>
+                            ids.includes(t.id) ? { ...t, nySource: enabled } : t
+                        ),
+                    };
+                    setTimeout(() => get().syncToDatabase(), 0);
+                    return newState;
                 }),
 
             addAsset: (asset) =>
@@ -367,17 +381,27 @@ export const useStore = create<AppState>()(
                     .filter((t) => t.type === 'expense')
                     .reduce((acc, t) => acc + t.amount, 0);
                 const netProfit = revenue - expenses;
-                const taxRate = 0.153 + 0.25;
-                const taxLiability = netProfit > 0 ? netProfit * taxRate : 0;
-                const nySourceIncome = state.transactions
-                    .filter((t) => t.type === 'income' && t.nySource)
+                const nySourceRevenue = state.transactions
+                    .filter((t) => t.type === 'income' && (t.nySource ?? true))
                     .reduce((acc, t) => acc + t.amount, 0);
+                const nySourceExpenses = state.transactions
+                    .filter((t) => t.type === 'expense' && (t.nySource ?? true))
+                    .reduce((acc, t) => acc + t.amount, 0);
+                const nySourceIncome = nySourceRevenue - nySourceExpenses;
+
+                const fedTaxRate = 0.35;
+                const nyTaxRate = 0.065;
+                const fedTax = netProfit > 0 ? netProfit * fedTaxRate : 0;
+                const nyTax = nySourceIncome > 0 ? nySourceIncome * nyTaxRate : 0;
+                const taxLiability = fedTax + nyTax;
 
                 return {
                     revenue,
                     expenses,
                     netProfit,
                     taxLiability,
+                    fedTax,
+                    nyTax,
                     nySourceIncome,
                 };
             },

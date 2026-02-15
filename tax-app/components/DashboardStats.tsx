@@ -88,11 +88,46 @@ export function DashboardStats() {
         const netProfit = revenue - expenses; // Cash Flow Net
         const taxableNetProfit = revenue - deductibleExpenses - totalDepreciation; // Taxable Net
 
-        const taxRate = 0.153 + 0.25; // Estimate
-        const taxLiability = taxableNetProfit > 0 ? taxableNetProfit * taxRate : 0;
-        const taxSavings = (deductibleExpenses + totalDepreciation) * taxRate;
+        const nySourceIncome = filteredTransactions
+            .filter(t => t.nySource ?? true)
+            .reduce((acc, t) => {
+                if (t.type === 'income') return acc + t.amount;
+                // For expenses, use deductible logic consistent with taxableNetProfit
+                const amount = t.amount || 0;
+                if (t.pillar === 'Interest Expense') {
+                    if (t.interest !== undefined) return acc - t.interest;
+                    if (t.category === 'Loan Principal') return acc;
+                    return acc - amount;
+                }
+                if (t.pillar === 'Travels') {
+                    if (t.category.includes('(50% Deductible)')) return acc - (amount * 0.5);
+                    if (t.category === 'Entertainment (Non-Deductible)') return acc;
+                    return acc - amount;
+                }
+                if (t.capitalize) return acc;
+                return acc - amount;
+            }, 0);
 
-        return { revenue, expenses, deductibleExpenses, netProfit, taxableNetProfit, totalDepreciation, taxLiability, taxSavings };
+        const fedTaxRate = 0.35;
+        const nyTaxRate = 0.065;
+
+        const fedTax = taxableNetProfit > 0 ? taxableNetProfit * fedTaxRate : 0;
+        const nyTax = nySourceIncome > 0 ? nySourceIncome * nyTaxRate : 0;
+        const taxLiability = fedTax + nyTax;
+        const taxSavings = (deductibleExpenses + totalDepreciation) * (fedTaxRate + nyTaxRate);
+
+        return {
+            revenue,
+            expenses,
+            deductibleExpenses,
+            netProfit,
+            taxableNetProfit,
+            totalDepreciation,
+            taxLiability,
+            taxSavings,
+            fedTax,
+            nyTax
+        };
     }, [transactions, assets, selectedYear, selectedProjectId, projects]);
 
     if (!mounted) {
@@ -213,8 +248,22 @@ export function DashboardStats() {
                                 <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-300">
                                     ${stats.taxLiability.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                                 </div>
-                                <div className="text-[10px] text-emerald-600/70 font-bold mt-1 uppercase tracking-tighter">
-                                    Estimated cash you need to save for taxes
+                                <div className="space-y-1 mt-2">
+                                    <div className="flex justify-between text-[10px] font-bold uppercase tracking-tight text-emerald-600/70">
+                                        <span>Fed/SE Tax (35%):</span>
+                                        <span className="font-mono text-emerald-800 dark:text-emerald-200">
+                                            ${stats.fedTax.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between text-[10px] font-bold uppercase tracking-tight text-emerald-600/70">
+                                        <span>NY State Tax (6.5%):</span>
+                                        <span className="font-mono text-emerald-800 dark:text-emerald-200">
+                                            ${stats.nyTax.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                                        </span>
+                                    </div>
+                                    <div className="text-[9px] text-emerald-600/50 font-bold mt-2 uppercase tracking-tighter italic border-t border-emerald-500/10 pt-1">
+                                        * Approximate estimations for planning only
+                                    </div>
                                 </div>
                             </CardContent>
                         </Card>
