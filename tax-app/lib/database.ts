@@ -39,22 +39,40 @@ export async function loadUserData(userId: string): Promise<UserData> {
         }));
 
         const existingProjectIds = new Set(loadedProjects.map(p => p.id));
-        const transactions = transactionsRes.data.map((t) => ({
-            id: t.id,
-            date: t.date,
-            amount: t.amount,
-            type: t.type,
-            description: t.description,
-            category: t.category,
-            status: (t.status || 'Cleared') as Transaction['status'], // Default to Cleared
-            entity: 'CVP' as Entity, // Default Entity
-            projectId: t.project_id,
-            projectName: t.project_name, // Mapped
-            nySource: t.ny_source,
-            pillar: t.pillar,
-            interest: t.interest,
-            capitalize: t.capitalize,
-        }));
+        // Map Transactions with Type Assertions and Self-Healing Linkage
+        const transactions: Transaction[] = transactionsRes.data.map((t) => {
+            let pid = t.project_id;
+            let pname = t.project_name;
+            const yearId = t.date ? t.date.split('-')[0] : null;
+
+            // Linkage repair: If we have a name but no ID (or invalid ID), try to reconcile with year-awareness
+            if (pname && (!pid || !existingProjectIds.has(pid))) {
+                const match = loadedProjects.find(p => p.name === pname && p.yearId === yearId);
+                if (match) pid = match.id;
+                else if (!yearId) {
+                    // Fallback to first name match if no date info
+                    const fallbackMatch = loadedProjects.find(p => p.name === pname);
+                    if (fallbackMatch) pid = fallbackMatch.id;
+                }
+            }
+
+            return {
+                id: t.id,
+                date: t.date,
+                amount: t.amount,
+                type: t.type as Transaction['type'],
+                description: t.description,
+                category: t.category,
+                status: (t.status || 'Cleared') as Transaction['status'],
+                entity: 'CVP' as Entity,
+                projectId: pid,
+                projectName: pname,
+                nySource: t.ny_source,
+                pillar: t.pillar,
+                interest: t.interest,
+                capitalize: t.capitalize,
+            };
+        });
 
         // Helper for UUID
         const generateUUID = () => {
@@ -64,41 +82,37 @@ export async function loadUserData(userId: string): Promise<UserData> {
             });
         };
 
-        // Infer Projects from Transactions if missing
+        // Infer Projects from Transactions if STILL missing after mapping
         const inferredProjects: Project[] = [];
-
-        // We use a simple loop to find missing projects and auto-create them
         for (const t of transactions) {
-            if (t.projectName) {
-                const existing = loadedProjects.find(p => p.name === t.projectName);
-                const alreadyInferred = inferredProjects.find(p => p.name === t.projectName);
+            if (t.projectName && !t.projectId) {
+                const yearId = t.date ? t.date.split('-')[0] : new Date().getFullYear().toString();
+                const alreadyInferred = inferredProjects.find(p => p.name === t.projectName && p.yearId === yearId);
 
-                if (!existing && !alreadyInferred) {
-                    // Check if there is really no project with this name
-                    // Create synthetic project AND Persist it
+                if (!alreadyInferred) {
                     const newId = generateUUID();
-                    const currentYear = new Date().getFullYear().toString();
-
                     const newProject: Project = {
                         id: newId,
                         name: t.projectName,
                         type: 'Generic',
-                        yearId: currentYear
+                        yearId: yearId
                     };
                     inferredProjects.push(newProject);
 
-                    // Self-Healing: Create the project in DB so future inserts work
-                    // utilizing async execution (fire and forget)
+                    // Update the transaction being processed to use this new ID
+                    t.projectId = newId;
+
+                    // Background Create
                     supabase.from('projects').upsert([{
                         id: newId,
                         name: newProject.name,
                         type: newProject.type,
                         year_id: newProject.yearId,
                         user_id: userId
-                    }]).then(({ error }) => {
-                        if (error) console.error("Auto-created missing project failed:", error);
-                        else console.log("Auto-created missing project:", newProject.name);
-                    });
+                    }]).then();
+                } else {
+                    // Link to the one we just inferred in this loop
+                    t.projectId = alreadyInferred.id;
                 }
             }
         }
