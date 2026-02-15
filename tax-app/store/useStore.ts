@@ -427,7 +427,7 @@ export const useStore = create<AppState>()(
             },
         }),
         {
-            name: 'tax-app-storage',
+            name: 'tax-app-storage-v2',
             storage: createJSONStorage(() => localStorage),
             partialize: (state) => ({
                 transactions: state.transactions,
