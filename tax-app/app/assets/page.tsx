@@ -1,4 +1,5 @@
 'use client';
+// Build Sync Fix: 2026-02-15 17:55
 
 import { AssetTable } from '@/components/AssetTable';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
@@ -90,4 +91,4 @@ export default function AssetsPage() {
         </div>
     );
 }
- 
+
