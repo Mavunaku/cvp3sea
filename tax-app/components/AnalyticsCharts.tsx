@@ -32,7 +32,7 @@ export function AnalyticsCharts() {
                     <CardTitle className="text-lg font-bold tracking-tight">Monthly Performance</CardTitle>
                 </CardHeader>
                 <CardContent className="pl-2 flex-1 min-h-[350px]">
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                         <BarChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                             <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-slate-200 dark:stroke-slate-800" />
                             <XAxis
@@ -97,7 +97,7 @@ export function AnalyticsCharts() {
                 </CardTitle>
             </CardHeader>
             <CardContent className="pl-2 flex-1 min-h-[350px]">
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                     <BarChart data={projectData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-slate-200 dark:stroke-slate-800" />
                         <XAxis dataKey="name" fontSize={11} tickLine={false} axisLine={false} />

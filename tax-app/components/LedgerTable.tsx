@@ -51,33 +51,35 @@ export function LedgerTable({ type }: LedgerTableProps) {
     // Calculate Totals for Footer
     // Calculate Totals for Footer (Deductible for Expenses, Raw for Income)
     const totalAmount = type === 'income'
-        ? sortedTransactions.reduce((acc, t) => acc + t.amount, 0)
+        ? sortedTransactions.reduce((acc, t) => acc + (t.amount || 0), 0)
         : sortedTransactions.reduce((acc, t) => {
+            const amount = t.amount || 0;
             if (t.pillar === 'Interest Expense') {
-                if (t.interest !== undefined) return acc + t.interest;
+                if (t.interest !== undefined) return acc + (t.interest || 0);
                 if (t.category === 'Loan Principal') return acc;
-                return acc + t.amount;
+                return acc + amount;
             }
             if (t.pillar === 'Travels') {
-                if (t.category.includes('(50% Deductible)')) return acc + (t.amount * 0.5);
+                if (t.category.includes('(50% Deductible)')) return acc + (amount * 0.5);
                 if (t.category === 'Entertainment (Non-Deductible)') return acc;
-                return acc + t.amount;
+                return acc + amount;
             }
             if (t.capitalize) return acc; // Skip capitalized repairs
-            return acc + t.amount;
+            return acc + amount;
         }, 0);
     const travelsTotal = type === 'expense'
         ? sortedTransactions.filter(t => t.pillar === 'Travels').reduce((acc, t) => {
-            if (t.category.includes('(50% Deductible)')) return acc + (t.amount * 0.5);
+            const amount = t.amount || 0;
+            if (t.category.includes('(50% Deductible)')) return acc + (amount * 0.5);
             if (t.category === 'Entertainment (Non-Deductible)') return acc;
-            return acc + t.amount;
+            return acc + amount;
         }, 0)
         : 0;
     const travelsGross = type === 'expense'
-        ? sortedTransactions.filter(t => t.pillar === 'Travels').reduce((acc, t) => acc + t.amount, 0)
+        ? sortedTransactions.filter(t => t.pillar === 'Travels').reduce((acc, t) => acc + (t.amount || 0), 0)
         : 0;
     const mealsSubtotal = type === 'expense'
-        ? sortedTransactions.filter(t => t.pillar === 'Travels' && t.category.includes('(50% Deductible)')).reduce((acc, t) => acc + t.amount, 0)
+        ? sortedTransactions.filter(t => t.pillar === 'Travels' && t.category.includes('(50% Deductible)')).reduce((acc, t) => acc + (t.amount || 0), 0)
         : 0;
 
     return (
@@ -117,7 +119,7 @@ export function LedgerTable({ type }: LedgerTableProps) {
                                         <th className="h-10 px-2 text-right align-middle font-medium text-muted-foreground w-24">Amount</th>
                                     </>
                                 )}
-                                <th className="h-10 px-2 text-right align-middle font-medium text-muted-foreground w-12 text-center">Actions</th>
+                                <th className="h-10 px-2 align-middle font-medium text-muted-foreground w-12 text-center">Actions</th>
                             </tr>
                         </thead>
 
@@ -189,7 +191,7 @@ function SummaryFooter({
     mealsSubtotal: number;
     transactions: Transaction[];
 }) {
-    const grossTotal = transactions.reduce((acc, t) => acc + t.amount, 0);
+    const grossTotal = transactions.reduce((acc, t) => acc + (t.amount || 0), 0);
 
     return (
         <tfoot className="bg-muted/50 font-medium border-t">
@@ -199,10 +201,10 @@ function SummaryFooter({
                     {type === 'expense' ? 'Deductible Total:' : 'Total Income:'}
                 </td>
                 <td className="p-2 text-right font-mono text-sm font-bold">
-                    ${totalAmount.toLocaleString()}
+                    ${(totalAmount || 0).toLocaleString()}
                 </td>
                 <td colSpan={2} className="text-[10px] text-muted-foreground pl-2 italic">
-                    {type === 'expense' && grossTotal !== totalAmount && `(Total Spent: $${grossTotal.toLocaleString()})`}
+                    {type === 'expense' && grossTotal !== totalAmount && `(Total Spent: $${(grossTotal || 0).toLocaleString()})`}
                 </td>
             </tr>
 
@@ -214,10 +216,10 @@ function SummaryFooter({
                             <td colSpan={5} className="p-2 text-right text-sm">Travels Deductible:</td>
                             <td className="p-2 text-right font-mono font-bold text-sm leading-none">
                                 <div className="flex flex-col items-end">
-                                    <span>${travelsTotal.toLocaleString()}</span>
+                                    <span>${(travelsTotal || 0).toLocaleString()}</span>
                                     {travelsGross !== travelsTotal && (
                                         <span className="text-[9px] opacity-60">
-                                            (Gross: ${travelsGross.toLocaleString()}, 50% Meals incl.)
+                                            (Gross: ${(travelsGross || 0).toLocaleString()}, 50% Meals incl.)
                                         </span>
                                     )}
                                 </div>

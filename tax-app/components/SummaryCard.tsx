@@ -20,32 +20,33 @@ export function SummaryCard() {
 
         const revenue = filteredTransactions
             .filter((t) => t.type === 'income')
-            .reduce((acc, t) => acc + t.amount, 0);
+            .reduce((acc, t) => acc + (t.amount || 0), 0);
 
         const expenses = filteredTransactions
             .filter((t) => t.type === 'expense')
-            .reduce((acc, t) => acc + t.amount, 0);
+            .reduce((acc, t) => acc + (t.amount || 0), 0);
 
         const deductibleExpenses = filteredTransactions
             .filter((t) => t.type === 'expense')
             .reduce((acc, t) => {
+                const amount = t.amount || 0;
                 if (t.pillar === 'Interest Expense') {
-                    if (t.interest !== undefined) return acc + t.interest;
+                    if (t.interest !== undefined) return acc + (t.interest || 0);
                     if (t.category === 'Loan Principal') return acc;
-                    return acc + t.amount;
+                    return acc + amount;
                 }
                 if (t.pillar === 'Travels') {
-                    if (t.category.includes('(50% Deductible)')) return acc + (t.amount * 0.5);
+                    if (t.category.includes('(50% Deductible)')) return acc + (amount * 0.5);
                     if (t.category === 'Entertainment (Non-Deductible)') return acc;
-                    return acc + t.amount;
+                    return acc + amount;
                 }
                 if (t.capitalize) return acc;
-                return acc + t.amount;
+                return acc + amount;
             }, 0);
 
         const nySourceIncome = filteredTransactions
             .filter(t => t.type === 'income' && t.nySource)
-            .reduce((acc, t) => acc + t.amount, 0);
+            .reduce((acc, t) => acc + (t.amount || 0), 0);
 
         const netProfit = revenue - expenses;
 
@@ -60,7 +61,7 @@ export function SummaryCard() {
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold text-emerald-600 font-mono">
-                        ${stats.revenue.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                        ${(stats.revenue || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                     </div>
                 </CardContent>
             </Card>
@@ -70,10 +71,10 @@ export function SummaryCard() {
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold text-rose-600 font-mono">
-                        ${stats.deductibleExpenses.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                        ${(stats.deductibleExpenses || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                     </div>
                     <p className="text-[10px] text-muted-foreground opacity-70 italic mt-1">
-                        Gross: ${stats.expenses.toLocaleString()}
+                        Gross: ${(stats.expenses || 0).toLocaleString()}
                     </p>
                 </CardContent>
             </Card>
@@ -83,7 +84,7 @@ export function SummaryCard() {
                 </CardHeader>
                 <CardContent>
                     <div className={cn("text-2xl font-bold font-mono", stats.netProfit >= 0 ? "text-slate-900 dark:text-slate-100" : "text-rose-600")}>
-                        ${stats.netProfit.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                        ${(stats.netProfit || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                     </div>
                 </CardContent>
             </Card>
@@ -93,7 +94,7 @@ export function SummaryCard() {
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-400 font-mono">
-                        ${stats.nySourceIncome.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                        ${(stats.nySourceIncome || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                     </div>
                 </CardContent>
             </Card>

@@ -62,7 +62,7 @@ export function RecentActivity() {
                                     </div>
                                 </div>
                                 <div className={`font-medium ${t.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}`}>
-                                    {t.type === 'income' ? '+' : '-'}${t.amount.toFixed(2)}
+                                    {t.type === 'income' ? '+' : '-'}${(t.amount || 0).toFixed(2)}
                                 </div>
                             </div>
                         ))}

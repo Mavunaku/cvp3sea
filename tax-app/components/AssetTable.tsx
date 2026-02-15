@@ -3,8 +3,8 @@
 import { useStore } from '@/store/useStore';
 import { Asset } from '@/types';
 import { EditableCell } from './EditableCell';
-import { Plus, Trash2 } from 'lucide-react';
-import { cn } from '@/lib/utils'; // Keep usage consistent
+import { Plus, Trash2, Info, Lightbulb, TrendingUp, Scale, Zap } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export function AssetTable() {
     const {
@@ -94,8 +94,11 @@ export function AssetTable() {
             <div className="space-y-4">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h2 className="text-xl font-bold tracking-tight text-indigo-700">Depreciation & Amortization Report</h2>
-                        <p className="text-xs text-muted-foreground">Fixed Assets, Improvements, and Write-offs</p>
+                        <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 italic">Equipment & Machinery</h2>
+                        <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                            <Zap className="h-3 w-3 text-emerald-500" />
+                            Active write-offs for physical business assets.
+                        </p>
                     </div>
                     <button
                         onClick={handleAdd}
@@ -114,20 +117,23 @@ export function AssetTable() {
                             <thead className="bg-muted/50 border-b">
                                 <tr>
                                     <th className="p-2 font-semibold text-muted-foreground border-r w-48">Asset Description</th>
-                                    <th className="p-2 font-semibold text-muted-foreground border-r w-24 whitespace-nowrap">Date in Service</th>
-                                    <th className="p-2 font-semibold text-muted-foreground border-r w-24 text-right">Cost (Net Land)</th>
+                                    <th className="p-2 font-semibold text-muted-foreground border-r w-24 whitespace-nowrap">Service Date</th>
+                                    <th className="p-2 font-semibold text-muted-foreground border-r w-24 text-right underline decoration-dotted cursor-help" title="Cost excluding land value">Cost (Net Land)</th>
                                     <th className="p-2 font-semibold text-muted-foreground border-r w-24 text-right">Land</th>
                                     <th className="p-2 font-semibold text-muted-foreground border-r w-16 text-center">Bus %</th>
-                                    <th className="p-2 font-semibold text-muted-foreground border-r w-20 text-center">Sec 179</th>
-                                    <th className="p-2 font-semibold text-muted-foreground border-r w-24 text-center">Spec. Allowance</th>
-                                    <th className="p-2 font-semibold text-muted-foreground border-r w-28 text-right">Depr. Basis</th>
+                                    <th className="p-2 font-semibold text-muted-foreground border-r w-20 text-center flex items-center justify-center gap-1">
+                                        Sec 179
+                                        <Info className="h-3 w-3 text-slate-400" />
+                                    </th>
+                                    <th className="p-2 font-semibold text-muted-foreground border-r w-24 text-center">Spec. Allow.</th>
+                                    <th className="p-2 font-semibold text-muted-foreground border-r w-28 text-right">Basis</th>
                                     <th className="p-2 font-semibold text-muted-foreground border-r w-16 text-center">Life</th>
                                     <th className="p-2 font-semibold text-muted-foreground border-r w-24 text-center">Method</th>
                                     <th className="p-2 font-semibold text-muted-foreground border-r w-16 text-center">Conv.</th>
-                                    <th className="p-2 font-semibold text-muted-foreground border-r w-24 text-right">Prior Depr.</th>
-                                    <th className="p-2 font-semibold text-muted-foreground border-r w-24 text-right">Current Depr.</th>
-                                    <th className="p-2 font-semibold text-muted-foreground w-24 text-right">Accum. Depr.</th>
-                                    <th className="p-2 font-semibold text-muted-foreground w-12 text-center">Actions</th>
+                                    <th className="p-2 font-semibold text-muted-foreground border-r w-24 text-right">Prior</th>
+                                    <th className="p-2 font-semibold text-muted-foreground border-r w-24 text-right text-emerald-600">Current</th>
+                                    <th className="p-2 font-semibold text-muted-foreground w-24 text-right">Accumulated</th>
+                                    <th className="p-2 font-semibold text-muted-foreground w-12 text-center"></th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y">
@@ -275,14 +281,50 @@ export function AssetTable() {
                         </table>
                     </div>
                 </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                    <div className="p-4 bg-emerald-50 dark:bg-emerald-900/10 rounded-xl border border-emerald-100 dark:border-emerald-900/30 shadow-sm relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <Zap className="h-12 w-12 text-emerald-600" />
+                        </div>
+                        <h4 className="text-sm font-bold text-emerald-800 dark:text-emerald-400 flex items-center gap-2">
+                            <Lightbulb className="h-4 w-4" />
+                            High Income Year? Use Sec 179
+                        </h4>
+                        <p className="text-[11px] text-emerald-700 dark:text-emerald-500 mt-2 leading-relaxed">
+                            Section 179 allows you to &quot;fast-forward&quot; your deductions. Check the box to deduct the <span className="underline italic">full amount</span> this year instead of over 5-7 years. Best used in years where you need a massive tax shield.
+                        </p>
+                    </div>
+                    <div className="p-4 bg-indigo-50 dark:bg-indigo-900/10 rounded-xl border border-indigo-100 dark:border-indigo-900/30 shadow-sm relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <TrendingUp className="h-12 w-12 text-indigo-600" />
+                        </div>
+                        <h4 className="text-sm font-bold text-indigo-800 dark:text-indigo-400 flex items-center gap-2">
+                            <Scale className="h-4 w-4" />
+                            Stable Growth? Use MACRS
+                        </h4>
+                        <p className="text-[11px] text-indigo-700 dark:text-indigo-500 mt-2 leading-relaxed">
+                            Standard depreciation (Don&apos;t check Sec 179) preserves deductions for the future. This is better if you expect your income to be significantly higher in the next 3-5 years.
+                        </p>
+                    </div>
+                </div>
             </div>
+
+            <div className="h-px bg-slate-200 dark:bg-slate-800 w-full" />
 
             {/* SECTION 2: Capitalized Improvements (Read-Only from Transactions) */}
             <div className="space-y-4">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h2 className="text-xl font-bold tracking-tight text-amber-700">Capitalized Improvements</h2>
-                        <p className="text-xs text-muted-foreground">Derived from Expenses marked as Capitalized</p>
+                        <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 italic">Property Improvements</h2>
+                        <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                            <Info className="h-3 w-3 text-amber-500" />
+                            Structural upgrades (HVAC, Roofs) - written off over 27.5 years.
+                        </p>
+                    </div>
+                    <div className="bg-amber-100/50 dark:bg-amber-900/20 px-3 py-1 rounded-full border border-amber-200 dark:border-amber-800 flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse" />
+                        <span className="text-[10px] font-bold text-amber-800 dark:text-amber-400 uppercase tracking-tighter">Auto-Synced</span>
                     </div>
                 </div>
 

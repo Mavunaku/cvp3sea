@@ -148,7 +148,7 @@ export function ExpenseRow({ transaction, onUpdate, onDelete }: ExpenseRowProps)
 
                         return (
                             <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 mt-0.5 leading-none">
-                                Deductible: ${taxPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                                Deductible: ${(taxPrice ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                             </span>
                         );
                     })()}
