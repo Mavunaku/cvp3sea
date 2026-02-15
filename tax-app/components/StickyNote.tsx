@@ -1,14 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { useStore } from '@/store/useStore';
 
 export function StickyNote() {
-    const [note, setNote] = useState('');
+    const { notes, setNotes } = useStore();
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const newValue = e.target.value;
-        setNote(newValue);
-        // TODO: Store in Supabase user_metadata or separate notes table
+        setNotes(e.target.value);
     };
 
     return (
@@ -20,7 +19,7 @@ export function StickyNote() {
             <textarea
                 className="w-full h-32 bg-transparent text-sm text-white/90 resize-none focus:outline-none placeholder:text-white/20 transition-all"
                 placeholder="Don't forget to deduct the home office..."
-                value={note}
+                value={notes}
                 onChange={handleChange}
                 spellCheck={false}
             />

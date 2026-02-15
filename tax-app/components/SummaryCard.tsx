@@ -53,7 +53,7 @@ export function SummaryCard() {
     }, [transactions, selectedYear, selectedProjectId, projects]);
 
     return (
-        <div className="grid gap-4 md:grid-cols-4">
+        <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <Card className="bg-emerald-50/10 border-emerald-100/50">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Gross Income</CardTitle>

@@ -93,9 +93,9 @@ export function LedgerTable({ type }: LedgerTableProps) {
                 </button>
             </div>
 
-            <div className="rounded-md border bg-card">
-                <div className="w-full overflow-auto">
-                    <table className="w-full caption-bottom text-sm border-collapse">
+            <div className="rounded-xl border bg-card overflow-hidden shadow-sm">
+                <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent">
+                    <table className="w-full caption-bottom text-sm border-collapse min-w-[700px]">
                         <thead>
                             <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
                                 <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground w-28">DATE</th>

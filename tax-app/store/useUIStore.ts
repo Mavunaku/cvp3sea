@@ -13,6 +13,10 @@ interface UIState {
     openManager: () => void;
     closeManager: () => void;
 
+    isNotesOpen: boolean;
+    openNotes: () => void;
+    closeNotes: () => void;
+
     logout: () => void;
 }
 
@@ -28,6 +32,10 @@ export const useUIStore = create<UIState>((set) => ({
     isManagerOpen: false,
     openManager: () => set({ isManagerOpen: true }),
     closeManager: () => set({ isManagerOpen: false }),
+
+    isNotesOpen: false,
+    openNotes: () => set({ isNotesOpen: true }),
+    closeNotes: () => set({ isNotesOpen: false }),
 
     logout: () => {
         document.cookie = "auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";

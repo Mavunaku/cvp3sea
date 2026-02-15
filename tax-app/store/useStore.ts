@@ -11,6 +11,7 @@ interface AppState {
     assets: Asset[];
     projects: Project[];
     years: string[]; // List of Year Folders (e.g. "2025", "2026")
+    notes: string;
 
     // User State
     userId: string | null;
@@ -43,6 +44,7 @@ interface AppState {
 
     addYear: (year: string) => void;
     deleteYear: (year: string) => void;
+    setNotes: (notes: string) => void;
 
     setSelectedYear: (year: string | null) => void;
     setSelectedProject: (projectId: string | null) => void;
@@ -65,6 +67,7 @@ export const useStore = create<AppState>()(
             assets: [],
             projects: [],
             years: [],
+            notes: '',
             userId: null,
             isLoading: false,
             isSyncing: false,
@@ -350,6 +353,10 @@ export const useStore = create<AppState>()(
 
             setSelectedYear: (year) => set({ selectedYear: year, selectedProjectId: null }),
             setSelectedProject: (projectId) => set({ selectedProjectId: projectId }),
+            setNotes: (notes) => {
+                set({ notes });
+                setTimeout(() => get().syncToDatabase(), 1000);
+            },
 
             getSummary: () => {
                 const state = get();
@@ -403,6 +410,7 @@ export const useStore = create<AppState>()(
                 assets: state.assets,
                 projects: state.projects,
                 years: state.years,
+                notes: state.notes,
                 userId: state.userId,
             }),
         }
