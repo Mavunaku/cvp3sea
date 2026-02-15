@@ -105,7 +105,7 @@ export function DashboardStats() {
 
     return (
         <div className="space-y-4">
-            <div className="flex justify-between items-center bg-gradient-to-r from-slate-100/50 to-slate-200/50 dark:from-slate-900/50 dark:to-slate-800/50 backdrop-blur-sm p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm print:hidden">
+            <div className="flex justify-between items-center bg-slate-50 dark:bg-slate-900/40 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm print:hidden">
                 <div className="flex items-center gap-3">
                     <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
                         <FileText className="h-5 w-5 text-blue-600" />
@@ -187,7 +187,7 @@ export function DashboardStats() {
                                 <div className="text-2xl font-bold text-blue-700 dark:text-blue-400">
                                     ${stats.deductibleExpenses.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                                 </div>
-                                <p className="text-xs text-muted-foreground mt-1">Money spent you DON'T pay tax on</p>
+                                <p className="text-xs text-muted-foreground mt-1">Money spent you DON&apos;T pay tax on</p>
                             </CardContent>
                         </Card>
                         <Card className="border-l-4 border-l-slate-400 bg-slate-50/50 dark:bg-slate-900/20">
@@ -201,7 +201,7 @@ export function DashboardStats() {
                                 <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                                     ${stats.taxableNetProfit.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                                 </div>
-                                <p className="text-xs text-muted-foreground mt-1">What the IRS sees as your "True Income"</p>
+                                <p className="text-xs text-muted-foreground mt-1">What the IRS sees as your &quot;True Income&quot;</p>
                             </CardContent>
                         </Card>
                         <Card className="border-l-4 border-l-emerald-500 bg-emerald-50/30 dark:bg-emerald-900/10 shadow-md ring-1 ring-emerald-500/10">

@@ -18,7 +18,7 @@ export function TaxTips() {
                 <div className="flex gap-4 items-start">
                     <div className="p-2 bg-rose-100 dark:bg-rose-900/40 rounded-xl shrink-0"><Scale className="h-4 w-4 text-rose-600" /></div>
                     <div>
-                        <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100">Separation of "Church & State"</h4>
+                        <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100">Separation of &quot;Church &amp; State&quot;</h4>
                         <p className="text-[11px] leading-relaxed text-muted-foreground mt-1">Never use one bank account for personal and business. It is the #1 audit trigger and makes your tax prep 100x harder.</p>
                     </div>
                 </div>
@@ -45,7 +45,7 @@ export function TaxTips() {
                     <div className="flex gap-4 items-start">
                         <div className="p-2 bg-indigo-100 dark:bg-indigo-900/40 rounded-xl shrink-0"><DollarSign className="h-4 w-4 text-indigo-600" /></div>
                         <div>
-                            <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100">Beat the "April Surprise"</h4>
+                            <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100">Beat the &quot;April Surprise&quot;</h4>
                             <p className="text-[11px] leading-relaxed text-muted-foreground mt-1">Set aside 30% of every payment for taxes. Paying quarterly prevents huge fees and stressful year-end bills.</p>
                         </div>
                     </div>
