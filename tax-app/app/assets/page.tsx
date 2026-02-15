@@ -77,7 +77,7 @@ export default function AssetsPage() {
                     <div>
                         <h4 className="text-sm font-bold">Depreciation Intelligence</h4>
                         <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                            Think of depreciation as a way to "slow-release" the expense of a large purchase. Instead of taking a huge loss one year, you smooth it out over the item&apos;s life.
+                            Think of depreciation as a way to &quot;slow-release&quot; the expense of a large purchase. Instead of taking a huge loss one year, you smooth it out over the item&apos;s life.
                             <span className="font-bold text-emerald-600 dark:text-emerald-400 italic"> Strategy Tip:</span> Use Sec 179 for a full write-off today if you need to offset a high income burst.
                         </p>
                     </div>
