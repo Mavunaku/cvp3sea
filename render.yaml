@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: tax-app
+    runtime: node
+    rootDir: tax-app
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - fromGroup: cvp3sea
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        value: https://nrqzesbghxvbhzudqzbs.supabase.co
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        value: sb_publishable_9KjNtn475VTHdjhNdr1bsA_Gfx5TbaB
