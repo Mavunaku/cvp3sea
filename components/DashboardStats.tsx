@@ -151,6 +151,18 @@ export function DashboardStats() {
         const taxLiability = fedTax + nyTax;
         const taxSavings = (deductibleExpenses + totalDepreciation) * (fedTaxRate + nyTaxRate);
 
+        // Debug logging
+        console.log('💰 Tax Calculation Debug:', {
+            revenue,
+            deductibleExpenses,
+            totalDepreciation,
+            taxableNetProfit,
+            nySourceIncome,
+            fedTax,
+            nyTax,
+            taxLiability
+        });
+
         return {
             revenue,
             expenses,
