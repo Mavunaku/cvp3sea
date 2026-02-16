@@ -9,9 +9,10 @@ interface EditableCellProps {
     type?: 'text' | 'number' | 'date';
     onSave: (value: string | number) => void;
     className?: string;
+    placeholder?: string;
 }
 
-export function EditableCell({ value, type = 'text', onSave, className }: EditableCellProps) {
+export function EditableCell({ value, type = 'text', onSave, className, placeholder }: EditableCellProps) {
     const [isEditing, setIsEditing] = useState(false);
     const [currentValue, setCurrentValue] = useState(value);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -57,6 +58,7 @@ export function EditableCell({ value, type = 'text', onSave, className }: Editab
                         "w-full rounded border border-sage-300 px-2 py-1 text-sm focus:border-sage-500 focus:outline-none dark:border-sage-700 dark:bg-sage-900",
                         className
                     )}
+                    placeholder={placeholder}
                 />
             </div>
         );
@@ -66,14 +68,14 @@ export function EditableCell({ value, type = 'text', onSave, className }: Editab
         <div
             onClick={() => setIsEditing(true)}
             className={cn(
-                "cursor-pointer rounded px-2 py-1 hover:bg-sage-100 dark:hover:bg-sage-800/50 min-h-[28px]",
+                "cursor-pointer rounded px-2 py-1 hover:bg-sage-100 dark:hover:bg-sage-800/50 min-h-[28px] flex items-center",
                 !value && "text-muted-foreground italic",
                 className
             )}
         >
             {type === 'number' && typeof value === 'number'
                 ? `$${value.toFixed(2)}`
-                : value || 'Click to edit'}
+                : (value || placeholder || 'Click to edit')}
         </div>
     );
 }
