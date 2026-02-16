@@ -38,29 +38,46 @@ export function DashboardStats() {
         });
 
         const revenue = filteredTransactions
-            .filter((t) => t.type === 'income')
-            .reduce((acc, t) => acc + t.amount, 0);
+            .filter(t => t.type === 'income')
+            .reduce((acc, t) => acc + (t.amount || 0), 0);
 
         const expenses = filteredTransactions
             .filter((t) => t.type === 'expense')
-            .reduce((acc, t) => acc + t.amount, 0);
+            .reduce((acc, t) => {
+                // Exclude capitalized improvements from regular expense total if they are handled separately?
+                // Usually "Expenses" card shows ALL cash outflow, including capitalized.
+                // But typically for P&L, capitalized items are not "Expenses".
+                // Let's keep it as cash flow for now, OR follow standard accounting.
+                // If t.capitalize is true, it is an Asset addition, not an Expense.
+                if (t.capitalize) return acc;
+                return acc + (t.amount || 0);
+            }, 0);
 
-        // 2. Calculate Deductible Expenses (exclude Principal and Capitalized Repairs)
         const deductibleExpenses = filteredTransactions
             .filter((t) => t.type === 'expense')
             .reduce((acc, t) => {
-                if (t.pillar === 'Interest Expense') {
-                    if (t.interest !== undefined) return acc + t.interest;
-                    if (t.category === 'Loan Principal') return acc;
-                    return acc + t.amount;
+                const amount = t.amount || 0;
+                // Exclude capitalized improvements
+                if (t.capitalize) return acc;
+
+                // Exclude non-deductible entertainment
+                if (t.category === 'Entertainment (Non-Deductible)') return acc;
+
+                // For loans, only deduct interest portion
+                if (t.interest !== undefined && t.pillar === 'Interest Expense') {
+                    // Safety check for category if needed, but pillar is stronger
+                    // If it's Meals with interest? Unlikely.
+                    // Just stick to simple logic:
+                    return acc + (t.interest || 0);
                 }
-                if (t.pillar === 'Travels') {
-                    if (t.category.includes('(50% Deductible)')) return acc + (t.amount * 0.5);
-                    if (t.category === 'Entertainment (Non-Deductible)') return acc;
-                    return acc + t.amount;
+
+                // 50% deduction for meals
+                if (t.category && (t.category.includes('Meals') || t.category.includes('(50% Deductible)'))) {
+                    return acc + (amount * 0.5);
                 }
-                if (t.capitalize) return acc; // Skip capitalized repairs
-                return acc + t.amount;
+
+                // Full deduction for other expenses
+                return acc + amount;
             }, 0);
 
         // 3. Calculate Depreciation Deduction
@@ -457,6 +474,37 @@ export function DashboardStats() {
                                     <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-300">
                                         ${stats.taxLiability.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                                     </div>
+
+                                    {/* Debug / Explanation Details */}
+                                    <details className="mt-2 text-xs text-slate-500 cursor-pointer">
+                                        <summary className="hover:text-emerald-600 transition-colors">Calculation Details</summary>
+                                        <div className="mt-2 p-2 bg-slate-100 dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700 space-y-1 font-mono">
+                                            <div className="flex justify-between">
+                                                <span>Revenue:</span>
+                                                <span>${stats.revenue.toLocaleString()}</span>
+                                            </div>
+                                            <div className="flex justify-between text-rose-500">
+                                                <span>- Deductions:</span>
+                                                <span>(${stats.deductibleExpenses.toLocaleString()})</span>
+                                            </div>
+                                            <div className="flex justify-between text-rose-500">
+                                                <span>- Depreciation:</span>
+                                                <span>(${stats.totalDepreciation.toLocaleString()})</span>
+                                            </div>
+                                            <div className="border-t border-slate-300 dark:border-slate-600 my-1 pt-1 flex justify-between font-bold">
+                                                <span>= Taxable Net:</span>
+                                                <span className={stats.taxableNetProfit < 0 ? "text-rose-500" : "text-emerald-600"}>
+                                                    ${stats.taxableNetProfit.toLocaleString()}
+                                                </span>
+                                            </div>
+                                            {stats.taxableNetProfit <= 0 && (
+                                                <div className="text-[10px] text-amber-600 italic mt-1">
+                                                    * No tax due because taxable net profit is zero or negative.
+                                                </div>
+                                            )}
+                                        </div>
+                                    </details>
+
                                     <div className="space-y-1 mt-2">
                                         <div className="flex justify-between text-[10px] font-bold uppercase tracking-tight text-emerald-600/70">
                                             <span>Fed/SE Tax (35%):</span>

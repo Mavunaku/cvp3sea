@@ -36,27 +36,36 @@ export function AccountantReport({ isOpen, onClose }: AccountantReportProps) {
 
     const revenue = filteredTransactions
         .filter(t => t.type === 'income')
-        .reduce((acc, t) => acc + t.amount, 0);
+        .reduce((acc, t) => acc + (t.amount || 0), 0);
 
     const expenses = filteredTransactions
         .filter(t => t.type === 'expense')
-        .reduce((acc, t) => acc + t.amount, 0);
+        .reduce((acc, t) => {
+            if (t.category === 'Loan Principal') return acc + (t.principal || 0);
+            return acc + (t.amount || 0);
+        }, 0);
 
     const deductibleExpenses = filteredTransactions
         .filter(t => t.type === 'expense')
         .reduce((acc, t) => {
+            const amount = t.amount || 0;
+            if (t.category === 'Loan Principal') return acc;
+
+            // Interest Expense
             if (t.pillar === 'Interest Expense') {
-                if (t.interest !== undefined) return acc + t.interest;
+                if (t.interest !== undefined) return acc + (t.interest || 0);
                 if (t.category === 'Loan Principal') return acc;
-                return acc + t.amount;
+                // Fallback
+                return acc + amount;
             }
+
             if (t.pillar === 'Travels') {
-                if (t.category.includes('(50% Deductible)')) return acc + (t.amount * 0.5);
+                if (t.category.includes('(50% Deductible)')) return acc + (amount * 0.5);
                 if (t.category === 'Entertainment (Non-Deductible)') return acc;
-                return acc + t.amount;
+                return acc + amount;
             }
             if (t.capitalize) return acc;
-            return acc + t.amount;
+            return acc + amount;
         }, 0);
 
     const totalDepreciation = filteredAssets.reduce((acc, asset) => {
