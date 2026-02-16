@@ -28,9 +28,6 @@ export function SyncStatusIndicator() {
         updateTimeAgo();
         const interval = setInterval(updateTimeAgo, 10000); // Update every 10 seconds
 
-        // Debugging
-        console.log('🔄 SyncStatusIndicator: lastSyncTime:', lastSyncTime, 'isSyncing:', isSyncing, 'Error:', syncError);
-
         return () => clearInterval(interval);
     }, [lastSyncTime]);
 

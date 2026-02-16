@@ -179,7 +179,7 @@ export function DashboardStats() {
 
     return (
         <div className="space-y-4">
-            <div className="flex justify-between items-center bg-slate-50 dark:bg-slate-900/40 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm print:hidden">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-50 dark:bg-slate-900/40 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm print:hidden">
                 <div className="flex items-center gap-3">
                     <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
                         {showTaxForm ? <LayoutDashboard className="h-5 w-5 text-blue-600" /> : <FileText className="h-5 w-5 text-blue-600" />}
@@ -237,7 +237,8 @@ export function DashboardStats() {
                             <div className="w-1 h-4 bg-emerald-500 rounded-full" />
                             <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500">Actual Cash Flow</h3>
                         </div>
-                        <div className="grid gap-3 grid-cols-1 md:grid-cols-3">
+                        {/* Top Cards */}
+                        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
                             <Card className="bg-emerald-50/10 border-emerald-100/50 relative">
                                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                     <div className="flex items-center gap-2">

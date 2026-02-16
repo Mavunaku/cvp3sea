@@ -17,7 +17,7 @@ export function MobileNav() {
         { name: 'Income', href: '/income', icon: TrendingUp },
         { name: 'Add', href: '#', icon: PlusCircle, isAction: true, action: openQuickAdd },
         { name: 'Expenses', href: '/expenses', icon: TrendingDown },
-        { name: 'Notes', href: '#', icon: StickyNote, isAction: true, action: openNotes },
+        { name: 'Depreciation', href: '/assets', icon: StickyNote }, // Changed from Notes to Depreciation
     ];
 
     return (

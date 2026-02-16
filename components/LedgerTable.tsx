@@ -2,6 +2,7 @@
 
 import { Transaction, TransactionType } from "@/types";
 import { TransactionRow } from "./TransactionRow";
+import { TransactionCard } from "./TransactionCard";
 import { Plus } from "lucide-react";
 import { useStore } from "@/store/useStore";
 import { ExportButton } from "./ExportButton";
@@ -108,7 +109,8 @@ export function LedgerTable({ type }: LedgerTableProps) {
             </div>
 
             <div className="rounded-xl border bg-card overflow-hidden shadow-sm">
-                <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent">
+                {/* Desktop Table View */}
+                <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent hidden md:block">
                     <table className="w-full caption-bottom text-sm border-collapse min-w-[700px]">
                         <thead>
                             <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -205,6 +207,24 @@ export function LedgerTable({ type }: LedgerTableProps) {
                         />
                     </table>
                 </div>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-4">
+                {visibleTransactions.length === 0 ? (
+                    <div className="text-center p-8 border rounded-lg border-dashed text-muted-foreground bg-slate-50 dark:bg-slate-900/50">
+                        No transactions found. Tap &quot;Add {type}&quot; to create one.
+                    </div>
+                ) : (
+                    visibleTransactions.map((t) => (
+                        <TransactionCard
+                            key={t.id}
+                            transaction={t}
+                            onUpdate={editTransaction}
+                            onDelete={deleteTransaction}
+                        />
+                    ))
+                )}
             </div>
             <div className="flex items-center justify-end gap-2 text-muted-foreground text-xs">
                 {/* Import Placeholder */}

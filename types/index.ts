@@ -68,6 +68,15 @@ export interface Asset {
     projectId?: string;
 }
 
+export const ASSET_TYPES = [
+    'Computer/Electronics',
+    'Office Furniture',
+    'Equipment',
+    'Vehicle',
+    'Property Improvement',
+    'Other'
+] as const;
+
 export const INCOME_CATEGORIES = [
     'Services',
     'Product Sales',
