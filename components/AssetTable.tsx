@@ -194,7 +194,7 @@ export function AssetTable() {
                                                     <select
                                                         className="w-full h-8 rounded border border-transparent bg-transparent text-xs hover:border-slate-300 focus:border-slate-500 truncate"
                                                         value={asset.projectId || ""}
-                                                        onChange={(e) => editAsset(asset.id, { projectId: e.target.value || null })}
+                                                        onChange={(e) => editAsset(asset.id, { projectId: e.target.value || undefined })}
                                                     >
                                                         <option value="">No Project</option>
                                                         {projects.filter(p => !selectedProjectId || p.id === selectedProjectId).map(p => (
