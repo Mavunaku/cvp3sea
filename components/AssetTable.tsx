@@ -62,7 +62,8 @@ export function AssetTable() {
             specialAllowance = totalBasis;
             currentDepreciation = specialAllowance;
         } else {
-            currentDepreciation = totalBasis / asset.usefulLife;
+            const life = asset.usefulLife || 5;
+            currentDepreciation = totalBasis / life;
         }
 
         const prior = asset.priorDepreciation || 0;

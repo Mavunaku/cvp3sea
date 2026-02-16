@@ -51,14 +51,11 @@ export function AccountantReport({ isOpen, onClose }: AccountantReportProps) {
             const amount = t.amount || 0;
             if (t.category === 'Loan Principal') return acc;
 
-            // Interest Expense
             if (t.pillar === 'Interest Expense') {
                 if (t.interest !== undefined) return acc + (t.interest || 0);
                 if (t.category === 'Loan Principal') return acc;
-                // Fallback
                 return acc + amount;
             }
-
             if (t.pillar === 'Travels') {
                 if (t.category.includes('(50% Deductible)')) return acc + (amount * 0.5);
                 if (t.category === 'Entertainment (Non-Deductible)') return acc;
@@ -70,13 +67,11 @@ export function AccountantReport({ isOpen, onClose }: AccountantReportProps) {
 
     const totalDepreciation = filteredAssets.reduce((acc, asset) => {
         const cost = asset.cost || 0;
-        const businessUse = (asset.businessUsePercent || 100) / 100;
+        const businessUse = asset.businessUsePercent / 100;
         const basis = cost * businessUse;
         if (asset.currentDepreciation !== undefined) return acc + asset.currentDepreciation;
         if (asset.section179 || asset.bonusDepreciation) return acc + basis;
-
-        const life = asset.usefulLife || 5;
-        return acc + Math.round(basis / life);
+        return acc + Math.round(basis / (asset.usefulLife || 5));
     }, 0);
 
     const nySourceIncome = filteredTransactions

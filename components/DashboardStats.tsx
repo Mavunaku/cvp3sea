@@ -44,11 +44,6 @@ export function DashboardStats() {
         const expenses = filteredTransactions
             .filter((t) => t.type === 'expense')
             .reduce((acc, t) => {
-                // Exclude capitalized improvements from regular expense total if they are handled separately?
-                // Usually "Expenses" card shows ALL cash outflow, including capitalized.
-                // But typically for P&L, capitalized items are not "Expenses".
-                // Let's keep it as cash flow for now, OR follow standard accounting.
-                // If t.capitalize is true, it is an Asset addition, not an Expense.
                 if (t.capitalize) return acc;
                 return acc + (t.amount || 0);
             }, 0);
@@ -57,26 +52,17 @@ export function DashboardStats() {
             .filter((t) => t.type === 'expense')
             .reduce((acc, t) => {
                 const amount = t.amount || 0;
-                // Exclude capitalized improvements
                 if (t.capitalize) return acc;
-
-                // Exclude non-deductible entertainment
                 if (t.category === 'Entertainment (Non-Deductible)') return acc;
 
-                // For loans, only deduct interest portion
                 if (t.interest !== undefined && t.pillar === 'Interest Expense') {
-                    // Safety check for category if needed, but pillar is stronger
-                    // If it's Meals with interest? Unlikely.
-                    // Just stick to simple logic:
                     return acc + (t.interest || 0);
                 }
 
-                // 50% deduction for meals
                 if (t.category && (t.category.includes('Meals') || t.category.includes('(50% Deductible)'))) {
                     return acc + (amount * 0.5);
                 }
 
-                // Full deduction for other expenses
                 return acc + amount;
             }, 0);
 
@@ -133,7 +119,7 @@ export function DashboardStats() {
             .filter(t => t.capitalize === true)
             .reduce((acc, t) => {
                 const usefulLife = t.capitalizeUsefulLife || 27.5;
-                return acc + Math.round(t.amount / usefulLife);
+                return acc + Math.round((t.amount || 0) / usefulLife);
             }, 0);
 
         const totalDepreciation = assetDepreciation + capRepairDepreciation;
@@ -144,11 +130,11 @@ export function DashboardStats() {
         const nySourceIncome = filteredTransactions
             .filter(t => t.nySource ?? true)
             .reduce((acc, t) => {
-                if (t.type === 'income') return acc + t.amount;
-                // For expenses, use deductible logic consistent with taxableNetProfit
                 const amount = t.amount || 0;
+                if (t.type === 'income') return acc + amount;
+
                 if (t.pillar === 'Interest Expense') {
-                    if (t.interest !== undefined) return acc - t.interest;
+                    if (t.interest !== undefined) return acc - (t.interest || 0);
                     if (t.category === 'Loan Principal') return acc;
                     return acc - amount;
                 }
@@ -504,7 +490,6 @@ export function DashboardStats() {
                                             )}
                                         </div>
                                     </details>
-
                                     <div className="space-y-1 mt-2">
                                         <div className="flex justify-between text-[10px] font-bold uppercase tracking-tight text-emerald-600/70">
                                             <span>Fed/SE Tax (35%):</span>
