@@ -108,6 +108,7 @@ export const useStore = create<AppState>()(
                         assets: data.assets,
                         userId,
                         isLoading: false,
+                        lastSyncTime: new Date(), // Mark as synced on load
                     });
                 } catch (error: any) {
                     console.error('Failed to load data:', error);
