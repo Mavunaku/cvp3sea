@@ -61,11 +61,13 @@ export function AccountantReport({ isOpen, onClose }: AccountantReportProps) {
 
     const totalDepreciation = filteredAssets.reduce((acc, asset) => {
         const cost = asset.cost || 0;
-        const businessUse = asset.businessUsePercent / 100;
+        const businessUse = (asset.businessUsePercent || 100) / 100;
         const basis = cost * businessUse;
         if (asset.currentDepreciation !== undefined) return acc + asset.currentDepreciation;
         if (asset.section179 || asset.bonusDepreciation) return acc + basis;
-        return acc + Math.round(basis / (asset.usefulLife || 5));
+
+        const life = asset.usefulLife || 5;
+        return acc + Math.round(basis / life);
     }, 0);
 
     const nySourceIncome = filteredTransactions

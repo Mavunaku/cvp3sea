@@ -98,7 +98,7 @@ export function DashboardStats() {
 
         const assetDepreciation = filteredAssets.reduce((acc, asset) => {
             const cost = asset.cost || 0;
-            const businessUse = asset.businessUsePercent / 100;
+            const businessUse = (asset.businessUsePercent || 100) / 100;
             const basis = cost * businessUse;
 
             if (asset.currentDepreciation !== undefined) {
@@ -107,7 +107,8 @@ export function DashboardStats() {
             if (asset.section179 || asset.bonusDepreciation) {
                 return acc + basis;
             }
-            return acc + Math.round(basis / asset.usefulLife);
+            const life = asset.usefulLife || 5;
+            return acc + Math.round(basis / life);
         }, 0);
 
         // Capitalized Repairs (from transactions) - use custom useful life
@@ -150,18 +151,6 @@ export function DashboardStats() {
         const nyTax = nySourceIncome > 0 ? nySourceIncome * nyTaxRate : 0;
         const taxLiability = fedTax + nyTax;
         const taxSavings = (deductibleExpenses + totalDepreciation) * (fedTaxRate + nyTaxRate);
-
-        // Debug logging
-        console.log('💰 Tax Calculation Debug:', {
-            revenue,
-            deductibleExpenses,
-            totalDepreciation,
-            taxableNetProfit,
-            nySourceIncome,
-            fedTax,
-            nyTax,
-            taxLiability
-        });
 
         return {
             revenue,
