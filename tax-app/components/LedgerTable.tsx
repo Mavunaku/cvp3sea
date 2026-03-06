@@ -122,85 +122,69 @@ export function LedgerTable({ type }: LedgerTableProps) {
                                         </th>
                                     </>
                                 ) : (
-                                    <>
-                                        <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground min-w-[120px]">Description</th>
-                                        <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground w-40">Project</th>
-                                        <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground w-40">Category</th>
-                                        <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground w-32">Pymnt Status</th>
-                                        <th className="h-10 px-2 text-right align-middle font-medium text-muted-foreground w-24">Amount</th>
-                                        <th className="h-10 px-2 text-center align-middle font-medium text-muted-foreground w-12 text-[9px] uppercase font-bold opacity-70 text-amber-600">CAP</th>
-                                        <th className="h-10 px-2 text-center align-middle font-medium text-muted-foreground w-12">
-                                            <div className="flex flex-col items-center gap-0.5">
-                                                <span className="text-[9px] uppercase font-bold opacity-70">NY</span>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={allNyChecked}
-                                                    ref={(el) => {
-                                                        if (el) el.indeterminate = someNyChecked;
-                                                    }}
-                                                    onChange={handleToggleAllNy}
+                                    onChange = { handleToggleAllNy }
                                                     className="h-3.5 w-3.5 rounded border-sage-300 text-sage-600 focus:ring-sage-500 cursor-pointer"
-                                                    title="Toggle All NY"
+                                title="Toggle All NY"
                                                 />
-                                            </div>
-                                        </th>
-                                    </>
+                            </div>
+                        </th>
+                    </>
                                 )}
-                                <th className="h-10 px-2 align-middle font-medium text-muted-foreground w-12 text-center">Actions</th>
-                            </tr>
-                        </thead>
+                    <th className="h-10 px-2 align-middle font-medium text-muted-foreground w-12 text-center">Actions</th>
+                </tr>
+            </thead>
 
-                        {type === 'income' ? (
-                            <tbody className="[&_tr:last-child]:border-0">
-                                {sortedTransactions.length === 0 ? (
-                                    <tr>
-                                        <td colSpan={10} className="h-24 text-center text-muted-foreground">
-                                            No transactions found. Click &quot;Add {type}&quot; to start.
-                                        </td>
-                                    </tr>
-                                ) : (
-                                    sortedTransactions.map((t) => (
-                                        <TransactionRow
-                                            key={t.id}
-                                            transaction={t}
-                                            onUpdate={editTransaction}
-                                            onDelete={deleteTransaction}
-                                        />
-                                    ))
-                                )}
-                            </tbody>
-                        ) : (
-                            <GroupedExpenseTable
-                                transactions={sortedTransactions}
+            {type === 'income' ? (
+                <tbody className="[&_tr:last-child]:border-0">
+                    {sortedTransactions.length === 0 ? (
+                        <tr>
+                            <td colSpan={10} className="h-24 text-center text-muted-foreground">
+                                No transactions found. Click &quot;Add {type}&quot; to start.
+                            </td>
+                        </tr>
+                    ) : (
+                        sortedTransactions.map((t) => (
+                            <TransactionRow
+                                key={t.id}
+                                transaction={t}
                                 onUpdate={editTransaction}
                                 onDelete={deleteTransaction}
                             />
-                        )}
+                        ))
+                    )}
+                </tbody>
+            ) : (
+                <GroupedExpenseTable
+                    transactions={sortedTransactions}
+                    onUpdate={editTransaction}
+                    onDelete={deleteTransaction}
+                />
+            )}
 
-                        <SummaryFooter
-                            type={type}
-                            totalAmount={totalAmount}
-                            grossTotal={grossTotal}
-                            travelsTotal={travelsTotal}
-                            travelsGross={travelsGross}
-                            mealsSubtotal={mealsSubtotal}
-                            transactions={sortedTransactions}
-                        />
-                    </table>
-                </div>
-            </div>
-            <div className="flex items-center justify-end gap-2 text-muted-foreground text-xs">
-                {/* Import Placeholder */}
-                <button
-                    className="hover:text-foreground transition-colors"
-                    onClick={() => alert("Import Feature Coming Soon")}
-                >
-                    Import CSV ({type})
-                </button>
-                <div className="h-4 w-px bg-border" />
-                <ExportButton type={type} />
-            </div>
+            <SummaryFooter
+                type={type}
+                totalAmount={totalAmount}
+                grossTotal={grossTotal}
+                travelsTotal={travelsTotal}
+                travelsGross={travelsGross}
+                mealsSubtotal={mealsSubtotal}
+                transactions={sortedTransactions}
+            />
+        </table>
+                </div >
+            </div >
+        <div className="flex items-center justify-end gap-2 text-muted-foreground text-xs">
+            {/* Import Placeholder */}
+            <button
+                className="hover:text-foreground transition-colors"
+                onClick={() => alert("Import Feature Coming Soon")}
+            >
+                Import CSV ({type})
+            </button>
+            <div className="h-4 w-px bg-border" />
+            <ExportButton type={type} />
         </div>
+        </div >
     );
 }
 
