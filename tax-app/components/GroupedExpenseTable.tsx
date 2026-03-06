@@ -87,19 +87,23 @@ function PillarSection({
 
     return (
         <>
-            <tr className="bg-muted/30 hover:bg-muted/50 cursor-pointer border-b" onClick={() => setIsOpen(!isOpen)}>
-                <td colSpan={8} className="p-2">
-                    <div className="flex items-center justify-between font-semibold text-sm">
-                        <div className="flex items-center gap-2 text-foreground">
-                            {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-                            <span>{pillar}</span>
-                            <span className="text-xs text-muted-foreground font-normal ml-2">({transactions.length} items)</span>
-                        </div>
-                        <div className="font-mono text-foreground">
-                            ${subtotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                        </div>
+            <tr className="bg-muted/30 hover:bg-muted/50 cursor-pointer border-b group" onClick={() => setIsOpen(!isOpen)}>
+                {/* Pillar and Count - Spanning Date to Payment Status (5 columns) */}
+                <td colSpan={5} className="p-2">
+                    <div className="flex items-center gap-2 text-foreground font-semibold text-sm">
+                        {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+                        <span>{pillar}</span>
+                        <span className="text-[10px] text-muted-foreground font-normal ml-2 uppercase tracking-wide">({transactions.length} items)</span>
                     </div>
                 </td>
+                {/* Subtotal - Aligned with Amount column (Col 6) */}
+                <td className="p-2 text-right font-mono font-bold text-foreground w-24">
+                    ${subtotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                </td>
+                {/* Empty cells for CAP, NY, and Actions (Cols 7, 8, 9) */}
+                <td className="w-12"></td>
+                <td className="w-12"></td>
+                <td className="w-12"></td>
             </tr>
             {isOpen && transactions.map(t => (
                 <ExpenseRow
@@ -111,7 +115,7 @@ function PillarSection({
             ))}
             {isOpen && transactions.length === 0 && (
                 <tr>
-                    <td colSpan={8} className="h-12 text-center text-xs text-muted-foreground italic border-b">
+                    <td colSpan={9} className="h-12 text-center text-xs text-muted-foreground italic border-b">
                         No expenses in {pillar} yet.
                     </td>
                 </tr>

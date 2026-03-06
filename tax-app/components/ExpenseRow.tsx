@@ -31,7 +31,7 @@ export function ExpenseRow({ transaction, onUpdate, onDelete }: ExpenseRowProps)
             isCapitalized && "bg-amber-100 dark:bg-amber-900/30 hover:bg-amber-200/50 dark:hover:bg-amber-900/50"
         )}>
             {/* Date */}
-            <td className="p-2 align-middle">
+            <td className="p-2 align-middle w-28">
                 <EditableCell
                     value={transaction.date}
                     type="date"
@@ -40,7 +40,7 @@ export function ExpenseRow({ transaction, onUpdate, onDelete }: ExpenseRowProps)
             </td>
 
             {/* Description */}
-            <td className="p-2 align-middle">
+            <td className="p-2 align-middle min-w-[120px]">
                 <EditableCell
                     value={transaction.description}
                     placeholder="Description"
@@ -49,7 +49,7 @@ export function ExpenseRow({ transaction, onUpdate, onDelete }: ExpenseRowProps)
             </td>
 
             {/* PROJECT */}
-            <td className="p-2 align-middle">
+            <td className="p-2 align-middle w-40">
                 <ProjectSelect
                     value={transaction.projectId}
                     onChange={(pid) => onUpdate(transaction.id, { projectId: pid })}
@@ -59,7 +59,7 @@ export function ExpenseRow({ transaction, onUpdate, onDelete }: ExpenseRowProps)
 
 
             {/* HIERARCHICAL CATEGORY SELECTION */}
-            <td className="p-2 align-middle">
+            <td className="p-2 align-middle w-40">
                 <div className="flex flex-col gap-1">
                     {/* Pillar Selector */}
                     <select
@@ -129,7 +129,7 @@ export function ExpenseRow({ transaction, onUpdate, onDelete }: ExpenseRowProps)
             </td>
 
             {/* Status */}
-            <td className="p-2 align-middle">
+            <td className="p-2 align-middle w-32">
                 <select
                     value={transaction.status}
                     onChange={(e) => onUpdate(transaction.id, { status: e.target.value as any })}
@@ -146,7 +146,7 @@ export function ExpenseRow({ transaction, onUpdate, onDelete }: ExpenseRowProps)
             </td>
 
             {/* Amount */}
-            <td className="p-2 align-middle text-right">
+            <td className="p-2 align-middle text-right w-24">
                 <div className="flex flex-col items-end">
                     <EditableCell
                         value={transaction.amount}
@@ -185,7 +185,22 @@ export function ExpenseRow({ transaction, onUpdate, onDelete }: ExpenseRowProps)
                     })()}
                 </div>
             </td>
-            <td className="p-2 align-middle text-center">
+
+            {/* CAP (New Column) */}
+            <td className="p-2 align-middle text-center w-12">
+                {transaction.pillar === 'Repairs' && (
+                    <input
+                        type="checkbox"
+                        checked={transaction.capitalize ?? false}
+                        onChange={(e) => onUpdate(transaction.id, { capitalize: e.target.checked })}
+                        className="h-4 w-4 rounded border-amber-300 text-amber-600 focus:ring-amber-500 cursor-pointer shadow-sm transition-all hover:scale-110"
+                        title="Mark as Capital Improvement (27.5 Year Depreciation)"
+                    />
+                )}
+            </td>
+
+            {/* NY Column */}
+            <td className="p-2 align-middle text-center w-12">
                 <input
                     type="checkbox"
                     checked={transaction.nySource ?? true}
@@ -195,10 +210,11 @@ export function ExpenseRow({ transaction, onUpdate, onDelete }: ExpenseRowProps)
             </td>
 
             {/* Actions */}
-            <td className="p-2 align-middle text-right">
+            <td className="p-2 align-middle text-right w-12">
                 <button
                     onClick={() => onDelete(transaction.id)}
                     className="text-muted-foreground hover:text-destructive transition-colors"
+                    title="Delete"
                 >
                     <Trash2 className="h-4 w-4" />
                 </button>
