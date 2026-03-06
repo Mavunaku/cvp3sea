@@ -1,5 +1,4 @@
 {
-  "framework": "nextjs",
-  "rootDirectory": "tax-app",
-  "buildCommand": "next build"
+  "buildCommand": "cd tax-app && npm run build",
+  "outputDirectory": "tax-app/.next"
 }

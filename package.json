@@ -1,7 +1,7 @@
 {
-    "name": "cvp3sea-root",
+    "name": "tax-monorepo",
     "private": true,
     "scripts": {
-        "build": "echo 'Building via vercel.json rootDirectory setting'"
+        "build": "cd tax-app && npm install && npm run build"
     }
 }
