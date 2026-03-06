@@ -3,6 +3,7 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useStore } from '@/store/useStore';
+import { filterTransactions } from '@/lib/calculations';
 
 export function AnalyticsCharts() {
     const { transactions, projects, selectedYear, selectedProjectId } = useStore();
@@ -10,9 +11,12 @@ export function AnalyticsCharts() {
     const formatCurrency = (value: number) =>
         new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
 
+    // Filter transactions using unified logic for consistency
+    const allFilteredTransactions = filterTransactions(transactions, projects, selectedYear, selectedProjectId);
+
     if (selectedProjectId) {
         // Single Project View: Monthly Trend
-        const projectTransactions = transactions.filter((t: any) => t.projectId === selectedProjectId);
+        const projectTransactions = allFilteredTransactions; // Already filtered by project if selected
         const monthlyData = projectTransactions.reduce((acc: any, t: any) => {
             const month = t.date.substring(0, 7); // "2025-01"
             if (!acc[month]) acc[month] = { name: month, Income: 0, Expenses: 0, Net: 0 };
@@ -78,7 +82,7 @@ export function AnalyticsCharts() {
         : projects;
 
     const projectData = relevantProjects.map((p: any) => {
-        const pTrans = transactions.filter((t: any) => t.projectId === p.id);
+        const pTrans = allFilteredTransactions.filter((t: any) => t.projectId === p.id);
         const income = pTrans.filter((t: any) => t.type === 'income').reduce((sum: number, t: any) => sum + t.amount, 0);
         const expense = pTrans.filter((t: any) => t.type === 'expense').reduce((sum: number, t: any) => sum + t.amount, 0);
         return {

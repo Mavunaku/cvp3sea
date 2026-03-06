@@ -6,7 +6,7 @@ import { useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { Transaction } from '@/types';
 
-import { calculateStats } from '@/lib/calculations';
+import { calculateStats, filterTransactions } from '@/lib/calculations';
 
 interface ScheduleCLine {
     label: string;
@@ -24,14 +24,7 @@ export function ScheduleCPreview() {
     }, [transactions, assets, projects, selectedYear, selectedProjectId]);
 
     const data = useMemo(() => {
-        const filteredTransactions = transactions.filter(t => {
-            if (selectedProjectId) return t.projectId === selectedProjectId;
-            if (selectedYear) {
-                const project = projects.find(p => p.id === t.projectId);
-                return project?.yearId === selectedYear || t.date.startsWith(selectedYear);
-            }
-            return true;
-        });
+        const filteredTransactions = filterTransactions(transactions, projects, selectedYear, selectedProjectId);
 
         const expenses = filteredTransactions.filter(t => t.type === 'expense');
 

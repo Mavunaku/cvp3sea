@@ -3,7 +3,8 @@
 import React from 'react';
 import { useStore } from '@/store/useStore';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { calculateStats } from '@/lib/calculations';
+import { calculateStats, filterTransactions } from '@/lib/calculations';
+import { FileText, Printer, X } from 'lucide-react';
 
 interface AccountantReportProps {
     isOpen: boolean;
@@ -18,14 +19,7 @@ export function AccountantReport({ isOpen, onClose }: AccountantReportProps) {
     const stats = calculateStats(transactions, assets, projects, selectedYear, selectedProjectId);
     const { revenue, expenses, deductibleExpenses, taxableNetProfit, nySourceIncome, totalDepreciation } = stats;
 
-    const filteredTransactions = transactions.filter(t => {
-        if (selectedProjectId) return t.projectId === selectedProjectId;
-        if (selectedYear) {
-            const project = projects.find(p => p.id === t.projectId);
-            return project?.yearId === selectedYear || t.date.startsWith(selectedYear);
-        }
-        return true;
-    });
+    const filteredTransactions = filterTransactions(transactions, projects, selectedYear, selectedProjectId);
 
     const incomeByCategory = filteredTransactions
         .filter(t => t.type === 'income')

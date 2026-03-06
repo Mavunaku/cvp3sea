@@ -4,9 +4,12 @@ import { useStore } from '@/store/useStore';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { TrendingUp, TrendingDown } from 'lucide-react';
+import { filterTransactions } from '@/lib/calculations';
 
 export function ProfitabilityRanking() {
     const { transactions, projects, selectedYear, selectedProjectId } = useStore();
+
+    const allFilteredTransactions = filterTransactions(transactions, projects, selectedYear, selectedProjectId);
 
     // If a project is selected, maybe show Top Categories instead?
     // For now, let's keep it simple. If project selected, hide this or show categories.
@@ -15,7 +18,7 @@ export function ProfitabilityRanking() {
 
     if (selectedProjectId) {
         // Show Top Expense Categories for this project
-        const pTrans = transactions.filter(t => t.projectId === selectedProjectId && t.type === 'expense');
+        const pTrans = allFilteredTransactions.filter(t => t.type === 'expense');
         const categoryTotals = pTrans.reduce((acc, t) => {
             acc[t.category] = (acc[t.category] || 0) + t.amount;
             return acc;
@@ -57,7 +60,7 @@ export function ProfitabilityRanking() {
         : projects;
 
     const rankings = relevantProjects.map(p => {
-        const pTrans = transactions.filter(t => t.projectId === p.id);
+        const pTrans = allFilteredTransactions.filter(t => t.projectId === p.id);
         const income = pTrans.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
         const expense = pTrans.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
         const net = income - expense;

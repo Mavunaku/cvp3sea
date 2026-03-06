@@ -5,59 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { useMemo } from 'react';
 
+import { calculateStats } from '@/lib/calculations';
+
 export function SummaryCard() {
     const { transactions, selectedYear, selectedProjectId, projects, assets } = useStore();
 
     const stats = useMemo(() => {
-        const filteredTransactions = transactions.filter(t => {
-            if (selectedProjectId) return t.projectId === selectedProjectId;
-            if (selectedYear) {
-                const project = projects.find(p => p.id === t.projectId);
-                return project?.yearId === selectedYear || t.date.startsWith(selectedYear);
-            }
-            return true;
-        });
-
-        const revenue = filteredTransactions
-            .filter((t) => t.type === 'income')
-            .reduce((acc, t) => acc + (t.amount || 0), 0);
-
-        const expenses = filteredTransactions
-            .filter((t) => t.type === 'expense')
-            .reduce((acc, t) => acc + (t.amount || 0), 0);
-
-        const deductibleExpenses = filteredTransactions
-            .filter((t) => t.type === 'expense')
-            .reduce((acc, t) => {
-                const amount = t.amount || 0;
-                if (t.pillar === 'Interest Expense') {
-                    if (t.interest !== undefined) return acc + (t.interest || 0);
-                    if (t.category === 'Loan Principal') return acc;
-                    return acc + amount;
-                }
-                if (t.pillar === 'Travels') {
-                    if (t.category.includes('(50% Deductible)')) return acc + (amount * 0.5);
-                    if (t.category === 'Entertainment (Non-Deductible)') return acc;
-                    return acc + amount;
-                }
-                if (t.capitalize) return acc;
-                return acc + amount;
-            }, 0);
-
-        const nySourceRevenue = filteredTransactions
-            .filter(t => t.type === 'income' && (t.nySource ?? true))
-            .reduce((acc, t) => acc + (t.amount || 0), 0);
-
-        const nySourceExpenses = filteredTransactions
-            .filter(t => t.type === 'expense' && (t.nySource ?? true))
-            .reduce((acc, t) => acc + (t.amount || 0), 0);
-
-        const nySourceIncome = nySourceRevenue - nySourceExpenses;
-
-        const netProfit = revenue - expenses;
-
-        return { revenue, expenses, deductibleExpenses, netProfit, nySourceIncome, nySourceRevenue, nySourceExpenses };
-    }, [transactions, selectedYear, selectedProjectId, projects]);
+        return calculateStats(transactions, assets, projects, selectedYear, selectedProjectId);
+    }, [transactions, assets, projects, selectedYear, selectedProjectId]);
 
     return (
         <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
@@ -104,11 +59,6 @@ export function SummaryCard() {
                 <CardContent>
                     <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-400 font-mono">
                         ${(stats.nySourceIncome || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                    </div>
-                    <div className="flex gap-2 mt-1 opacity-60 text-[9px] font-bold uppercase tracking-tighter text-emerald-800 dark:text-emerald-400">
-                        <span>Inc: ${(stats.nySourceRevenue || 0).toLocaleString()}</span>
-                        <span>-</span>
-                        <span>Exp: ${(stats.nySourceExpenses || 0).toLocaleString()}</span>
                     </div>
                 </CardContent>
             </Card>

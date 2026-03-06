@@ -7,6 +7,8 @@ import { useStore } from "@/store/useStore";
 import { ExportButton } from "./ExportButton";
 import { GroupedExpenseTable } from "./GroupedExpenseTable";
 
+import { filterTransactions, calculateStats } from "@/lib/calculations";
+
 interface LedgerTableProps {
     type: TransactionType;
 }
@@ -23,12 +25,8 @@ export function LedgerTable({ type }: LedgerTableProps) {
         toggleAllNySource
     } = useStore();
 
-    // Filter by Global Context (Project/Year)
-    const contextFilteredTransactions = transactions.filter(t => {
-        if (selectedProjectId) return t.projectId === selectedProjectId;
-        if (selectedYear) return t.date.startsWith(selectedYear);
-        return true;
-    });
+    // Filter by Global Context (Project/Year) using unified logic
+    const contextFilteredTransactions = filterTransactions(transactions, projects, selectedYear, selectedProjectId);
 
     const filteredTransactions = contextFilteredTransactions.filter(t => t.type === type);
 
@@ -60,25 +58,10 @@ export function LedgerTable({ type }: LedgerTableProps) {
         toggleAllNySource(visibleTransactions.map(t => t.id), targetState);
     };
 
-    // Calculate Totals for Footer
-    // Calculate Totals for Footer (Deductible for Expenses, Raw for Income)
-    const totalAmount = type === 'income'
-        ? sortedTransactions.filter(t => t.nySource ?? true).reduce((acc, t) => acc + (t.amount || 0), 0)
-        : sortedTransactions.filter(t => t.nySource ?? true).reduce((acc, t) => {
-            const amount = t.amount || 0;
-            if (t.pillar === 'Interest Expense') {
-                if (t.interest !== undefined) return acc + (t.interest || 0);
-                if (t.category === 'Loan Principal') return acc;
-                return acc + amount;
-            }
-            if (t.pillar === 'Travels') {
-                if (t.category.includes('(50% Deductible)')) return acc + (amount * 0.5);
-                if (t.category === 'Entertainment (Non-Deductible)') return acc;
-                return acc + amount;
-            }
-            if (t.capitalize) return acc; // Skip capitalized repairs
-            return acc + amount;
-        }, 0);
+    // Calculate Totals for Footer (Match Dashboard Stats)
+    const stats = calculateStats(contextFilteredTransactions, [], projects, selectedYear, selectedProjectId);
+    const totalAmount = type === 'income' ? stats.revenue : stats.deductibleExpenses;
+    const grossTotal = type === 'income' ? stats.revenue : stats.expenses;
     const travelsTotal = type === 'expense'
         ? sortedTransactions.filter(t => t.pillar === 'Travels').reduce((acc, t) => {
             const amount = t.amount || 0;
@@ -195,6 +178,7 @@ export function LedgerTable({ type }: LedgerTableProps) {
                         <SummaryFooter
                             type={type}
                             totalAmount={totalAmount}
+                            grossTotal={grossTotal}
                             travelsTotal={travelsTotal}
                             travelsGross={travelsGross}
                             mealsSubtotal={mealsSubtotal}
@@ -221,6 +205,7 @@ export function LedgerTable({ type }: LedgerTableProps) {
 function SummaryFooter({
     type,
     totalAmount,
+    grossTotal,
     travelsTotal,
     travelsGross,
     mealsSubtotal,
@@ -228,13 +213,12 @@ function SummaryFooter({
 }: {
     type: 'income' | 'expense';
     totalAmount: number;
+    grossTotal: number;
     travelsTotal: number;
     travelsGross: number;
     mealsSubtotal: number;
     transactions: Transaction[];
 }) {
-    const grossTotal = transactions.reduce((acc, t) => acc + (t.amount || 0), 0);
-
     return (
         <tfoot className="bg-muted/50 font-medium border-t">
             {/* Main Total Row */}
@@ -246,7 +230,7 @@ function SummaryFooter({
                     ${(totalAmount || 0).toLocaleString()}
                 </td>
                 <td colSpan={2} className="text-[10px] text-muted-foreground pl-2 italic">
-                    {type === 'expense' && grossTotal !== totalAmount && `(Total Spent: $${(grossTotal || 0).toLocaleString()})`}
+                    {type === 'expense' && grossTotal !== totalAmount && `(Gross Spent: $${(grossTotal || 0).toLocaleString()})`}
                 </td>
             </tr>
 
