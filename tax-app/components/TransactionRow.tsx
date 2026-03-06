@@ -28,22 +28,22 @@ export function TransactionRow({ transaction, onUpdate, onDelete }: TransactionR
 
     return (
         <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-            <td className="p-2 align-middle">
+            <td className="p-2 align-middle w-28">
                 <EditableCell
                     value={transaction.date}
                     type="date"
                     onSave={(val) => onUpdate(transaction.id, { date: String(val) })}
-                    className="w-32"
+                    className="w-full"
                 />
             </td>
-            <td className="p-2 align-middle">
+            <td className="p-2 align-middle min-w-[120px]">
                 <EditableCell
                     value={transaction.description}
                     onSave={(val) => onUpdate(transaction.id, { description: String(val) })}
                     className="font-medium"
                 />
             </td>
-            <td className="p-2 align-middle">
+            <td className="p-2 align-middle w-40">
                 {/* Project Selector */}
                 <ProjectSelect
                     value={transaction.projectId}
@@ -51,7 +51,7 @@ export function TransactionRow({ transaction, onUpdate, onDelete }: TransactionR
                 />
             </td>
 
-            <td className="p-2 align-middle">
+            <td className="p-2 align-middle w-40">
                 <select
                     value={transaction.category}
                     onChange={handleCategoryChange}
@@ -64,7 +64,7 @@ export function TransactionRow({ transaction, onUpdate, onDelete }: TransactionR
                     ))}
                 </select>
             </td>
-            <td className="p-2 align-middle">
+            <td className="p-2 align-middle w-32">
                 <select
                     value={transaction.status}
                     onChange={(e) => onUpdate(transaction.id, { status: e.target.value as any })}
@@ -80,7 +80,7 @@ export function TransactionRow({ transaction, onUpdate, onDelete }: TransactionR
                     <option value="Reconciled">Reconciled</option>
                 </select>
             </td>
-            <td className="p-2 align-middle text-right">
+            <td className="p-2 align-middle text-right w-24">
                 <EditableCell
                     value={transaction.amount}
                     type="number"
@@ -108,7 +108,7 @@ export function TransactionRow({ transaction, onUpdate, onDelete }: TransactionR
                 />
             </td>
             {/* Actions */}
-            <td className="p-2 align-middle text-right">
+            <td className="p-2 align-middle text-right w-12">
                 <div className="flex items-center justify-end gap-2">
                     {transaction.type === 'expense' && (
                         <button
