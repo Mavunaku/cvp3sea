@@ -1,3 +1,5 @@
 {
-  "rootDirectory": "tax-app"
+  "framework": "nextjs",
+  "rootDirectory": "tax-app",
+  "buildCommand": "next build"
 }

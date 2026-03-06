@@ -75,7 +75,7 @@ export const useStore = create<AppState>()(
             isSyncing: false,
             syncError: null,
             lastSyncTime: null,
-            selectedYear: null,
+            selectedYear: "2026",
             selectedProjectId: null,
 
             setUserId: (userId) => set({ userId }),
