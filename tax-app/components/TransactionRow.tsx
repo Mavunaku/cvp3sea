@@ -89,7 +89,7 @@ export function TransactionRow({ transaction, onUpdate, onDelete }: TransactionR
                 />
             </td>
             <td className="p-2 align-middle text-center w-12">
-                {transaction.type === 'expense' && transaction.pillar === 'Repairs' && (
+                {transaction.type === 'expense' && (
                     <input
                         type="checkbox"
                         checked={transaction.capitalize ?? false}
@@ -99,7 +99,7 @@ export function TransactionRow({ transaction, onUpdate, onDelete }: TransactionR
                     />
                 )}
             </td>
-            <td className="p-2 align-middle text-center">
+            <td className="p-2 align-middle text-center w-12">
                 <input
                     type="checkbox"
                     checked={transaction.nySource ?? true}
