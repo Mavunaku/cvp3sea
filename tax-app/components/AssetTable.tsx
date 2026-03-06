@@ -3,9 +3,11 @@
 import { useStore } from '@/store/useStore';
 import { Asset } from '@/types';
 import { EditableCell } from './EditableCell';
-import { Plus, Trash2, Info, Lightbulb, TrendingUp, Scale, Zap } from 'lucide-react';
+import { Plus, Trash2, Info, Lightbulb, TrendingUp, Scale, Zap, Download } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from 'react';
+import { DeductionStrategyPDF } from './DeductionStrategyPDF';
 
 export function AssetTable() {
     const {
@@ -16,6 +18,7 @@ export function AssetTable() {
         transactions,
         selectedProjectId
     } = useStore();
+    const [isExportOpen, setIsExportOpen] = useState(false);
 
     // 1. Filter Assets by Project (if selected)
     const filteredAssets = selectedProjectId
@@ -147,19 +150,30 @@ export function AssetTable() {
                             <Zap className="h-6 w-6 text-indigo-600" />
                         </div>
                         <div>
-                            <h2 className="text-xl font-black tracking-tight text-slate-900 dark:text-slate-100 uppercase">Fixed Asset Ledger</h2>
-                            <p className="text-[11px] text-muted-foreground font-medium">Manage and track depreciation for business equipment.</p>
+                            <h2 className="text-xl font-black tracking-tight text-slate-900 dark:text-slate-100 uppercase">Deduction Strategy Center</h2>
+                            <p className="text-[11px] text-muted-foreground font-medium">Professional tax strategies for your fixed assets and improvements.</p>
                         </div>
                     </div>
-                    <button
-                        onClick={handleAdd}
-                        disabled={!selectedProjectId}
-                        className="inline-flex items-center justify-center rounded-xl text-sm font-bold transition-all shadow-lg active:scale-95 bg-slate-900 text-white hover:bg-black h-11 px-6 border-b-4 border-slate-700 hover:border-slate-900"
-                    >
-                        <Plus className="mr-2 h-4 w-4" />
-                        Add New Asset
-                    </button>
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={() => setIsExportOpen(true)}
+                            className="inline-flex items-center justify-center rounded-xl text-sm font-bold transition-all shadow-sm active:scale-95 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 h-11 px-6 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50"
+                        >
+                            <Download className="mr-2 h-4 w-4" />
+                            Download PDF
+                        </button>
+                        <button
+                            onClick={handleAdd}
+                            disabled={!selectedProjectId}
+                            className="inline-flex items-center justify-center rounded-xl text-sm font-bold transition-all shadow-lg active:scale-95 bg-slate-900 text-white hover:bg-black h-11 px-6 border-b-4 border-slate-700 hover:border-slate-900"
+                        >
+                            <Plus className="mr-2 h-4 w-4" />
+                            Add New Asset
+                        </button>
+                    </div>
                 </div>
+
+                <DeductionStrategyPDF isOpen={isExportOpen} onClose={() => setIsExportOpen(false)} />
 
                 <div className="rounded-md border bg-card shadow-sm overflow-hidden border-collapse">
                     <div className="w-full overflow-auto">
