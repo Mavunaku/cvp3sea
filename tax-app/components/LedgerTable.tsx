@@ -104,10 +104,10 @@ export function LedgerTable({ type }: LedgerTableProps) {
                                         <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground w-40">Category</th>
                                         <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground w-32">Pymnt Status</th>
                                         <th className="h-10 px-2 text-right align-middle font-medium text-muted-foreground w-24">Amount</th>
-                                        <th className="h-10 px-2 text-center align-middle font-medium text-muted-foreground w-12 text-[9px] uppercase font-bold opacity-30">CAP</th>
-                                        <th className="h-10 px-2 text-center align-middle font-medium text-muted-foreground w-12">
+                                        <th className="h-10 px-2 text-center align-middle w-12 text-[9px] uppercase font-bold opacity-30 text-muted-foreground">CAP</th>
+                                        <th className="h-10 px-2 text-center align-middle w-12">
                                             <div className="flex flex-col items-center gap-0.5">
-                                                <span className="text-[9px] uppercase font-bold opacity-70">NY</span>
+                                                <span className="text-[9px] uppercase font-bold opacity-70 text-emerald-600">NY</span>
                                                 <input
                                                     type="checkbox"
                                                     checked={allNyChecked}
@@ -128,8 +128,8 @@ export function LedgerTable({ type }: LedgerTableProps) {
                                         <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground w-40">Category</th>
                                         <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground w-32">Pymnt Status</th>
                                         <th className="h-10 px-2 text-right align-middle font-medium text-muted-foreground w-24">Amount</th>
-                                        <th className="h-10 px-2 text-center align-middle font-medium text-muted-foreground w-12 text-[9px] uppercase font-bold opacity-70 text-amber-600">CAP</th>
-                                        <th className="h-10 px-2 text-center align-middle font-medium text-muted-foreground w-12">
+                                        <th className="h-10 px-2 text-center align-middle w-12 text-[9px] uppercase font-bold opacity-70 text-amber-600">CAP</th>
+                                        <th className="h-10 px-2 text-center align-middle w-12">
                                             <div className="flex flex-col items-center gap-0.5">
                                                 <span className="text-[9px] uppercase font-bold opacity-70 text-emerald-600">NY</span>
                                                 <input
