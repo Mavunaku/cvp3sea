@@ -1,0 +1,7 @@
+{
+    "name": "cvp3sea-root",
+    "private": true,
+    "scripts": {
+        "build": "echo 'Building via vercel.json rootDirectory setting'"
+    }
+}
