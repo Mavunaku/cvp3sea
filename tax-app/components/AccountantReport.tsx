@@ -3,7 +3,7 @@
 import React from 'react';
 import { useStore } from '@/store/useStore';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, Printer, X, Download } from 'lucide-react';
+import { calculateStats } from '@/lib/calculations';
 
 interface AccountantReportProps {
     isOpen: boolean;
@@ -15,55 +15,18 @@ export function AccountantReport({ isOpen, onClose }: AccountantReportProps) {
 
     if (!isOpen) return null;
 
-    // Filter Data based on selection
+    const stats = calculateStats(transactions, assets, projects, selectedYear, selectedProjectId);
+    const { revenue, expenses, deductibleExpenses, taxableNetProfit, nySourceIncome, totalDepreciation } = stats;
+
     const filteredTransactions = transactions.filter(t => {
         if (selectedProjectId) return t.projectId === selectedProjectId;
         if (selectedYear) {
             const project = projects.find(p => p.id === t.projectId);
-            return project?.yearId === selectedYear;
+            return project?.yearId === selectedYear || t.date.startsWith(selectedYear);
         }
         return true;
     });
 
-    const filteredAssets = assets.filter(a => {
-        if (selectedProjectId) return a.projectId === selectedProjectId;
-        if (selectedYear) {
-            const project = projects.find(p => p.id === a.projectId);
-            return project?.yearId === selectedYear;
-        }
-        return true;
-    });
-
-    const revenue = filteredTransactions
-        .filter(t => t.type === 'income')
-        .reduce((acc, t) => acc + t.amount, 0);
-
-    const expenses = filteredTransactions
-        .filter(t => t.type === 'expense')
-        .reduce((acc, t) => acc + t.amount, 0);
-
-    const deductibleExpenses = filteredTransactions
-        .filter(t => t.type === 'expense')
-        .reduce((acc, t) => {
-            if (t.pillar === 'Interest Expense') {
-                if (t.interest !== undefined) return acc + t.interest;
-                if (t.category === 'Loan Principal') return acc;
-                return acc + t.amount;
-            }
-            if (t.pillar === 'Travels') {
-                if (t.category.includes('(50% Deductible)')) return acc + (t.amount * 0.5);
-                if (t.category === 'Entertainment (Non-Deductible)') return acc;
-                return acc + t.amount;
-            }
-            if (t.capitalize) return acc;
-            return acc + t.amount;
-        }, 0);
-
-    const nySourceIncome = filteredTransactions
-        .filter(t => t.type === 'income' && t.nySource)
-        .reduce((acc, t) => acc + t.amount, 0);
-
-    // Grouping by category/pillar for report
     const incomeByCategory = filteredTransactions
         .filter(t => t.type === 'income')
         .reduce((acc: any, t) => {

@@ -4,6 +4,7 @@
 import { useStore } from '@/store/useStore';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { DollarSign, TrendingUp, TrendingDown, Scale, PiggyBank, FileText, Download } from 'lucide-react';
+import { calculateStats } from '@/lib/calculations';
 import { useMemo, useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { AccountantReport } from './AccountantReport';
@@ -21,118 +22,7 @@ export function DashboardStats() {
     }, []);
 
     const stats = useMemo(() => {
-        // 1. Filter Transactions based on Global Context
-        const filteredTransactions = transactions.filter(t => {
-            if (selectedProjectId) return t.projectId === selectedProjectId;
-            if (selectedYear) {
-                const project = projects.find(p => p.id === t.projectId);
-                // Robust Fallback: Show data if project matches OR if date matches (Legacy Support)
-                return project?.yearId === selectedYear || t.date.startsWith(selectedYear);
-            }
-            return true;
-        });
-
-        const revenue = filteredTransactions
-            .filter((t) => t.type === 'income')
-            .reduce((acc, t) => acc + t.amount, 0);
-
-        const expenses = filteredTransactions
-            .filter((t) => t.type === 'expense')
-            .reduce((acc, t) => acc + t.amount, 0);
-
-        // 2. Calculate Deductible Expenses (exclude Principal and Capitalized Repairs)
-        const deductibleExpenses = filteredTransactions
-            .filter((t) => t.type === 'expense')
-            .reduce((acc, t) => {
-                if (t.pillar === 'Interest Expense') {
-                    if (t.interest !== undefined) return acc + t.interest;
-                    if (t.category === 'Loan Principal') return acc;
-                    return acc + t.amount;
-                }
-                if (t.pillar === 'Travels') {
-                    if (t.category.includes('(50% Deductible)')) return acc + (t.amount * 0.5);
-                    if (t.category === 'Entertainment (Non-Deductible)') return acc;
-                    return acc + t.amount;
-                }
-                if (t.capitalize) return acc; // Skip capitalized repairs
-                return acc + t.amount;
-            }, 0);
-
-        // 3. Calculate Depreciation Deduction
-        const filteredAssets = assets.filter(a => {
-            if (selectedProjectId) return a.projectId === selectedProjectId;
-            if (selectedYear) {
-                const project = projects.find(p => p.id === a.projectId);
-                // Robust Fallback: Show data if project matches OR if purchase date matches (Legacy Support)
-                return project?.yearId === selectedYear || a.purchaseDate?.startsWith(selectedYear);
-            }
-            return true;
-        });
-
-        const assetDepreciation = filteredAssets.reduce((acc, asset) => {
-            const cost = asset.cost || 0;
-            const businessUse = asset.businessUsePercent / 100;
-            const basis = cost * businessUse;
-
-            if (asset.currentDepreciation !== undefined) {
-                return acc + asset.currentDepreciation;
-            }
-            if (asset.section179 || asset.bonusDepreciation) {
-                return acc + basis;
-            }
-            return acc + Math.round(basis / asset.usefulLife);
-        }, 0);
-
-        // Capitalized Repairs (from transactions) - always 27.5 years
-        const capRepairDepreciation = filteredTransactions
-            .filter(t => t.capitalize === true)
-            .reduce((acc, t) => acc + Math.round(t.amount / 27.5), 0);
-
-        const totalDepreciation = assetDepreciation + capRepairDepreciation;
-
-        const netProfit = revenue - expenses; // Cash Flow Net
-        const taxableNetProfit = revenue - deductibleExpenses - totalDepreciation; // Taxable Net
-
-        const nySourceIncome = filteredTransactions
-            .filter(t => t.nySource ?? true)
-            .reduce((acc, t) => {
-                if (t.type === 'income') return acc + t.amount;
-                // For expenses, use deductible logic consistent with taxableNetProfit
-                const amount = t.amount || 0;
-                if (t.pillar === 'Interest Expense') {
-                    if (t.interest !== undefined) return acc - t.interest;
-                    if (t.category === 'Loan Principal') return acc;
-                    return acc - amount;
-                }
-                if (t.pillar === 'Travels') {
-                    if (t.category.includes('(50% Deductible)')) return acc - (amount * 0.5);
-                    if (t.category === 'Entertainment (Non-Deductible)') return acc;
-                    return acc - amount;
-                }
-                if (t.capitalize) return acc;
-                return acc - amount;
-            }, 0);
-
-        const fedTaxRate = 0.35;
-        const nyTaxRate = 0.065;
-
-        const fedTax = taxableNetProfit > 0 ? taxableNetProfit * fedTaxRate : 0;
-        const nyTax = nySourceIncome > 0 ? nySourceIncome * nyTaxRate : 0;
-        const taxLiability = fedTax + nyTax;
-        const taxSavings = (deductibleExpenses + totalDepreciation) * (fedTaxRate + nyTaxRate);
-
-        return {
-            revenue,
-            expenses,
-            deductibleExpenses,
-            netProfit,
-            taxableNetProfit,
-            totalDepreciation,
-            taxLiability,
-            taxSavings,
-            fedTax,
-            nyTax
-        };
+        return calculateStats(transactions, assets, projects, selectedYear, selectedProjectId);
     }, [transactions, assets, selectedYear, selectedProjectId, projects]);
 
     if (!mounted) {

@@ -69,36 +69,48 @@ export async function loadUserData(userId: string): Promise<UserData> {
 
         // We use a simple loop to find missing projects and auto-create them
         for (const t of transactions) {
-            if (t.projectName) {
-                const existing = loadedProjects.find(p => p.name === t.projectName);
-                const alreadyInferred = inferredProjects.find(p => p.name === t.projectName);
+            if (t.projectName && t.projectId) {
+                const existing = loadedProjects.find(p => p.id === t.projectId);
+                const alreadyInferred = inferredProjects.find(p => p.id === t.projectId);
 
                 if (!existing && !alreadyInferred) {
-                    // Check if there is really no project with this name
-                    // Create synthetic project AND Persist it
-                    const newId = generateUUID();
-                    const currentYear = new Date().getFullYear().toString();
+                    // We found an orphaned transaction. 
+                    // Try to infer the correct year from the date OR description
+                    const dateYear = t.date.split('-')[0];
+                    let yearId = dateYear;
+
+                    // Accounting Specialist Hint: If description mentions a year like "2025", 
+                    // and it's a catch-up entry, use that instead.
+                    const yearMatch = t.description.match(/\b(20\d{2})\b/);
+                    if (yearMatch && yearMatch[1] !== dateYear) {
+                        console.log(`Inferred Year ${yearMatch[1]} from description "${t.description}" for catch-up entry.`);
+                        yearId = yearMatch[1];
+                    }
+
+                    if (!yearId || yearId.length !== 4) yearId = new Date().getFullYear().toString();
 
                     const newProject: Project = {
-                        id: newId,
+                        id: t.projectId,
                         name: t.projectName,
                         type: 'Generic',
-                        yearId: currentYear
+                        yearId: yearId
                     };
                     inferredProjects.push(newProject);
 
-                    // Self-Healing: Create the project in DB so future inserts work
-                    // utilizing async execution (fire and forget)
+                    // Re-create missing project in DB
                     supabase.from('projects').upsert([{
-                        id: newId,
+                        id: t.projectId,
                         name: newProject.name,
                         type: newProject.type,
                         year_id: newProject.yearId,
                         user_id: userId
                     }]).then(({ error }) => {
-                        if (error) console.error("Auto-created missing project failed:", error);
-                        else console.log("Auto-created missing project:", newProject.name);
+                        if (error) console.error("Auto-restored missing project failed:", error);
+                        else console.log("Auto-restored missing project:", newProject.name, "for year", yearId);
                     });
+
+                    // Also ensure the year exists
+                    supabase.from('years').upsert([{ id: yearId, user_id: userId }]).then();
                 }
             }
         }

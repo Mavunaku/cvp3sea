@@ -6,6 +6,8 @@ import { useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { Transaction } from '@/types';
 
+import { calculateStats } from '@/lib/calculations';
+
 interface ScheduleCLine {
     label: string;
     value: number;
@@ -17,8 +19,12 @@ interface ScheduleCLine {
 export function ScheduleCPreview() {
     const { transactions, selectedYear, selectedProjectId, projects, assets } = useStore();
 
+    const stats = useMemo(() => {
+        return calculateStats(transactions, assets, projects, selectedYear, selectedProjectId);
+    }, [transactions, assets, projects, selectedYear, selectedProjectId]);
+
     const data = useMemo(() => {
-        const filtered = transactions.filter(t => {
+        const filteredTransactions = transactions.filter(t => {
             if (selectedProjectId) return t.projectId === selectedProjectId;
             if (selectedYear) {
                 const project = projects.find(p => p.id === t.projectId);
@@ -27,13 +33,7 @@ export function ScheduleCPreview() {
             return true;
         });
 
-        // Part I: Income
-        const grossReceipts = filtered
-            .filter(t => t.type === 'income')
-            .reduce((acc, t) => acc + (t.amount || 0), 0);
-
-        // Part II: Expenses
-        const expenses = filtered.filter(t => t.type === 'expense');
+        const expenses = filteredTransactions.filter(t => t.type === 'expense');
 
         const getSum = (pill: string, cat?: string) => {
             return expenses
@@ -44,7 +44,6 @@ export function ScheduleCPreview() {
                 })
                 .reduce((acc, t) => {
                     const amount = t.amount || 0;
-                    // Apply deductible logic
                     if (t.pillar === 'Interest Expense') {
                         return acc + (t.interest ?? (t.category === 'Loan Principal' ? 0 : amount));
                     }
@@ -61,23 +60,23 @@ export function ScheduleCPreview() {
 
         const advertising = getSum('General Business', 'Advertising');
         const insurance = getSum('General Business', 'Insurance');
-        const mortgageInterest = getSum('Interest Expense'); // We handle interest portion in getSum logic
+        const mortgageInterest = getSum('Interest Expense');
         const repairs = getSum('Repairs');
         const utilities = getSum('Utilities');
         const travel = expenses
             .filter(t => t.pillar === 'Travels' && t.category === 'Auto & Travel')
-            .reduce((acc, t) => acc + t.amount, 0);
+            .reduce((acc, t) => acc + (t.amount || 0), 0);
 
         const meals = expenses
             .filter(t => t.pillar === 'Travels' && t.category.includes('(50% Deductible)'))
-            .reduce((acc, t) => acc + (t.amount * 0.5), 0);
+            .reduce((acc, t) => acc + ((t.amount || 0) * 0.5), 0);
 
         const otherExpenses = expenses
             .filter(t => {
                 const knownPillars = ['General Business', 'Interest Expense', 'Repairs', 'Utilities', 'Travels'];
                 if (knownPillars.includes(t.pillar || '')) {
                     if (t.pillar === 'General Business' && (t.category === 'Advertising' || t.category === 'Insurance')) return false;
-                    if (t.pillar === 'Travels') return false; // Handled separately
+                    if (t.pillar === 'Travels') return false;
                     if (t.pillar === 'Interest Expense' || t.pillar === 'Repairs' || t.pillar === 'Utilities') return false;
                     return true;
                 }
@@ -85,11 +84,8 @@ export function ScheduleCPreview() {
             })
             .reduce((acc, t) => acc + (t.amount || 0), 0);
 
-        const totalExpenses = [advertising, insurance, mortgageInterest, repairs, utilities, travel, meals, otherExpenses]
-            .reduce((acc, v) => acc + v, 0);
-
         return {
-            grossReceipts,
+            grossReceipts: stats.revenue,
             advertising,
             insurance,
             mortgageInterest,
@@ -97,11 +93,12 @@ export function ScheduleCPreview() {
             utilities,
             travel,
             meals,
+            depreciation: stats.totalDepreciation,
             otherExpenses,
-            totalExpenses,
-            netProfit: grossReceipts - totalExpenses
+            totalExpenses: stats.deductibleExpenses + stats.totalDepreciation,
+            netProfit: stats.taxableNetProfit
         };
-    }, [transactions, projects, selectedYear, selectedProjectId]);
+    }, [transactions, projects, selectedYear, selectedProjectId, stats]);
 
     const lines: ScheduleCLine[] = [
         { label: "1. Gross receipts or sales", value: data.grossReceipts, isBold: true },
@@ -112,6 +109,7 @@ export function ScheduleCPreview() {
         { label: "21. Repairs and maintenance", value: data.repairs, indent: true },
         { label: "24a. Travel", value: data.travel, indent: true },
         { label: "24b. Deductible meals (50%)", value: data.meals, indent: true },
+        { label: "13. Depreciation (from Page 2)", value: data.depreciation, indent: true },
         { label: "25. Utilities", value: data.utilities, indent: true },
         { label: "27a. Other expenses", value: data.otherExpenses, indent: true },
         { label: "28. Total expenses", value: data.totalExpenses, isBold: true },
