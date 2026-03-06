@@ -89,6 +89,17 @@ export function TransactionRow({ transaction, onUpdate, onDelete }: TransactionR
                 />
             </td>
             <td className="p-2 align-middle text-center">
+                {transaction.type === 'expense' && (
+                    <input
+                        type="checkbox"
+                        checked={transaction.capitalize ?? false}
+                        onChange={(e) => onUpdate(transaction.id, { capitalize: e.target.checked })}
+                        className="h-4 w-4 rounded border-amber-300 text-amber-600 focus:ring-amber-500 cursor-pointer"
+                        title="Mark as Capital Improvement (27.5 Year Depreciation)"
+                    />
+                )}
+            </td>
+            <td className="p-2 align-middle text-center">
                 <input
                     type="checkbox"
                     checked={transaction.nySource ?? true}
