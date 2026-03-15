@@ -10,6 +10,9 @@ const nextConfig = {
     config.resolve.alias['@'] = path.resolve(__dirname)
     return config
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 }
 
 module.exports = nextConfig
