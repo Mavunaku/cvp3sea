@@ -17,7 +17,7 @@ export function AccountantReport({ isOpen, onClose }: AccountantReportProps) {
     if (!isOpen) return null;
 
     const stats = calculateStats(transactions, assets, projects, selectedYear, selectedProjectId);
-    const { revenue, deductibleExpenses, taxableNetProfit, nySourceIncome, totalDepreciation, totalWriteOffs } = stats;
+    const { revenue, expenses, deductibleExpenses, taxableNetProfit, nySourceIncome, totalDepreciation, totalWriteOffs } = stats;
 
     const filteredTransactions = filterTransactions(transactions, projects, selectedYear, selectedProjectId);
 
@@ -84,20 +84,20 @@ export function AccountantReport({ isOpen, onClose }: AccountantReportProps) {
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                         <div className="p-6 bg-emerald-50/50 dark:bg-emerald-900/10 rounded-2xl border border-emerald-100 dark:border-emerald-900/30">
                             <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest opacity-80">Gross Income</span>
-                            <div className="text-2xl font-black text-emerald-700 dark:text-emerald-400">${revenue.toLocaleString()}</div>
+                            <div className="text-2xl font-black text-emerald-700 dark:text-emerald-400">${(revenue || 0).toLocaleString()}</div>
                         </div>
                         <div className="p-6 bg-rose-50/50 dark:bg-rose-900/10 rounded-2xl border border-rose-100 dark:border-rose-900/30">
                             <div className="flex justify-between items-start">
                                 <span className="text-[10px] font-bold text-rose-600 uppercase tracking-widest opacity-80">Total Deductible</span>
                                 {expenses !== deductibleExpenses && (
-                                    <span className="text-[9px] text-rose-400 font-medium italic">Gross: ${expenses.toLocaleString()}</span>
+                                    <span className="text-[9px] text-rose-400 font-medium italic">Gross: ${(expenses || 0).toLocaleString()}</span>
                                 )}
                             </div>
-                            <div className="text-2xl font-black text-rose-700 dark:text-rose-400">${totalWriteOffs.toLocaleString()}</div>
+                            <div className="text-2xl font-black text-rose-700 dark:text-rose-400">${(totalWriteOffs || 0).toLocaleString()}</div>
                         </div>
                         <div className="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 md:col-span-1 col-span-2">
                             <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest opacity-80">Taxable Net</span>
-                            <div className="text-2xl font-black text-slate-900 dark:text-slate-100">${(revenue - deductibleExpenses).toLocaleString()}</div>
+                            <div className="text-2xl font-black text-slate-900 dark:text-slate-100">${((revenue || 0) - (deductibleExpenses || 0)).toLocaleString()}</div>
                         </div>
                     </div>
 
@@ -116,13 +116,13 @@ export function AccountantReport({ isOpen, onClose }: AccountantReportProps) {
                                     {Object.entries(incomeByCategory).map(([cat, amount]: any) => (
                                         <tr key={cat}>
                                             <td className="px-4 py-3">{cat}</td>
-                                            <td className="px-4 py-3 text-right font-mono font-bold">${amount.toLocaleString()}</td>
+                                            <td className="px-4 py-3 text-right font-mono font-bold">${(amount || 0).toLocaleString()}</td>
                                         </tr>
                                     ))}
                                     {nySourceIncome > 0 && (
                                         <tr className="bg-blue-50/20">
                                             <td className="px-4 py-3 font-semibold text-blue-600 italic">Of which: NY Source Income</td>
-                                            <td className="px-4 py-3 text-right font-mono font-bold text-blue-600">${nySourceIncome.toLocaleString()}</td>
+                                            <td className="px-4 py-3 text-right font-mono font-bold text-blue-600">${(nySourceIncome || 0).toLocaleString()}</td>
                                         </tr>
                                     )}
                                 </tbody>
@@ -151,11 +151,12 @@ export function AccountantReport({ isOpen, onClose }: AccountantReportProps) {
                                             <td className="px-4 py-3 text-right font-mono font-bold">
                                                 {pillar === 'Travels' ? (
                                                     <div className="flex flex-col items-end">
-                                                        <span className="text-[10px] opacity-60">Total: ${amount.toLocaleString()}</span>
+                                                        <span className="text-[10px] opacity-60">Total: ${(amount || 0).toLocaleString()}</span>
                                                         <span className="text-blue-600">Deductible: ${(
                                                             filteredTransactions
                                                                 .filter(t => t.pillar === 'Travels')
                                                                 .reduce((acc, t) => acc + getTransactionDeductibleAmount(t), 0)
+                                                            || 0
                                                         ).toLocaleString()}</span>
                                                     </div>
                                                 ) : (
@@ -173,17 +174,17 @@ export function AccountantReport({ isOpen, onClose }: AccountantReportProps) {
                     <div className="mt-8 space-y-2 border-t pt-4">
                         <div className="flex justify-between text-xs text-slate-500 font-bold uppercase tracking-tighter">
                              <span>Current Expenses (Pillars)</span>
-                             <span className="font-mono">${deductibleExpenses.toLocaleString()}</span>
+                             <span className="font-mono">${(deductibleExpenses || 0).toLocaleString()}</span>
                         </div>
                         {totalDepreciation > 0 && (
                             <div className="flex justify-between text-xs text-amber-600 font-bold uppercase tracking-tighter italic">
                                 <span>Federal Depreciation (Assets)</span>
-                                <span className="font-mono">+${totalDepreciation.toLocaleString()}</span>
+                                 <span className="font-mono">+${(totalDepreciation || 0).toLocaleString()}</span>
                             </div>
                         )}
                         <div className="flex justify-between text-base font-black border-t-2 border-rose-100 pt-2 text-rose-700">
                             <span>TOTAL DEDUCTIBLE (WRITE-OFFS)</span>
-                            <span className="font-mono underline decoration-rose-200 underline-offset-4">${totalWriteOffs.toLocaleString()}</span>
+                             <span className="font-mono underline decoration-rose-200 underline-offset-4">${(totalWriteOffs || 0).toLocaleString()}</span>
                         </div>
                     </div>
 

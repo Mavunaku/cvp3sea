@@ -161,7 +161,7 @@ export function ExpenseRow({ transaction, onUpdate, onDelete }: ExpenseRowProps)
 
                         return (
                             <div className="text-[10px] font-bold text-rose-500 mt-0.5 whitespace-nowrap opacity-80">
-                                Deductible: ${deductible.toLocaleString()}
+                                Deductible: ${(deductible || 0).toLocaleString()}
                                 {transaction.capitalize && " (As Asset)"}
                             </div>
                         );

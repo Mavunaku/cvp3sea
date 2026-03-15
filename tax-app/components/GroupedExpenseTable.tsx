@@ -99,7 +99,7 @@ function PillarSection({
                 </td>
                 {/* Subtotal - Aligned with Amount column (Col 6) */}
                 <td className="p-2 text-right font-mono font-bold text-foreground w-24">
-                    ${subtotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                    ${(subtotal || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </td>
                 {/* Empty cells for CAP, NY, and Actions (Cols 7, 8, 9) */}
                 <td className="w-12"></td>
