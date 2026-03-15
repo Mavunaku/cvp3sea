@@ -3,7 +3,7 @@
 import React from 'react';
 import { useStore } from '@/store/useStore';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { calculateStats, filterTransactions } from '@/lib/calculations';
+import { calculateStats, filterTransactions, getTransactionDeductibleAmount } from '@/lib/calculations';
 import { FileText, Printer, X } from 'lucide-react';
 
 interface AccountantReportProps {
@@ -17,7 +17,7 @@ export function AccountantReport({ isOpen, onClose }: AccountantReportProps) {
     if (!isOpen) return null;
 
     const stats = calculateStats(transactions, assets, projects, selectedYear, selectedProjectId);
-    const { revenue, expenses, deductibleExpenses, taxableNetProfit, nySourceIncome, totalDepreciation } = stats;
+    const { revenue, deductibleExpenses, taxableNetProfit, nySourceIncome, totalDepreciation, totalWriteOffs } = stats;
 
     const filteredTransactions = filterTransactions(transactions, projects, selectedYear, selectedProjectId);
 
@@ -32,7 +32,7 @@ export function AccountantReport({ isOpen, onClose }: AccountantReportProps) {
         .filter(t => t.type === 'expense')
         .reduce((acc: any, t) => {
             const pillar = t.pillar || 'Uncategorized';
-            acc[pillar] = (acc[pillar] || 0) + t.amount;
+            acc[pillar] = (acc[pillar] || 0) + getTransactionDeductibleAmount(t);
             return acc;
         }, {});
 
@@ -93,7 +93,7 @@ export function AccountantReport({ isOpen, onClose }: AccountantReportProps) {
                                     <span className="text-[9px] text-rose-400 font-medium italic">Gross: ${expenses.toLocaleString()}</span>
                                 )}
                             </div>
-                            <div className="text-2xl font-black text-rose-700 dark:text-rose-400">${deductibleExpenses.toLocaleString()}</div>
+                            <div className="text-2xl font-black text-rose-700 dark:text-rose-400">${totalWriteOffs.toLocaleString()}</div>
                         </div>
                         <div className="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 md:col-span-1 col-span-2">
                             <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest opacity-80">Taxable Net</span>
@@ -155,11 +155,7 @@ export function AccountantReport({ isOpen, onClose }: AccountantReportProps) {
                                                         <span className="text-blue-600">Deductible: ${(
                                                             filteredTransactions
                                                                 .filter(t => t.pillar === 'Travels')
-                                                                .reduce((acc, t) => {
-                                                                    if (t.category.includes('(50% Deductible)')) return acc + (t.amount * 0.5);
-                                                                    if (t.category === 'Entertainment (Non-Deductible)') return acc;
-                                                                    return acc + t.amount;
-                                                                }, 0)
+                                                                .reduce((acc, t) => acc + getTransactionDeductibleAmount(t), 0)
                                                         ).toLocaleString()}</span>
                                                     </div>
                                                 ) : (
@@ -170,6 +166,24 @@ export function AccountantReport({ isOpen, onClose }: AccountantReportProps) {
                                     ))}
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+                    {/* Breakdown of write-offs */}
+                    <div className="mt-8 space-y-2 border-t pt-4">
+                        <div className="flex justify-between text-xs text-slate-500 font-bold uppercase tracking-tighter">
+                             <span>Current Expenses (Pillars)</span>
+                             <span className="font-mono">${deductibleExpenses.toLocaleString()}</span>
+                        </div>
+                        {totalDepreciation > 0 && (
+                            <div className="flex justify-between text-xs text-amber-600 font-bold uppercase tracking-tighter italic">
+                                <span>Federal Depreciation (Assets)</span>
+                                <span className="font-mono">+${totalDepreciation.toLocaleString()}</span>
+                            </div>
+                        )}
+                        <div className="flex justify-between text-base font-black border-t-2 border-rose-100 pt-2 text-rose-700">
+                            <span>TOTAL DEDUCTIBLE (WRITE-OFFS)</span>
+                            <span className="font-mono underline decoration-rose-200 underline-offset-4">${totalWriteOffs.toLocaleString()}</span>
                         </div>
                     </div>
 

@@ -5,6 +5,7 @@ import { ExpenseRow } from './ExpenseRow';
 import { useState } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { getTransactionDeductibleAmount } from '@/lib/calculations';
 
 interface GroupedExpenseTableProps {
     transactions: Transaction[];
@@ -52,7 +53,7 @@ export function GroupedExpenseTable({ transactions, onUpdate, onDelete }: Groupe
                 // If we want to show empty pillars to encourage filling them, we keep them.
                 // Or we can hide empty pillars. Let's keep them primarily to show structure, but maybe hide Uncategorized if empty.
 
-                const subtotal = groupTransactions.reduce((acc, t) => acc + t.amount, 0);
+                const subtotal = groupTransactions.reduce((acc, t) => acc + getTransactionDeductibleAmount(t), 0);
 
                 return (
                     <PillarSection

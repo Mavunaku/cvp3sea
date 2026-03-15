@@ -194,7 +194,7 @@ export function DashboardStats() {
                                 </CardHeader>
                                 <CardContent>
                                     <div className="text-2xl font-bold text-blue-700 dark:text-blue-400">
-                                        ${stats.deductibleExpenses.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                                        ${stats.totalWriteOffs.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                                     </div>
                                     <p className="text-xs text-muted-foreground mt-1">Money spent you DON&apos;T pay tax on</p>
                                 </CardContent>

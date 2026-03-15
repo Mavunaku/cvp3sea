@@ -4,6 +4,7 @@ import { Transaction, EXPENSE_PILLARS, ExpensePillar } from '@/types';
 import { EditableCell } from './EditableCell';
 import { Trash2, AlertCircle } from 'lucide-react'; // AlertCircle for tooltips if needed
 import { ProjectSelect } from './ProjectSelect';
+import { filterTransactions, getTransactionDeductibleAmount } from "@/lib/calculations";
 import { cn } from '@/lib/utils';
 
 import { useStore } from '@/store/useStore';
@@ -155,33 +156,15 @@ export function ExpenseRow({ transaction, onUpdate, onDelete }: ExpenseRowProps)
                         className="justify-end font-mono"
                     />
                     {(() => {
-                        let taxPrice = transaction.amount;
-                        let showTaxPrice = false;
+                        const deductible = getTransactionDeductibleAmount(transaction);
+                        if (deductible === transaction.amount && !transaction.capitalize) return null;
 
-                        if (transaction.pillar === 'Interest Expense') {
-                            if (transaction.interest !== undefined) {
-                                taxPrice = transaction.interest;
-                                showTaxPrice = true;
-                            } else if (transaction.category === 'Loan Principal') {
-                                taxPrice = 0;
-                                showTaxPrice = true;
-                            }
-                        } else if (transaction.pillar === 'Travels') {
-                            if (transaction.category.includes('(50% Deductible)')) {
-                                taxPrice = transaction.amount * 0.5;
-                                showTaxPrice = true;
-                            } else if (transaction.category === 'Entertainment (Non-Deductible)') {
-                                taxPrice = 0;
-                                showTaxPrice = true;
-                            }
-                        } else if (transaction.capitalize) {
-                            taxPrice = 0;
-                            showTaxPrice = true;
-                        }
-
-                        if (!showTaxPrice) return null;
-
-                        return null; // Removed Deductible indicator
+                        return (
+                            <div className="text-[10px] font-bold text-rose-500 mt-0.5 whitespace-nowrap opacity-80">
+                                Deductible: ${deductible.toLocaleString()}
+                                {transaction.capitalize && " (As Asset)"}
+                            </div>
+                        );
                     })()}
                 </div>
             </td>

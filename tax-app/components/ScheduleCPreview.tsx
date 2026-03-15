@@ -6,7 +6,7 @@ import { useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { Transaction } from '@/types';
 
-import { calculateStats, filterTransactions } from '@/lib/calculations';
+import { calculateStats, filterTransactions, getTransactionDeductibleAmount } from '@/lib/calculations';
 
 interface ScheduleCLine {
     label: string;
@@ -36,18 +36,7 @@ export function ScheduleCPreview() {
                     return matchPillar;
                 })
                 .reduce((acc, t) => {
-                    const amount = t.amount || 0;
-                    if (t.pillar === 'Interest Expense') {
-                        return acc + (t.interest ?? (t.category === 'Loan Principal' ? 0 : amount));
-                    }
-                    if (t.pillar === 'Travels' && t.category.includes('(50% Deductible)')) {
-                        return acc + (amount * 0.5);
-                    }
-                    if (t.pillar === 'Travels' && t.category === 'Entertainment (Non-Deductible)') {
-                        return acc;
-                    }
-                    if (t.capitalize) return acc;
-                    return acc + amount;
+                    return acc + getTransactionDeductibleAmount(t);
                 }, 0);
         };
 
@@ -58,11 +47,11 @@ export function ScheduleCPreview() {
         const utilities = getSum('Utilities');
         const travel = expenses
             .filter(t => t.pillar === 'Travels' && t.category === 'Auto & Travel')
-            .reduce((acc, t) => acc + (t.amount || 0), 0);
+            .reduce((acc, t) => acc + getTransactionDeductibleAmount(t), 0);
 
         const meals = expenses
-            .filter(t => t.pillar === 'Travels' && t.category.includes('(50% Deductible)'))
-            .reduce((acc, t) => acc + ((t.amount || 0) * 0.5), 0);
+            .filter(t => t.pillar === 'Travels' && (t.category.includes('(50% Deductible)') || t.description.toLowerCase().includes('meal') || t.category.toLowerCase().includes('meal')))
+            .reduce((acc, t) => acc + getTransactionDeductibleAmount(t), 0);
 
         const otherExpenses = expenses
             .filter(t => {
@@ -75,7 +64,7 @@ export function ScheduleCPreview() {
                 }
                 return true;
             })
-            .reduce((acc, t) => acc + (t.amount || 0), 0);
+            .reduce((acc, t) => acc + getTransactionDeductibleAmount(t), 0);
 
         return {
             grossReceipts: stats.revenue,
@@ -88,7 +77,7 @@ export function ScheduleCPreview() {
             meals,
             depreciation: stats.totalDepreciation,
             otherExpenses,
-            totalExpenses: stats.deductibleExpenses + stats.totalDepreciation,
+            totalExpenses: stats.totalWriteOffs,
             netProfit: stats.taxableNetProfit
         };
     }, [transactions, projects, selectedYear, selectedProjectId, stats]);

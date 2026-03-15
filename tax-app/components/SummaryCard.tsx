@@ -32,7 +32,7 @@ export function SummaryCard() {
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold text-rose-600 font-mono">
-                        ${(stats.deductibleExpenses || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                        ${(stats.totalWriteOffs || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                     </div>
                     <p className="text-[10px] text-muted-foreground opacity-70 italic mt-1">
                         Gross: ${(stats.expenses || 0).toLocaleString()}

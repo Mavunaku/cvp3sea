@@ -7,7 +7,7 @@ import { useStore } from "@/store/useStore";
 import { ExportButton } from "./ExportButton";
 import { GroupedExpenseTable } from "./GroupedExpenseTable";
 
-import { filterTransactions, calculateStats } from "@/lib/calculations";
+import { filterTransactions, calculateStats, getTransactionDeductibleAmount } from "@/lib/calculations";
 
 interface LedgerTableProps {
     type: TransactionType;
@@ -63,18 +63,14 @@ export function LedgerTable({ type }: LedgerTableProps) {
     const totalAmount = type === 'income' ? stats.revenue : stats.deductibleExpenses;
     const grossTotal = type === 'income' ? stats.revenue : stats.expenses;
     const travelsTotal = type === 'expense'
-        ? sortedTransactions.filter(t => t.pillar === 'Travels').reduce((acc, t) => {
-            const amount = t.amount || 0;
-            if (t.category.includes('(50% Deductible)')) return acc + (amount * 0.5);
-            if (t.category === 'Entertainment (Non-Deductible)') return acc;
-            return acc + amount;
-        }, 0)
+        ? sortedTransactions.filter(t => t.pillar === 'Travels').reduce((acc, t) => acc + getTransactionDeductibleAmount(t), 0)
         : 0;
     const travelsGross = type === 'expense'
         ? sortedTransactions.filter(t => t.pillar === 'Travels').reduce((acc, t) => acc + (t.amount || 0), 0)
         : 0;
     const mealsSubtotal = type === 'expense'
-        ? sortedTransactions.filter(t => t.pillar === 'Travels' && t.category.includes('(50% Deductible)')).reduce((acc, t) => acc + (t.amount || 0), 0)
+        ? sortedTransactions.filter(t => t.pillar === 'Travels' && (t.category.includes('(50% Deductible)') || t.description.toLowerCase().includes('meal') || t.category.toLowerCase().includes('meal')))
+            .reduce((acc, t) => acc + getTransactionDeductibleAmount(t), 0)
         : 0;
 
     return (
@@ -184,6 +180,8 @@ export function LedgerTable({ type }: LedgerTableProps) {
                             travelsTotal={travelsTotal}
                             travelsGross={travelsGross}
                             mealsSubtotal={mealsSubtotal}
+                            depreciation={stats.totalDepreciation}
+                            writeOffs={stats.totalWriteOffs}
                             transactions={sortedTransactions}
                         />
                     </table>
@@ -211,6 +209,8 @@ function SummaryFooter({
     travelsTotal,
     travelsGross,
     mealsSubtotal,
+    depreciation,
+    writeOffs,
     transactions
 }: {
     type: 'income' | 'expense';
@@ -219,6 +219,8 @@ function SummaryFooter({
     travelsTotal: number;
     travelsGross: number;
     mealsSubtotal: number;
+    depreciation: number;
+    writeOffs: number;
     transactions: Transaction[];
 }) {
     return (
@@ -226,7 +228,7 @@ function SummaryFooter({
             {/* Main Total Row */}
             <tr>
                 <td colSpan={6} className="p-2 text-right text-sm">
-                    {type === 'expense' ? 'Deductible Total:' : 'Total Income:'}
+                    {type === 'expense' ? 'Current Expenses (Deductible):' : 'Total Income:'}
                 </td>
                 <td className="p-2 text-right font-mono text-sm font-bold">
                     ${(totalAmount || 0).toLocaleString()}
@@ -238,18 +240,29 @@ function SummaryFooter({
 
             {type === 'expense' && (
                 <>
+                    {depreciation > 0 && (
+                         <tr className="bg-amber-50/20 text-amber-700 dark:text-amber-400 border-t border-amber-100/30">
+                            <td colSpan={6} className="p-2 text-right text-sm italic">Yearly Depreciation (incl. Capitalized Repairs):</td>
+                            <td className="p-2 text-right font-mono text-sm font-bold">+${(depreciation || 0).toLocaleString()}</td>
+                            <td colSpan={2}></td>
+                         </tr>
+                    )}
+                    
+                    <tr className="bg-blue-50/30 dark:bg-blue-900/20 border-t-2 border-blue-500/20">
+                        <td colSpan={6} className="p-2 text-right text-sm font-black uppercase tracking-widest text-blue-800 dark:text-blue-300">Total Deductible (Write-offs):</td>
+                        <td className="p-2 text-right font-mono text-sm font-black text-blue-900 dark:text-blue-200 underline decoration-blue-500/30 underline-offset-4">
+                            ${(writeOffs || 0).toLocaleString()}
+                        </td>
+                        <td colSpan={2}></td>
+                    </tr>
+
                     {/* Travels Breakdown Row */}
                     {travelsGross > 0 && (
-                        <tr className="text-blue-600 border-t border-blue-100/20">
-                            <td colSpan={6} className="p-2 text-right text-sm">Travels Deductible:</td>
-                            <td className="p-2 text-right font-mono font-bold text-sm leading-none">
+                        <tr className="text-blue-600/70 border-t border-blue-100/10">
+                            <td colSpan={6} className="p-2 text-right text-[11px]">Travels Subtotal:</td>
+                            <td className="p-2 text-right font-mono font-bold text-[11px] leading-none">
                                 <div className="flex flex-col items-end">
                                     <span>${(travelsTotal || 0).toLocaleString()}</span>
-                                    {travelsGross !== travelsTotal && (
-                                        <span className="text-[9px] opacity-60">
-                                            (Gross: ${(travelsGross || 0).toLocaleString()}, 50% Meals incl.)
-                                        </span>
-                                    )}
                                 </div>
                             </td>
                             <td colSpan={2}></td>

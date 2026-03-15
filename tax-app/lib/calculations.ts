@@ -12,6 +12,40 @@ export interface CalculationStats {
     fedTax: number;
     nyTax: number;
     nySourceIncome: number;
+    nySourceIncomeBeforeDepr: number;
+    totalWriteOffs: number; // Sum of current deductible expenses + depreciation
+}
+
+export function getTransactionDeductibleAmount(t: Transaction): number {
+    const amount = t.amount || 0;
+    if (t.type === 'income') return amount;
+    
+    // Rule: Capitalized repairs are not immediately deductible
+    if (t.capitalize) return 0;
+
+    if (t.pillar === 'Interest Expense') {
+        // Only interest portion is deductible, not principal
+        if (t.interest !== undefined) return t.interest;
+        if (t.category === 'Loan Principal') return 0;
+        return amount;
+    }
+
+    if (t.pillar === 'Travels') {
+        // Accounting Rule: Business meals are 50% deductible. 
+        // Travel meals are also 50%. Entertainment is 0%.
+        const isMeal = t.category.includes('(50% Deductible)') || 
+                       t.description.toLowerCase().includes('meal') || 
+                       t.category.toLowerCase().includes('meal');
+        
+        if (isMeal) {
+            return amount * 0.5;
+        }
+        
+        if (t.category === 'Entertainment (Non-Deductible)') return 0;
+        return amount;
+    }
+
+    return amount;
 }
 
 export function filterTransactions(
@@ -75,25 +109,7 @@ export function calculateStats(
 
     const deductibleExpenses = filteredTransactions
         .filter((t) => t.type === 'expense')
-        .reduce((acc, t) => {
-            const amount = t.amount || 0;
-            if (t.pillar === 'Interest Expense') {
-                if (t.interest !== undefined) return acc + t.interest;
-                if (t.category === 'Loan Principal') return acc;
-                return acc + amount;
-            }
-            if (t.pillar === 'Travels') {
-                // Accounting Rule: Business meals are 50% deductible. 
-                // Travel meals are also 50%. Entertainment is 0%.
-                if (t.category.includes('(50% Deductible)') || t.description.toLowerCase().includes('meal')) {
-                    return acc + (amount * 0.5);
-                }
-                if (t.category === 'Entertainment (Non-Deductible)') return acc;
-                return acc + amount;
-            }
-            if (t.capitalize) return acc;
-            return acc + amount;
-        }, 0);
+        .reduce((acc, t) => acc + getTransactionDeductibleAmount(t), 0);
 
     // Depreciation Logic
     let fedDepreciation = 0;
@@ -146,27 +162,14 @@ export function calculateStats(
     const netProfit = revenue - expenses;
     const taxableNetProfit = revenue - deductibleExpenses - fedDepreciation;
 
-    const nySourceIncome = filteredTransactions
+    const nySourceIncomeBeforeDepr = filteredTransactions
         .filter(t => t.nySource ?? true)
         .reduce((acc, t) => {
-            const amount = t.amount || 0;
-            if (t.type === 'income') return acc + amount;
+            const deductible = getTransactionDeductibleAmount(t);
+            return t.type === 'income' ? acc + deductible : acc - deductible;
+        }, 0);
 
-            if (t.pillar === 'Interest Expense') {
-                if (t.interest !== undefined) return acc - t.interest;
-                if (t.category === 'Loan Principal') return acc;
-                return acc - amount;
-            }
-            if (t.pillar === 'Travels') {
-                if (t.category.includes('(50% Deductible)') || t.description.toLowerCase().includes('meal')) {
-                    return acc - (amount * 0.5);
-                }
-                if (t.category === 'Entertainment (Non-Deductible)') return acc;
-                return acc - amount;
-            }
-            if (t.capitalize) return acc;
-            return acc - amount;
-        }, 0) - nyDepreciation;
+    const nySourceIncome = nySourceIncomeBeforeDepr - nyDepreciation;
 
     const fedTaxRate = 0.35; // Combined Fed + SE Tax
     const nyTaxRate = 0.065;
@@ -185,6 +188,8 @@ export function calculateStats(
         taxSavings: (deductibleExpenses + fedDepreciation) * (fedTaxRate + nyTaxRate),
         fedTax,
         nyTax,
-        nySourceIncome
+        nySourceIncome,
+        nySourceIncomeBeforeDepr,
+        totalWriteOffs: deductibleExpenses + fedDepreciation
     };
 }
