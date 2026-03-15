@@ -1,4 +1,3 @@
-```json
 {
     "name": "tax-monorepo",
     "private": true,
@@ -11,4 +10,3 @@
         "react-dom": "^18"
     }
 }
-```
