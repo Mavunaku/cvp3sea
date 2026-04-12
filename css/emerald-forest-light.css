@@ -367,6 +367,21 @@ h1.navbar-brand a {
   max-width: 650px;
 }
 
+/* Eyebrow label above hero title */
+.hero-eyebrow {
+  display: inline-block;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 50px;
+  margin-bottom: 18px;
+}
+
 .hero-title {
   font-family: 'Montserrat', sans-serif;
   font-size: 52px;
@@ -376,6 +391,125 @@ h1.navbar-brand a {
   color: #fff;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
+
+/* Trust chips row */
+.hero-trust-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.hero-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 50px;
+  backdrop-filter: blur(6px);
+}
+
+.hero-chip i {
+  color: #a8edcd;
+  font-size: 13px;
+}
+
+/* Why CVP Card */
+.hero-why-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 22px;
+  padding: 36px 32px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.22);
+  border-bottom: 5px solid var(--clr-primary);
+  color: var(--clr-text);
+}
+
+.why-card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--clr-accent);
+  margin-bottom: 22px;
+  text-align: center;
+  letter-spacing: -0.3px;
+}
+
+.why-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.why-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.why-icon {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  background: linear-gradient(135deg, var(--clr-primary), var(--clr-deep-green));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 15px;
+  box-shadow: 0 4px 10px rgba(42,157,143,0.3);
+}
+
+.why-list li div strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--clr-accent);
+  margin-bottom: 2px;
+}
+
+.why-list li div p {
+  font-size: 13px;
+  color: var(--clr-text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.btn-call-now {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: linear-gradient(135deg, var(--clr-primary), var(--clr-deep-green));
+  color: #fff !important;
+  padding: 13px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  transition: var(--transition);
+  box-shadow: 0 8px 20px rgba(42,157,143,0.3);
+  letter-spacing: 0.5px;
+}
+
+.btn-call-now:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(42,157,143,0.45);
+  text-decoration: none;
+  color: #fff !important;
+}
+
+.btn-call-now i {
+  margin-right: 8px;
+}
+
+
 
 .hero-subtitle {
   font-family: 'Lato', sans-serif;
