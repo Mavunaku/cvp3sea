@@ -217,6 +217,7 @@ h1.navbar-brand a {
   background-position: center;
   filter: brightness(1.05) contrast(1.02); /* Minimal processing for detail */
   transform: scale(1); /* Sharp 1:1 pixel rendering */
+  animation: heroBgScale 30s linear infinite alternate;
 }
 
 /* No-scale version for maximum sharpness */
