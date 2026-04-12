@@ -151,86 +151,83 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 
 	<main class="site-content" role="main">
 
-		<!--Home Slider==================================== -->
+		
 
-		<section id="home-slider">
-			<!-- Deep green / Binghamton-brown gradient overlay for text readability -->
-			<div class="hero-gradient-overlay"></div>
-			<div id="slider" class="sl-slider-wrapper">
+				<!-- Modern Luxury Discovery Hero ==================================== -->
+		<section id="luxury-hero" class="modern-hero">
+			<!-- Background Layer -->
+			<div class="hero-bg-container">
+				<div class="hero-bg-img" style="background-image: url('img/discovery-hero.jpg');"></div>
+				<div class="hero-mesh-overlay"></div>
+				<div class="hero-luxury-overlay"></div>
+			</div>
 
-				<div class="sl-slider">
+			<!-- Animated Blobs Behind Content -->
+			<div class="floating-shapes">
+				<div class="shape shape-1"></div>
+				<div class="shape shape-2"></div>
+				<div class="shape shape-3"></div>
+			</div>
 
-					<div class="sl-slide active" data-orientation="horizontal" data-slice1-rotation="-25"
-						data-slice2-rotation="-25" data-slice1-scale="2" data-slice2-scale="2">
-						<div class="bg-img bg-img-1222"></div>
-						<div class="slide-caption">
-							<div class="caption-content">
-								<h1 class="animated fadeInDown">Explore Binghamton & Beyond</h1>
-								<h2 class="animated fadeInDown">
-									Discovery in Every Direction — Let Adventure be your Guide
-								</h2>
-								<div class="hero-cta-group animated fadeInUp">
-									<a href="#todo" class="hero-btn-primary">Explore Things To Do</a>
-									<a href="/index#portfolio" class="hero-btn-outline">Our Properties</a>
-								</div>
+			<div class="container hero-content-wrapper">
+				<div class="row display-flex-center">
+					<!-- Left Side: Discovery Content -->
+					<div class="col-md-7">
+						<div class="hero-glass-panel wow animated fadeInLeft" data-wow-duration="1.2s">
+							<span class="hero-eyebrow">🏞️ Explore Broome County</span>
+							<h1 class="hero-title">Discovery in Every<br>Direction</h1>
+							<p class="hero-description">
+								From cascading waterfalls to historic carousels, discover the vibrant soul of the Southern Tier. Adventure, culture, and nature await just minutes from your doorstep.
+							</p>
+							<div class="hero-trust-chips">
+								<span class="hero-chip"><i class="fa fa-tree"></i> Iconic Parks</span>
+								<span class="hero-chip"><i class="fa fa-utensils"></i> Local Dining</span>
+								<span class="hero-chip"><i class="fa fa-city"></i> Nearby Cities</span>
+							</div>
+							<div class="hero-cta-group">
+								<a href="#todo" class="btn btn-luxury-primary" aria-label="See local activities">Explore Now</a>
+								<a href="index.html#portfolio" class="btn btn-luxury-outline" aria-label="Browse our properties">View Properties</a>
 							</div>
 						</div>
 					</div>
 
-					<div class="sl-slide" data-orientation="vertical" data-slice1-rotation="10"
-						data-slice2-rotation="-15" data-slice1-scale="1.5" data-slice2-scale="1.5">
-						<div class="bg-img bg-img-202"></div>
-						<div class="slide-caption">
-							<div class="caption-content">
-								<h1 class="animated fadeInDown">Discovery in Everyday</h1>
-								<h2 class="animated fadeInDown">Travel far, Discover the unknown</h2>
-								<div class="hero-cta-group animated fadeInUp">
-									<a href="#todo" class="hero-btn-primary">Local Attractions</a>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="3"
-						data-slice2-rotation="3" data-slice1-scale="2" data-slice2-scale="1">
-						<div class="bg-img bg-img-3222"></div>
-						<div class="slide-caption">
-							<div class="caption-content">
-								<h1 class="animated fadeInDown">Contact Us</h1>
-								<h2 class="animated fadeInDown">We are here to help you find your way</h2>
-								<div class="hero-cta-group animated fadeInUp">
-									<a href="/index#request-schedule" class="hero-btn-primary">Request More
-										Information</a>
-								</div>
-							</div>
+					<!-- Right Side: Discovery Highlights Card -->
+					<div class="col-md-5">
+						<div class="hero-why-card wow animated fadeInRight" data-wow-duration="1.2s" data-wow-delay="0.3s">
+							<h3 class="why-card-title">Local Favorites</h3>
+							<ul class="why-list">
+								<li>
+									<span class="why-icon"><i class="fa fa-mountain"></i></span>
+									<div><strong>Outdoor Adventures</strong><p>Hiking, skiing, and panoramic river views.</p></div>
+								</li>
+								<li>
+									<span class="why-icon"><i class="fa fa-university"></i></span>
+									<div><strong>Cultural Gems</strong><p>Museums, art walks, and historic architecture.</p></div>
+								</li>
+								<li>
+									<span class="why-icon"><i class="fa fa-car"></i></span>
+									<div><strong>Nearby Getaways</strong><p>Easy drives to Ithaca, Syracuse, and Scranton.</p></div>
+								</li>
+								<li>
+									<span class="why-icon"><i class="fa fa-glass-cheers"></i></span>
+									<div><strong>Community Vibe</strong><p>Festivals, farmers markets, and local spirits.</p></div>
+								</li>
+							</ul>
+							<a href="#todo" class="btn-call-now"><i class="fa fa-compass"></i> Start Exploring</a>
 						</div>
 					</div>
 				</div>
-
-
-				<!--ARROWS-->
-				<nav id="nav-arrows" class="nav-arrows hidden-xs hidden-sm visible-md visible-lg">
-					<a href="javascript:;" class="sl-prev">
-						<i class="fa fa-angle-left fa-3x"></i>
-					</a>
-					<a href="javascript:;" class="sl-next">
-						<i class="fa fa-angle-right fa-3x"></i>
-					</a>
-				</nav>
-
-
-				<nav id="nav-dots" class="nav-dots visible-xs visible-sm hidden-md hidden-lg">
-					<span class="nav-dot-current"></span>
-					<span></span>
-					<span></span>
-				</nav>
-
 			</div>
 
-
+			<!-- Subtle Scroll Indicator -->
+			<div class="hero-scroll-indicator">
+				<a href="#todo" aria-label="Scroll to activities"><i
+						class="fa fa-angle-down animated bounce"></i></a>
+			</div>
 		</section>
+		<!-- End Luxury Hero Section ==================================== -->
 
-		<!--        End Home SliderEnd        ==================================== -->
+		
 
 		<!-- Things To Do Section (Replaces manual about section) -->
 		<section id="todo" class="activities-section">
