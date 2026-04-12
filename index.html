@@ -8,8 +8,9 @@
 <head>
 	<!-- Clean URL: remove /index.html from address bar (GitHub Pages has no server-side rewrite) -->
 	<script>
-		if (window.location.pathname === '/index.html') {
-			history.replaceState(null, '', '/');
+		// Clean URL: remove .html extension from address bar
+		if (window.location.pathname.endsWith('.html')) {
+			history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 		}
 	</script>
 	<!-- meta character set -->
@@ -389,7 +390,7 @@
 					<!-- LEFT: Discover Places -->
 					<div id="todo" class="discover-col">
 						<h2 class="combined-section-title">Discover Places</h2>
-						<a href="/todo.html" class="discover-card"
+						<a href="/todo" class="discover-card"
 							aria-label="Explore places and things to do in Binghamton">
 							<img src="img/knwomorw.png" alt="Explore activities near Binghamton NY">
 							<div class="discover-card-text"><i class="fa fa-arrow-right" style="margin-right:6px;"></i>
@@ -602,7 +603,8 @@
 
 	<script>
 		// Handle To Do List scroll while keeping the URL as /todo.html
-		document.querySelectorAll('a[href="/todo.html"]').forEach(link => {
+		// Exclude .discover-card so it redirect to the page instead of scrolling
+		document.querySelectorAll('a[href="/todo.html"]:not(.discover-card)').forEach(link => {
 			link.addEventListener('click', function (e) {
 				const target = document.querySelector('.discover-col .combined-section-title');
 				if (target) {
