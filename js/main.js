@@ -81,8 +81,9 @@ $(document).ready(function () {
         closeClick: true,
 
         beforeShow: function () {
-            this.title = $(this.element).attr('title');
-            this.title = '<h3>' + this.title + '</h3>' + '<p>' + $(this.element).parents('.portfolio-item').find('img').attr('alt') + '</p>';
+            var linkTitle = $(this.element).attr('title') || '';
+            var imgAlt    = $(this.element).parents('.portfolio-item').find('img').attr('alt') || '';
+            this.title = (linkTitle ? '<h3>' + linkTitle + '</h3>' : '') + (imgAlt ? '<p>' + imgAlt + '</p>' : '');
         },
 
         helpers: {
