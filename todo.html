@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--[if lt IE 7]>      <html lang="en" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html lang="en" class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html lang="en" class="no-js lt-ie9"> <![endif]-->
@@ -6,6 +6,12 @@
 <html lang="en" class="no-js"> <!--<![endif]-->
 
 <head>
+<!-- Clean URL: remove .html extension from address bar -->
+<script>
+if (window.location.pathname.endsWith('.html')) {
+history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
+}
+</script>
 	<!-- meta character set -->
 	<meta charset="utf-8">
 	<!-- Always force latest IE rendering engine or request Chrome Frame -->
