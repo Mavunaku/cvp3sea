@@ -20,10 +20,6 @@ jQuery(window).load(function () {
 
 $(document).ready(function () {
 
-    /* ========================================================================= */
-    /*	Menu item highlighting
-    /* ========================================================================= */
-
     jQuery('#nav').singlePageNav({
         offset: jQuery('#nav').outerHeight(),
         filter: ':not(.external)',
