@@ -1,8 +1,10 @@
-/* 
+/*
    CVP Properties Website Upgrade
    Standardization & Modernization for Homepage Slider and About Story Cards
    Features: Minimalist Design, Smooth 6s Transitions, Responsive Layout, High Contrast.
 */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap');
 
 /* ========================================= */
 /* 1. SLIDER CONTAINER & LAYOUT              */
@@ -100,38 +102,45 @@
 /* ========================================= */
 
 .caption-content {
-    max-width: 900px;
+    position: relative;
+    max-width: 720px;
     width: 90%;
     margin: 0 auto;
-    padding: 50px 40px;
+    padding: 56px 54px;
     color: #ffffff;
 
-    /* Translucent Background Box (Uniform Size) */
-    background: rgba(0, 0, 0, 0.45);
-    /* Dark translucent background */
-    backdrop-filter: blur(8px);
-    /* Modern glass blur */
-    -webkit-backdrop-filter: blur(8px);
-    border-radius: 12px;
-    /* Soft rounded corners */
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    /* Subtle border */
+    /* Refined glass panel — lighter and more elegant than a flat slab */
+    background: rgba(15, 30, 25, 0.30);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-top: 1px solid rgba(255, 255, 255, 0.38);
 
-    /* Ensure uniform visual weight */
-    min-height: 400px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 
-    /* Shadow for depth */
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
 
     /* Animation: Entrance */
     opacity: 0;
     animation: fadeInUpSmooth 1.2s ease forwards;
     animation-delay: 0.5s;
-    /* Wait briefly for slide transition */
+}
+
+/* Brand accent bar at the top of the glass panel for a designed feel */
+.caption-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 64px;
+    height: 4px;
+    border-radius: 0 0 4px 4px;
+    background: linear-gradient(90deg, var(--clr-primary, #2a9d8f), var(--clr-primary-light, #5cc4b8));
 }
 
 
@@ -141,44 +150,41 @@
 
 .slide-caption h1,
 .slide-caption .slide-title {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 800;
-    /* Extra bold for readability */
-    font-size: 4.2em;
-    /* Large and prominent */
-    line-height: 1.1;
-    margin-bottom: 25px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    display: block;
+    font-family: 'Playfair Display', 'Open Sans', serif;
+    font-weight: 600;
+    font-size: 3.6em;
+    line-height: 1.12;
+    margin: 0 0 20px;
+    text-transform: none;
+    letter-spacing: 0;
     color: #ffffff;
-    /* Strong drop shadow for high contrast */
-    text-shadow: 0 4px 20px rgba(0, 0, 0, 1);
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.85);
 }
 
 .slide-caption h2,
 .slide-caption .slide-subtitle {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 600;
-    font-size: 2.0em;
-    line-height: 1.4;
-    margin-bottom: 30px;
-    color: #ffffff;
+    display: block;
+    font-family: 'Inter', 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 1.25em;
+    line-height: 1.6;
+    margin: 0 0 8px;
+    color: rgba(255, 255, 255, 0.9);
     position: relative;
-    display: inline-block;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 1);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85);
 }
 
-/* Decorative Divider (Optional, kept minimal) */
+/* Refined brand-colored divider under the subtitle */
 .slide-caption h2::after,
 .slide-caption .slide-subtitle::after {
     content: '';
     display: block;
-    width: 80px;
-    height: 3px;
-    background: #ffffff;
-    margin: 25px auto 0;
-    opacity: 0.8;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    width: 56px;
+    height: 2px;
+    background: var(--clr-primary-light, #5cc4b8);
+    margin: 22px auto 0;
+    opacity: 0.9;
 }
 
 .slide-caption span {
@@ -238,18 +244,18 @@
     overflow: hidden;
 }
 
-/* Primary Button (Solid White) - Prominent/Readable */
+/* Primary Button — brand gradient for a modern, on-brand CTA */
 .hero-btn-primary {
-    background-color: #ffffff;
-    color: #2c3e50;
-    border: 3px solid #ffffff;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, var(--clr-primary, #2a9d8f), var(--clr-primary-dark, #1a7a6e));
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 8px 22px rgba(42, 157, 143, 0.4);
 }
 
 .hero-btn-primary:hover {
-    background-color: #f2f2f2;
+    filter: brightness(1.08);
     transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 14px 32px rgba(42, 157, 143, 0.55);
 }
 
 /* Outline Button (Glassy) */
