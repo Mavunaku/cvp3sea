@@ -31,6 +31,7 @@ export interface Transaction {
     // Phase 3 Fields
     pillar?: ExpensePillar; // For hierarchical expenses
     capitalize?: boolean; // For Repairs
+    capitalizeLife?: number; // Recovery period in years for a capitalized improvement (default 27.5)
     property?: string; // For Utilities (Unit/Address)
     mileage?: number; // For Auto & Travel
     // Loan / Mortgage specific
@@ -46,6 +47,15 @@ export interface Project {
     name: string;
     type: 'Property' | 'Client' | 'Generic';
     yearId: string; // Projects are scoped to a fiscal year folder
+}
+
+// An LLC member/partner who receives a share of the entity's income via K-1.
+// An empty members list (or a single 100% member) means the entity is a
+// single-member LLC / sole proprietorship reporting on Schedule C instead.
+export interface Member {
+    id: string;
+    name: string;
+    ownershipPercent: number; // 0-100, expected to sum to 100 across all members
 }
 
 export interface Asset {
@@ -65,6 +75,11 @@ export interface Asset {
     currentDepreciation?: number; // Manual entry for current year depreciation
     notes?: string;
     projectId?: string;
+    // Disposition / sale (capital gains — Form 4797). An asset with a saleDate
+    // and salePrice is treated as disposed of during the year.
+    saleDate?: string;
+    salePrice?: number; // Gross sale price allocated to this asset
+    sellingCosts?: number; // Commissions / closing costs allocated to this asset
 }
 
 export const INCOME_CATEGORIES = [

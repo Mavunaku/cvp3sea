@@ -2,30 +2,28 @@
 // Build Sync Fix: 2026-02-15 17:55
 
 import { AssetTable } from '@/components/AssetTable';
+import { DispositionTable } from '@/components/DispositionTable';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { useStore } from '@/store/useStore';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Info, TrendingUp, Scale, Zap } from 'lucide-react';
+import { filterAssets, calculateAccumulatedDepreciation } from '@/lib/calculations';
+import { calculateYearlyDepreciation } from '@/lib/depreciation';
 
 export default function AssetsPage() {
-    const { assets, transactions, selectedProjectId } = useStore();
+    const { assets, projects, selectedYear, selectedProjectId } = useStore();
 
-    const filteredAssets = selectedProjectId
-        ? assets.filter(a => a.projectId === selectedProjectId)
-        : assets;
+    const taxYear = selectedYear ? parseInt(selectedYear, 10) : new Date().getFullYear();
+    const yearLabel = selectedYear || taxYear.toString();
+    const filteredAssets = filterAssets(assets, projects, selectedYear, selectedProjectId);
 
     const totalBasis = filteredAssets.reduce((acc, a) => acc + (a.cost * (a.businessUsePercent / 100)), 0);
 
-    // Simplified current deduction calculation for summary
-    const currentDeduction = filteredAssets.reduce((acc, a) => {
-        const basis = a.cost * (a.businessUsePercent / 100);
-        if (a.currentDepreciation !== undefined) return acc + a.currentDepreciation;
-        if (a.section179) return acc + basis;
-        if (a.bonusDepreciation) return acc + basis;
-        return acc + (basis / (a.usefulLife || 5));
-    }, 0);
+    // Uses the real MACRS engine so this matches the Fixed Asset Ledger below
+    // instead of a naive straight-line estimate that ignored the tax year.
+    const currentDeduction = filteredAssets.reduce((acc, a) => acc + calculateYearlyDepreciation(a, taxYear).amount, 0);
 
-    const lifetimeSavings = filteredAssets.reduce((acc, a) => acc + (a.priorDepreciation || 0), 0) + currentDeduction;
+    const lifetimeSavings = filteredAssets.reduce((acc, a) => acc + calculateAccumulatedDepreciation(a, taxYear), 0);
 
     return (
         <div className="flex-1 space-y-6 p-8 pt-6 pb-20">
@@ -51,7 +49,7 @@ export default function AssetsPage() {
                     </Card>
                     <Card className="bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-100 dark:border-emerald-900 shadow-sm">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-xs font-bold uppercase tracking-widest text-emerald-700 dark:text-emerald-400">2026 Tax Deduction</CardTitle>
+                            <CardTitle className="text-xs font-bold uppercase tracking-widest text-emerald-700 dark:text-emerald-400">{yearLabel} Tax Deduction</CardTitle>
                             <Zap className="h-4 w-4 text-emerald-600" />
                         </CardHeader>
                         <CardContent>
@@ -88,6 +86,10 @@ export default function AssetsPage() {
             <div className="space-y-8">
                 <AssetTable />
             </div>
+
+            <div className="h-px bg-slate-200 dark:bg-slate-800 w-full" />
+
+            <DispositionTable />
         </div>
     );
 }

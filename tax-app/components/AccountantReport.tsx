@@ -97,7 +97,7 @@ export function AccountantReport({ isOpen, onClose }: AccountantReportProps) {
                         </div>
                         <div className="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 md:col-span-1 col-span-2">
                             <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest opacity-80">Taxable Net</span>
-                            <div className="text-2xl font-black text-slate-900 dark:text-slate-100">${((revenue || 0) - (deductibleExpenses || 0)).toLocaleString()}</div>
+                            <div className="text-2xl font-black text-slate-900 dark:text-slate-100">${(taxableNetProfit || 0).toLocaleString()}</div>
                         </div>
                     </div>
 

@@ -2,19 +2,19 @@
 
 import { useState } from 'react';
 import { useStore } from '@/store/useStore';
-import { Plus, Trash2, Edit2, X, Folder, Briefcase, ShieldAlert } from 'lucide-react';
+import { Plus, Trash2, Edit2, X, Folder, Briefcase, ShieldAlert, Users, ArrowRightCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Project } from '@/types';
 import { RescueCenter } from './RescueCenter';
+import { MemberManager } from './MemberManager';
 
 import { useUIStore } from '@/store/useUIStore';
 
 export function ProjectManager() {
     const { isManagerOpen: isOpen, closeManager: onClose } = useUIStore();
-    const { years, projects, addYear, deleteYear, addProject, deleteProject, editProject } = useStore();
-    const [activeTab, setActiveTab] = useState<'hierarchy' | 'rescue'>('hierarchy');
+    const { years, projects, addYear, deleteYear, rolloverYear, addProject, deleteProject, editProject, selectedYear: selectedYearForProjects, setSelectedYear: setSelectedYearForProjects } = useStore();
+    const [activeTab, setActiveTab] = useState<'hierarchy' | 'members' | 'rescue'>('hierarchy');
     const [newYear, setNewYear] = useState('');
-    const [selectedYearForProjects, setSelectedYearForProjects] = useState<string | null>(null);
     const [newProjectName, setNewProjectName] = useState('');
     const [newProjectType, setNewProjectType] = useState<'Property' | 'Client' | 'Generic'>('Property');
     const [editingProject, setEditingProject] = useState<string | null>(null); // ID of project being edited
@@ -47,6 +47,19 @@ export function ProjectManager() {
     };
 
     const currentProjects = projects.filter(p => p.yearId === selectedYearForProjects);
+
+    const handleRollover = (sourceYear: string) => {
+        const targetYear = (parseInt(sourceYear, 10) + 1).toString();
+        if (years.includes(targetYear)) {
+            alert(`Year ${targetYear} already exists. Rolling forward again would duplicate properties/assets — delete ${targetYear} first if you want to re-roll it.`);
+            return;
+        }
+        if (!window.confirm(`Roll forward ${sourceYear} → ${targetYear}?\n\nThis creates ${targetYear} with the same properties/clients, and carries forward every asset that hasn't been sold yet so depreciation continues correctly. Transactions do NOT carry forward — ${targetYear} starts with a clean ledger.`)) {
+            return;
+        }
+        rolloverYear(sourceYear, targetYear);
+        setSelectedYearForProjects(targetYear);
+    };
 
     return (
         <div className="fixed inset-0 z-[9000] flex items-center justify-center">
@@ -84,6 +97,16 @@ export function ProjectManager() {
                                 Hierarchy
                             </button>
                             <button
+                                onClick={() => setActiveTab('members')}
+                                className={cn(
+                                    "px-3 py-1 text-xs font-bold rounded-md transition-all flex items-center gap-1.5",
+                                    activeTab === 'members' ? "bg-background shadow-sm text-indigo-600" : "opacity-50 hover:opacity-100"
+                                )}
+                            >
+                                <Users className="h-3 w-3 pointer-events-none" />
+                                Members
+                            </button>
+                            <button
                                 onClick={() => setActiveTab('rescue')}
                                 className={cn(
                                     "px-3 py-1 text-xs font-bold rounded-md transition-all flex items-center gap-1.5",
@@ -101,7 +124,11 @@ export function ProjectManager() {
                     </button>
                 </div>
 
-                {activeTab === 'hierarchy' ? (
+                {activeTab === 'members' ? (
+                    <div className="flex-1 overflow-y-auto">
+                        <MemberManager />
+                    </div>
+                ) : activeTab === 'hierarchy' ? (
                     <div className="flex flex-1 overflow-hidden">
                         {/* LEFT COLUMN: YEARS */}
                         <div className="w-1/3 border-r p-4 bg-muted/10 flex flex-col gap-4">
@@ -143,17 +170,29 @@ export function ProjectManager() {
                                             <Folder className="h-4 w-4 opacity-50 pointer-events-none" />
                                             <span>{year}</span>
                                         </div>
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                if (window.confirm(`Are you sure you want to delete the fiscal year ${year}? This will also delete all projects, transactions, and assets linked to this year.`)) {
-                                                    deleteYear(year);
-                                                }
-                                            }}
-                                            className="relative z-20 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100"
-                                        >
-                                            <Trash2 className="h-3 w-3 pointer-events-none" />
-                                        </button>
+                                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100">
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleRollover(year);
+                                                }}
+                                                className="relative z-20 text-muted-foreground hover:text-indigo-600"
+                                                title={`Roll forward to ${parseInt(year, 10) + 1}`}
+                                            >
+                                                <ArrowRightCircle className="h-3.5 w-3.5 pointer-events-none" />
+                                            </button>
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    if (window.confirm(`Are you sure you want to delete the fiscal year ${year}? This will also delete all projects, transactions, and assets linked to this year.`)) {
+                                                        deleteYear(year);
+                                                    }
+                                                }}
+                                                className="relative z-20 text-muted-foreground hover:text-destructive"
+                                            >
+                                                <Trash2 className="h-3 w-3 pointer-events-none" />
+                                            </button>
+                                        </div>
                                     </div>
                                 ))}
                             </div>

@@ -6,7 +6,8 @@ import { useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { Transaction } from '@/types';
 
-import { calculateStats, filterTransactions, getTransactionDeductibleAmount } from '@/lib/calculations';
+import { calculateStats, filterTransactions, filterAssets, getTransactionDeductibleAmount, isCashSettled, isRentalProject } from '@/lib/calculations';
+import { calculateYearlyDepreciation } from '@/lib/depreciation';
 
 interface ScheduleCLine {
     label: string;
@@ -24,9 +25,20 @@ export function ScheduleCPreview() {
     }, [transactions, assets, projects, selectedYear, selectedProjectId]);
 
     const data = useMemo(() => {
-        const filteredTransactions = filterTransactions(transactions, projects, selectedYear, selectedProjectId);
+        const taxYear = selectedYear ? parseInt(selectedYear, 10) : new Date().getFullYear();
 
+        // Schedule C is the active trade/business activity only — rental real
+        // estate is reported on Schedule E instead, so it's excluded here to
+        // avoid double-counting the same income/expenses on both previews.
+        const filteredTransactions = filterTransactions(transactions, projects, selectedYear, selectedProjectId)
+            .filter(isCashSettled)
+            .filter(t => !isRentalProject(t.projectId, projects));
+        const businessAssets = filterAssets(assets, projects, selectedYear, selectedProjectId)
+            .filter(a => !isRentalProject(a.projectId, projects));
+
+        const income = filteredTransactions.filter(t => t.type === 'income');
         const expenses = filteredTransactions.filter(t => t.type === 'expense');
+        const grossReceipts = income.reduce((acc, t) => acc + (t.amount || 0), 0);
 
         const getSum = (pill: string, cat?: string) => {
             return expenses
@@ -45,6 +57,7 @@ export function ScheduleCPreview() {
         const mortgageInterest = getSum('Interest Expense');
         const repairs = getSum('Repairs');
         const utilities = getSum('Utilities');
+        const taxesAndLicenses = getSum('Taxes Paid');
         const travel = expenses
             .filter(t => t.pillar === 'Travels' && t.category === 'Auto & Travel')
             .reduce((acc, t) => acc + getTransactionDeductibleAmount(t), 0);
@@ -55,32 +68,41 @@ export function ScheduleCPreview() {
 
         const otherExpenses = expenses
             .filter(t => {
-                const knownPillars = ['General Business', 'Interest Expense', 'Repairs', 'Utilities', 'Travels'];
+                const knownPillars = ['General Business', 'Interest Expense', 'Repairs', 'Utilities', 'Travels', 'Taxes Paid'];
                 if (knownPillars.includes(t.pillar || '')) {
                     if (t.pillar === 'General Business' && (t.category === 'Advertising' || t.category === 'Insurance')) return false;
                     if (t.pillar === 'Travels') return false;
-                    if (t.pillar === 'Interest Expense' || t.pillar === 'Repairs' || t.pillar === 'Utilities') return false;
+                    if (t.pillar === 'Interest Expense' || t.pillar === 'Repairs' || t.pillar === 'Utilities' || t.pillar === 'Taxes Paid') return false;
                     return true;
                 }
                 return true;
             })
             .reduce((acc, t) => acc + getTransactionDeductibleAmount(t), 0);
 
+        const depreciation = businessAssets.reduce((acc, a) => acc + calculateYearlyDepreciation(a, taxYear).amount, 0)
+            + expenses
+                .filter(t => t.capitalize === true)
+                .reduce((acc, t) => acc + Math.round((t.amount || 0) / (t.capitalizeLife || 27.5)), 0);
+
+        const totalExpenses = advertising + insurance + mortgageInterest + repairs + utilities
+            + taxesAndLicenses + travel + meals + depreciation + otherExpenses;
+
         return {
-            grossReceipts: stats.revenue,
+            grossReceipts,
             advertising,
             insurance,
             mortgageInterest,
             repairs,
             utilities,
+            taxesAndLicenses,
             travel,
             meals,
-            depreciation: stats.totalDepreciation,
+            depreciation,
             otherExpenses,
-            totalExpenses: stats.totalWriteOffs,
-            netProfit: stats.taxableNetProfit
+            totalExpenses,
+            netProfit: grossReceipts - totalExpenses,
         };
-    }, [transactions, projects, selectedYear, selectedProjectId, stats]);
+    }, [transactions, assets, projects, selectedYear, selectedProjectId]);
 
     const lines: ScheduleCLine[] = [
         { label: "1. Gross receipts or sales", value: data.grossReceipts, isBold: true },
@@ -89,6 +111,7 @@ export function ScheduleCPreview() {
         { label: "15. Insurance (other than health)", value: data.insurance, indent: true },
         { label: "16a. Mortgage interest paid to banks", value: data.mortgageInterest, indent: true },
         { label: "21. Repairs and maintenance", value: data.repairs, indent: true },
+        { label: "23. Taxes and licenses", value: data.taxesAndLicenses, indent: true },
         { label: "24a. Travel", value: data.travel, indent: true },
         { label: "24b. Deductible meals (50%)", value: data.meals, indent: true },
         { label: "13. Depreciation (from Page 2)", value: data.depreciation, indent: true },
@@ -107,10 +130,13 @@ export function ScheduleCPreview() {
                         <p className="text-[10px] font-bold text-muted-foreground uppercase">Form 1040 | Profit or Loss From Business</p>
                     </div>
                     <div className="text-right">
-                        <div className="text-xl font-bold">2024</div>
+                        <div className="text-xl font-bold">{selectedYear || 'All Time'}</div>
                         <p className="text-[8px] text-muted-foreground uppercase">Estimated Preview Only</p>
                     </div>
                 </div>
+                <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-3 leading-relaxed border-t border-slate-200 dark:border-slate-800 pt-3">
+                    This is for <strong>active business work</strong> — freelance, consulting, services you personally perform. Net profit here is subject to <strong>self-employment tax (15.3%)</strong> on top of income tax. Rental real estate does not belong here — see Schedule E instead. Only transactions tagged to a &quot;Client&quot; or &quot;Generic&quot; project (not &quot;Property&quot;) are included.
+                </p>
             </CardHeader>
             <CardContent className="p-0">
                 <div className="divide-y divide-slate-100 dark:divide-slate-900">

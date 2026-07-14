@@ -1,6 +1,13 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
+  // Gate `dark:` utilities behind an explicit ".dark" class (matching the
+  // CSS-variable theme already defined in globals.css) instead of the OS-level
+  // prefers-color-scheme media query. Nothing in this app ever adds a "dark"
+  // class, so leaving this on the default "media" strategy meant dark: text
+  // colors would silently activate for any visitor whose OS prefers dark mode
+  // — while backgrounds stayed light — producing low-contrast, hard-to-read text.
+  darkMode: ["class"],
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',

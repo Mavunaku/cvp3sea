@@ -1,16 +1,17 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { Transaction, Asset } from '@/types';
+import { Transaction, Asset, Member } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
 import { supabase } from '@/lib/supabase';
 import { Project } from '@/types';
-import { loadUserData, syncAllData, deleteTransaction as dbDeleteTransaction, deleteAsset as dbDeleteAsset, deleteProject as dbDeleteProject } from '@/lib/database';
+import { loadUserData, syncAllData, deleteTransaction as dbDeleteTransaction, deleteAsset as dbDeleteAsset, deleteProject as dbDeleteProject, deleteMember as dbDeleteMember } from '@/lib/database';
 import { calculateStats } from '@/lib/calculations';
 
 interface AppState {
     transactions: Transaction[];
     assets: Asset[];
     projects: Project[];
+    members: Member[]; // LLC members/partners for K-1 allocation; empty/single = Schedule C
     years: string[]; // List of Year Folders (e.g. "2025", "2026")
     notes: string;
 
@@ -44,8 +45,14 @@ interface AppState {
     editProject: (id: string, updates: Partial<Project>) => void;
     deleteProject: (id: string) => void;
 
+    setMembers: (members: Member[]) => void;
+    addMember: (member: Omit<Member, 'id'>) => void;
+    editMember: (id: string, updates: Partial<Member>) => void;
+    deleteMember: (id: string) => void;
+
     addYear: (year: string) => void;
     deleteYear: (year: string) => void;
+    rolloverYear: (sourceYear: string, targetYear: string) => void;
     setNotes: (notes: string) => void;
 
     setSelectedYear: (year: string | null) => void;
@@ -68,6 +75,7 @@ export const useStore = create<AppState>()(
             transactions: [],
             assets: [],
             projects: [],
+            members: [],
             years: [],
             notes: '',
             userId: null,
@@ -107,6 +115,7 @@ export const useStore = create<AppState>()(
                         projects: data.projects,
                         transactions: data.transactions,
                         assets: data.assets,
+                        members: data.members,
                         userId,
                         isLoading: false,
                         lastSyncTime: new Date(),
@@ -132,6 +141,7 @@ export const useStore = create<AppState>()(
                         projects: state.projects,
                         transactions: state.transactions,
                         assets: state.assets,
+                        members: state.members,
                     });
                     set({ isSyncing: false, lastSyncTime: new Date(), syncError: null });
                 } catch (error: any) {
@@ -339,6 +349,39 @@ export const useStore = create<AppState>()(
                     };
                 }),
 
+            setMembers: (members) =>
+                set(() => {
+                    const newState = { members };
+                    setTimeout(() => get().syncToDatabase(), 0);
+                    return newState;
+                }),
+
+            addMember: (member) =>
+                set((state) => {
+                    const newState = {
+                        members: [...state.members, { ...member, id: uuidv4() }],
+                    };
+                    setTimeout(() => get().syncToDatabase(), 0);
+                    return newState;
+                }),
+
+            editMember: (id, updates) =>
+                set((state) => {
+                    const newState = {
+                        members: state.members.map((m) => (m.id === id ? { ...m, ...updates } : m)),
+                    };
+                    setTimeout(() => get().syncToDatabase(), 0);
+                    return newState;
+                }),
+
+            deleteMember: (id) =>
+                set((state) => {
+                    dbDeleteMember(id).catch(console.error);
+                    return {
+                        members: state.members.filter((m) => m.id !== id),
+                    };
+                }),
+
             addYear: (year) =>
                 set((state) => {
                     if (state.years.includes(year)) return state;
@@ -367,6 +410,42 @@ export const useStore = create<AppState>()(
                     return newState;
                 }),
 
+            // Copies each Property/Client/Generic project from sourceYear into
+            // targetYear (new IDs), plus every asset that hasn't been sold yet
+            // (so depreciation continues) — since calculateYearlyDepreciation
+            // derives everything from purchaseDate, no manual basis math is
+            // needed here. Transactions do NOT roll forward: each fiscal year
+            // starts with a clean ledger.
+            rolloverYear: (sourceYear, targetYear) =>
+                set((state) => {
+                    if (!state.years.includes(sourceYear) || state.years.includes(targetYear)) return state;
+
+                    const sourceProjects = state.projects.filter(p => p.yearId === sourceYear);
+                    const projectIdMap = new Map<string, string>();
+                    const newProjects: Project[] = sourceProjects.map(p => {
+                        const newId = uuidv4();
+                        projectIdMap.set(p.id, newId);
+                        return { ...p, id: newId, yearId: targetYear };
+                    });
+
+                    const sourceProjectIds = new Set(sourceProjects.map(p => p.id));
+                    const newAssets: Asset[] = state.assets
+                        .filter(a => a.projectId && sourceProjectIds.has(a.projectId) && !a.saleDate)
+                        .map(a => ({
+                            ...a,
+                            id: uuidv4(),
+                            projectId: a.projectId ? projectIdMap.get(a.projectId) : undefined,
+                        }));
+
+                    const newState = {
+                        years: [...state.years, targetYear],
+                        projects: [...state.projects, ...newProjects],
+                        assets: [...state.assets, ...newAssets],
+                    };
+                    setTimeout(() => get().syncToDatabase(), 0);
+                    return newState;
+                }),
+
             setSelectedYear: (year) => set({ selectedYear: year, selectedProjectId: null }),
             setSelectedProject: (projectId) => set({ selectedProjectId: projectId }),
             setNotes: (notes) => {
@@ -390,6 +469,7 @@ export const useStore = create<AppState>()(
                     transactions: importedState.transactions || [],
                     assets: importedState.assets || [],
                     projects: importedState.projects || [],
+                    members: importedState.members || [],
                     years: importedState.years || [],
                 });
                 setTimeout(() => get().syncToDatabase(), 0);
@@ -401,6 +481,7 @@ export const useStore = create<AppState>()(
                     transactions: state.transactions,
                     assets: state.assets,
                     projects: state.projects,
+                    members: state.members,
                     years: state.years,
                 };
             },
@@ -412,6 +493,7 @@ export const useStore = create<AppState>()(
                 transactions: state.transactions,
                 assets: state.assets,
                 projects: state.projects,
+                members: state.members,
                 years: state.years,
                 notes: state.notes,
                 userId: state.userId,

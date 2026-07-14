@@ -38,7 +38,7 @@ export function LedgerTable({ type }: LedgerTableProps) {
             entity: 'Freelance', // Default
             category: type === 'income' ? 'Contract' : 'Other',
             description: type === 'income' ? 'New Invoice' : 'New Expense',
-            status: 'Pending',
+            status: 'Cleared',
             pillar: type === 'expense' ? 'General Business' : undefined, // Phase 3 Default
         });
     };
@@ -124,7 +124,10 @@ export function LedgerTable({ type }: LedgerTableProps) {
                                         <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground w-40">Category</th>
                                         <th className="h-10 px-2 text-left align-middle font-medium text-muted-foreground w-32">Pymnt Status</th>
                                         <th className="h-10 px-2 text-right align-middle font-medium text-muted-foreground w-24">Amount</th>
-                                        <th className="h-10 px-2 text-center align-middle w-12 text-[9px] uppercase font-bold opacity-70 text-amber-600">CAP</th>
+                                        <th
+                                            className="h-10 px-2 text-center align-middle w-12 text-[9px] uppercase font-bold opacity-70 text-amber-600 cursor-help underline decoration-dotted"
+                                            title="CAP = Capital Improvement. Check it on a Repairs or General Business expense to capitalize it: instead of deducting the full amount now, it moves to the Depreciation Schedule and is written off over 27.5 years."
+                                        >CAP</th>
                                         <th className="h-10 px-2 text-center align-middle w-12">
                                             <div className="flex flex-col items-center gap-0.5">
                                                 <span className="text-[9px] uppercase font-bold opacity-70 text-emerald-600">NY</span>
@@ -187,6 +190,26 @@ export function LedgerTable({ type }: LedgerTableProps) {
                     </table>
                 </div >
             </div >
+            {type === 'expense' && (
+                <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/40 p-3">
+                    <p className="text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-2">Payment Status — what these mean</p>
+                    <div className="grid gap-2 sm:grid-cols-3 text-[11px] leading-relaxed">
+                        <div className="flex gap-2">
+                            <span className="mt-0.5 shrink-0 font-bold text-amber-600">Pending</span>
+                            <span className="text-muted-foreground">Recorded but not yet paid or not yet showing on your bank/card statement.</span>
+                        </div>
+                        <div className="flex gap-2">
+                            <span className="mt-0.5 shrink-0 font-bold text-slate-600 dark:text-slate-300">Cleared</span>
+                            <span className="text-muted-foreground">Paid and confirmed on your statement. This is the normal state for a real expense (the default for new entries).</span>
+                        </div>
+                        <div className="flex gap-2">
+                            <span className="mt-0.5 shrink-0 font-bold text-emerald-600">Reconciled</span>
+                            <span className="text-muted-foreground">Cleared <em>and</em> matched line-by-line against your bank statement during monthly bookkeeping — your books provably agree with the bank.</span>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <div className="flex items-center justify-end gap-2 text-muted-foreground text-xs">
                 {/* Import Placeholder */}
                 <button

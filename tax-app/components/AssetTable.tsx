@@ -6,6 +6,8 @@ import { EditableCell } from './EditableCell';
 import { Plus, Trash2, Info, Lightbulb, TrendingUp, Scale, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { filterAssets, filterTransactions } from '@/lib/calculations';
+import { calculateYearlyDepreciation } from '@/lib/depreciation';
 
 export function AssetTable() {
     const {
@@ -15,21 +17,35 @@ export function AssetTable() {
         deleteAsset,
         transactions,
         editTransaction,
+        projects,
+        selectedYear,
         selectedProjectId
     } = useStore();
 
-    // 1. Filter Assets by Project (if selected)
-    const filteredAssets = selectedProjectId
-        ? assets.filter(a => a.projectId === selectedProjectId)
-        : assets;
+    const taxYear = selectedYear ? parseInt(selectedYear, 10) : new Date().getFullYear();
+    const yearLabel = selectedYear || taxYear.toString();
 
-    // 2. Derive Capitalized Improvements from Transactions
-    const capitalizedRepairs = transactions.filter(t =>
-        t.capitalize === true &&
-        (!selectedProjectId || t.projectId === selectedProjectId)
-    );
+    // 1. Filter Assets by fiscal year (via project.yearId) and Project (if selected)
+    const filteredAssets = filterAssets(assets, projects, selectedYear, selectedProjectId);
+
+    // 2. Derive Capitalized Improvements from Transactions, same scope
+    const capitalizedRepairs = filterTransactions(transactions, projects, selectedYear, selectedProjectId)
+        .filter(t => t.capitalize === true);
 
     const handleAdd = () => {
+        // Resolve which property the new asset belongs to. If a property is
+        // selected, use it. Otherwise fall back to the first property in the
+        // selected year so the button always works instead of sitting disabled.
+        let projectId = selectedProjectId || undefined;
+        if (!projectId) {
+            const yearProjects = projects.filter(p => p.yearId === selectedYear);
+            if (yearProjects.length > 0) {
+                projectId = yearProjects[0].id;
+            } else {
+                alert('Add a property first: open "Configure Ledgers" → Hierarchy and create a property for this year, then add assets to it.');
+                return;
+            }
+        }
         addAsset({
             name: 'New Asset',
             type: 'Office Furniture',
@@ -40,41 +56,34 @@ export function AssetTable() {
             section179: false,
             bonusDepreciation: false,
             notes: '',
-            projectId: selectedProjectId || undefined,
+            projectId,
         });
     };
 
+    // Uses the real MACRS/HY/MQ/MM engine (lib/depreciation.ts) so the
+    // numbers shown here match what Schedule C/E and the dashboard compute —
+    // this used to be a naive straight-line-only estimate that ignored the
+    // Method/Convention dropdowns and always expensed Sec 179/bonus again on
+    // every subsequent year's view, which double-counted the deduction.
     const calculateDepreciationDetails = (asset: Asset) => {
         const cost = asset.cost || 0;
         const businessUse = asset.businessUsePercent / 100;
         const totalBasis = cost * businessUse;
 
-        let currentDepreciation = 0;
-        let specialAllowance = 0;
-        let sec179 = 0;
-
-        if (asset.currentDepreciation !== undefined) {
-            currentDepreciation = asset.currentDepreciation;
-        } else if (asset.section179) {
-            sec179 = totalBasis;
-            currentDepreciation = sec179;
-        } else if (asset.bonusDepreciation) {
-            specialAllowance = totalBasis;
-            currentDepreciation = specialAllowance;
-        } else {
-            currentDepreciation = totalBasis / asset.usefulLife;
-        }
+        const result = calculateYearlyDepreciation(asset, taxYear);
+        const currentDepreciation = result.amount;
+        const sec179 = asset.section179 && result.isServiceYear ? currentDepreciation : 0;
+        const specialAllowance = asset.bonusDepreciation && result.isServiceYear ? currentDepreciation : 0;
 
         const prior = asset.priorDepreciation || 0;
-        const roundedCurrentDepr = Math.round(currentDepreciation);
-        const accumulated = prior + roundedCurrentDepr;
+        const accumulated = prior + currentDepreciation;
         const depreciableBasis = totalBasis;
 
         return {
             depreciableBasis,
             sec179,
             specialAllowance,
-            currentDepreciation: roundedCurrentDepr,
+            currentDepreciation,
             prior,
             accumulated
         };
@@ -88,7 +97,7 @@ export function AssetTable() {
     const totalAccumDepr = assetStats.reduce((acc, s) => acc + s.accumulated, 0);
 
     const totalCapRepairsCost = capitalizedRepairs.reduce((acc, t) => acc + t.amount, 0);
-    const totalCapRepairsDepreciation = capitalizedRepairs.reduce((acc, t) => acc + Math.round(t.amount / 27.5), 0);
+    const totalCapRepairsDepreciation = capitalizedRepairs.reduce((acc, t) => acc + Math.round(t.amount / (t.capitalizeLife || 27.5)), 0);
 
     return (
         <div className="space-y-8">
@@ -96,7 +105,7 @@ export function AssetTable() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <Card className="bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800 shadow-sm">
                     <CardHeader className="pb-2">
-                        <CardTitle className="text-[10px] font-black uppercase tracking-widest text-emerald-800 dark:text-emerald-400">Total 2026 Write-off</CardTitle>
+                        <CardTitle className="text-[10px] font-black uppercase tracking-widest text-emerald-800 dark:text-emerald-400">Total {yearLabel} Write-off</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="text-3xl font-black text-emerald-700 dark:text-emerald-300 font-mono">
@@ -154,7 +163,6 @@ export function AssetTable() {
                     </div>
                     <button
                         onClick={handleAdd}
-                        disabled={!selectedProjectId}
                         className="inline-flex items-center justify-center rounded-xl text-sm font-bold transition-all shadow-lg active:scale-95 bg-slate-900 text-white hover:bg-black h-11 px-6 border-b-4 border-slate-700 hover:border-slate-900"
                     >
                         <Plus className="mr-2 h-4 w-4" />
@@ -182,7 +190,7 @@ export function AssetTable() {
                                     <th className="p-2 font-semibold text-muted-foreground border-r w-24 text-center">Method</th>
                                     <th className="p-2 font-semibold text-muted-foreground border-r w-16 text-center">Conv.</th>
                                     <th className="p-2 font-semibold text-muted-foreground border-r w-24 text-right">Prior</th>
-                                    <th className="p-2 font-bold text-emerald-700 bg-emerald-500/10 border-r w-24 text-right uppercase tracking-tighter">2026 Write-off</th>
+                                    <th className="p-2 font-bold text-emerald-700 bg-emerald-500/10 border-r w-24 text-right uppercase tracking-tighter">{yearLabel} Write-off</th>
                                     <th className="p-2 font-semibold text-muted-foreground w-24 text-right">Accumulated</th>
                                     <th className="p-2 font-semibold text-muted-foreground w-12 text-center"></th>
                                 </tr>
@@ -391,7 +399,7 @@ export function AssetTable() {
                                     <th className="h-12 px-4 text-left align-middle font-bold text-slate-500 uppercase tracking-tighter">Description/Vendor</th>
                                     <th className="h-12 px-4 text-right align-middle font-bold text-slate-500 w-28 uppercase tracking-tighter">Cost</th>
                                     <th className="h-12 px-4 text-center align-middle font-bold text-slate-500 w-24 uppercase tracking-tighter">Life</th>
-                                    <th className="h-12 px-4 text-right align-middle font-black text-amber-600 w-32 uppercase tracking-tighter bg-amber-500/5 border-l border-amber-100/50">2026 Write-off</th>
+                                    <th className="h-12 px-4 text-right align-middle font-black text-amber-600 w-32 uppercase tracking-tighter bg-amber-500/5 border-l border-amber-100/50">{yearLabel} Write-off</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-amber-100/30">
@@ -413,12 +421,21 @@ export function AssetTable() {
                                             </td>
                                             <td className="p-4 align-middle text-right font-mono text-slate-600">${t.amount.toLocaleString()}</td>
                                             <td className="p-4 align-middle text-center">
-                                                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 border border-amber-200">
-                                                    27.5 Yrs
-                                                </span>
+                                                <select
+                                                    value={t.capitalizeLife || 27.5}
+                                                    onChange={(e) => editTransaction(t.id, { capitalizeLife: Number(e.target.value) })}
+                                                    className="inline-flex items-center rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 border border-amber-200 px-2 py-0.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-400"
+                                                    title="Recovery period — how many years to depreciate this improvement over"
+                                                >
+                                                    <option value={5}>5 Yrs</option>
+                                                    <option value={7}>7 Yrs</option>
+                                                    <option value={15}>15 Yrs</option>
+                                                    <option value={27.5}>27.5 Yrs</option>
+                                                    <option value={39}>39 Yrs</option>
+                                                </select>
                                             </td>
                                             <td className="p-4 align-middle text-right font-mono text-amber-700 font-black bg-amber-500/10 ring-1 ring-amber-500/20 shadow-inner">
-                                                ${(t.amount / 27.5).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                                ${(t.amount / (t.capitalizeLife || 27.5)).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                                             </td>
                                         </tr>
                                     ))

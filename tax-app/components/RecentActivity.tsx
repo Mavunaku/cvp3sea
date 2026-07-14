@@ -55,7 +55,9 @@ export function RecentActivity() {
                                     <div className="space-y-1">
                                         <p className="text-sm font-medium leading-none">{t.description || t.category}</p>
                                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                            <span>{format(new Date(t.date), 'MMM d, yyyy')}</span>
+                                            {/* Append T00:00:00 so the date parses in local time — bare
+                                                YYYY-MM-DD parses as UTC and shifts a day in US timezones */}
+                                            <span>{format(new Date(t.date + 'T00:00:00'), 'MMM d, yyyy')}</span>
                                             <span>•</span>
                                             <span>{t.entity}</span>
                                         </div>

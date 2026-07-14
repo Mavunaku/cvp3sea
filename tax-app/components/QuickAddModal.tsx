@@ -71,7 +71,7 @@ export function QuickAddModal() {
             description,
             entity,
             category,
-            status: 'Pending',
+            status: 'Cleared',
             projectId: projectId // Mandatory
         });
         closeQuickAdd();

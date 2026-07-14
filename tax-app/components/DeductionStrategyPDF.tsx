@@ -55,7 +55,7 @@ export function DeductionStrategyPDF({ isOpen, onClose }: DeductionStrategyPDFPr
     const assetStats = filteredAssets.map(calculateDepreciationDetails);
     const totalCurrentDepr = assetStats.reduce((acc, s) => acc + s.currentDepreciation, 0);
     const totalCapRepairsCost = capitalizedRepairs.reduce((acc, t) => acc + t.amount, 0);
-    const totalCapRepairsDepreciation = capitalizedRepairs.reduce((acc, t) => acc + Math.round(t.amount / 27.5), 0);
+    const totalCapRepairsDepreciation = capitalizedRepairs.reduce((acc, t) => acc + Math.round(t.amount / (t.capitalizeLife || 27.5)), 0);
 
     const handlePrint = () => {
         window.print();
@@ -174,10 +174,10 @@ export function DeductionStrategyPDF({ isOpen, onClose }: DeductionStrategyPDFPr
                                     capitalizedRepairs.map((t) => (
                                         <tr key={t.id} className="hover:bg-slate-50/50">
                                             <td className="py-3 pr-4 font-bold text-slate-900">{t.description}</td>
-                                            <td className="py-3 text-center">27.5 Yrs</td>
+                                            <td className="py-3 text-center">{t.capitalizeLife || 27.5} Yrs</td>
                                             <td className="py-3 text-right font-mono">${t.amount.toLocaleString()}</td>
                                             <td className="py-3 text-right font-mono font-black text-amber-700 bg-amber-500/5 border-x border-amber-500/10">
-                                                ${Math.round(t.amount / 27.5).toLocaleString()}
+                                                ${Math.round(t.amount / (t.capitalizeLife || 27.5)).toLocaleString()}
                                             </td>
                                         </tr>
                                     ))
