@@ -140,31 +140,34 @@ export function DispositionTable() {
                                         />
                                     </label>
                                     <label className="block">
-                                        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500" title="What you paid for the building, excluding land">Building Cost (No Land)</span>
+                                        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Building Cost (No Land)</span>
                                         <EditableCell
                                             value={asset.cost}
                                             type="number"
                                             onSave={(val) => editAsset(asset.id, { cost: Number.isFinite(Number(val)) ? Number(val) : 0 })}
                                             className="mt-1 border border-slate-200 dark:border-slate-700 rounded-lg font-mono"
                                         />
+                                        <p className="text-[10px] text-slate-400 mt-1 leading-snug">What you paid for the building itself, excluding land.</p>
                                     </label>
                                     <label className="block">
-                                        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500" title="Land is not depreciable, but it counts toward your basis when you sell">Land Value</span>
+                                        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Land Value</span>
                                         <EditableCell
                                             value={asset.land || 0}
                                             type="number"
                                             onSave={(val) => editAsset(asset.id, { land: Number.isFinite(Number(val)) ? Number(val) : 0 })}
                                             className="mt-1 border border-slate-200 dark:border-slate-700 rounded-lg font-mono"
                                         />
+                                        <p className="text-[10px] text-slate-400 mt-1 leading-snug">Not depreciable, but still counts toward your basis when you sell.</p>
                                     </label>
                                     <label className="block">
-                                        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500" title="Depreciation you already claimed in earlier tax years">Prior Depreciation</span>
+                                        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Prior Depreciation</span>
                                         <EditableCell
                                             value={asset.priorDepreciation || 0}
                                             type="number"
                                             onSave={(val) => editAsset(asset.id, { priorDepreciation: Number.isFinite(Number(val)) ? Number(val) : 0 })}
                                             className="mt-1 border border-slate-200 dark:border-slate-700 rounded-lg font-mono"
                                         />
+                                        <p className="text-[10px] text-slate-400 mt-1 leading-snug">Depreciation already claimed in years before this app tracked it. Leave at $0 if this app has tracked it from day one.</p>
                                     </label>
                                 </div>
 
@@ -180,6 +183,7 @@ export function DispositionTable() {
                                                     onSave={(val) => editAsset(asset.id, { saleDate: String(val) || undefined })}
                                                     className="mt-1 border border-slate-200 dark:border-slate-700 rounded-lg"
                                                 />
+                                                <p className="text-[10px] text-slate-400 mt-1 leading-snug">The closing date &mdash; sets which year's return this sale is reported on.</p>
                                             </label>
                                             <label className="block">
                                                 <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Sale Price</span>
@@ -189,17 +193,22 @@ export function DispositionTable() {
                                                     onSave={(val) => editAsset(asset.id, { salePrice: Number.isFinite(Number(val)) ? Number(val) : undefined })}
                                                     className="mt-1 border border-slate-200 dark:border-slate-700 rounded-lg font-mono"
                                                 />
+                                                <p className="text-[10px] text-slate-400 mt-1 leading-snug">The full contract price the property sold for, before any deductions.</p>
                                             </label>
                                             <label className="block">
-                                                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500" title="Realtor commissions, closing costs, transfer taxes">Selling Costs</span>
+                                                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Selling Costs</span>
                                                 <EditableCell
                                                     value={asset.sellingCosts ?? ''}
                                                     type="number"
                                                     onSave={(val) => editAsset(asset.id, { sellingCosts: Number.isFinite(Number(val)) ? Number(val) : undefined })}
                                                     className="mt-1 border border-slate-200 dark:border-slate-700 rounded-lg font-mono"
                                                 />
+                                                <p className="text-[10px] text-slate-400 mt-1 leading-snug">Realtor commissions, closing costs, transfer taxes &mdash; what it cost you to sell.</p>
                                             </label>
                                         </div>
+                                        <p className="text-[10px] text-purple-600/70 dark:text-purple-400/70 font-semibold -mt-2 mb-4">
+                                            Sale Price &minus; Selling Costs = your net proceeds, which is what the gain/loss below is calculated from.
+                                        </p>
 
                                         {/* The plain-English result */}
                                         <div className="grid gap-2 sm:grid-cols-4 text-center">
