@@ -3,8 +3,8 @@
  * Aesthetic: Indian/Spiritual, Earthy, Serene
  */
 
-/* Import Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap');
+/* Import Fonts - matches the site-wide font stack (Inter body / Playfair Display headings) */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
     --yoga-saffron: #e76f51;
@@ -22,7 +22,7 @@
 
 /* Base Overrides for Yoga Page */
 body.yoga-page {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Inter', sans-serif;
     color: var(--yoga-charcoal);
     background-color: var(--yoga-cream);
     /* Warm nice background */
@@ -85,6 +85,128 @@ body.yoga-page {
     padding: 0 20px;
 }
 
+/* Premium Hero (Home) */
+.yoga-hero {
+    height: 100vh;
+    min-height: 600px;
+}
+
+.yoga-hero-panel {
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
+    margin: 0 20px;
+    padding: 60px 50px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 24px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+}
+
+.yoga-hero-panel .yoga-icon {
+    color: #fff;
+    font-size: 3.2em;
+    margin-bottom: 10px;
+}
+
+.yoga-hero-panel h1 {
+    color: #fff;
+    font-size: 3.2em;
+    margin: 10px 0 15px;
+}
+
+.yoga-hero-panel p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2em;
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+.yoga-eyebrow {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8em;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--yoga-sand);
+    border: 1px solid rgba(244, 162, 97, 0.5);
+    border-radius: 30px;
+    padding: 6px 18px;
+    margin-bottom: 5px;
+}
+
+.yoga-hero-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.yoga-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85em;
+    font-weight: 700;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    padding: 8px 18px;
+}
+
+.yoga-chip i {
+    color: var(--yoga-sand);
+}
+
+.yoga-hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+/* .btn-yoga / .btn-yoga-secondary carry margin-top/margin-left meant for
+   stacking inline after a paragraph; inside this flex row that extra,
+   unequal margin throws the two buttons out of alignment with each other. */
+.yoga-hero-cta .btn-yoga,
+.yoga-hero-cta .btn-yoga-secondary {
+    margin: 0;
+}
+
+/* Higher specificity than .btn-yoga-secondary alone (which sets a dark
+   charcoal color) so this light variant's white text actually wins the
+   cascade instead of being silently overridden further down the file. */
+.btn-yoga-secondary.btn-yoga-secondary-light {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.75);
+    color: #fff;
+    margin-left: 0;
+    margin-top: 0;
+}
+
+.btn-yoga-secondary.btn-yoga-secondary-light:hover {
+    background-color: #fff;
+    color: var(--yoga-charcoal);
+}
+
+@media (max-width: 768px) {
+    .yoga-hero-panel {
+        padding: 40px 25px;
+    }
+
+    .yoga-hero-panel h1 {
+        font-size: 2.3em;
+    }
+}
+
 .yoga-banner h2 {
     font-size: 3.5em;
     font-weight: 700;
@@ -105,6 +227,21 @@ body.yoga-page {
     padding: 60px 0;
 }
 
+/* Vertically balances image + text two-column rows so the shorter
+   column doesn't leave a large gap under it (Bootstrap 3 rows are
+   float-based, not flex, so columns don't align by default). */
+.yoga-row-align {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+@media (max-width: 991px) {
+    .yoga-row-align {
+        display: block;
+    }
+}
+
 .yoga-icon {
     font-size: 3em;
     color: var(--yoga-saffron);
@@ -118,7 +255,7 @@ body.yoga-page {
     color: #fff;
     padding: 12px 30px;
     border-radius: 30px;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -139,7 +276,7 @@ body.yoga-page {
     color: var(--yoga-charcoal);
     padding: 12px 30px;
     border-radius: 30px;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -204,6 +341,81 @@ body.yoga-page {
     color: var(--yoga-charcoal);
 }
 
+/* Philosophy Section: circular emblem + Eight Limbs card grid */
+.philosophy-emblem {
+    width: 300px;
+    height: 300px;
+    margin: 40px auto 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #fff;
+    box-shadow: 0 15px 35px rgba(38, 70, 83, 0.18);
+}
+
+.philosophy-emblem img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    /* Source art is a black square with an orange text ring ("CVP
+       PROPERTIES" / "GREEK PEAK") around a smaller inner circle. A mild
+       zoom still clipped that ring text mid-letter, which read as broken;
+       zooming in further crops past the ring entirely so only the clean
+       inner mountains/lotus artwork shows. */
+    transform: scale(2.15);
+}
+
+.philosophy-grid {
+    margin-top: 10px;
+}
+
+.philosophy-grid>div {
+    margin-bottom: 30px;
+    display: flex;
+}
+
+.limb-card {
+    background: #fff;
+    padding: 30px 22px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border-bottom: 4px solid var(--yoga-sage);
+    text-align: center;
+    width: 100%;
+    transition: transform 0.3s ease;
+}
+
+.limb-card:hover {
+    transform: translateY(-8px);
+}
+
+.limb-index {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--yoga-saffron);
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 1em;
+    margin-bottom: 12px;
+}
+
+.limb-card h3 {
+    font-size: 1.2em;
+    margin: 0 0 8px;
+}
+
+.limb-card p {
+    font-size: 0.95em;
+    color: rgba(38, 70, 83, 0.8);
+    margin: 0;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .yoga-banner h2 {
@@ -214,129 +426,18 @@ body.yoga-page {
         margin-left: 0;
         margin-top: 10px;
     }
+
+    .philosophy-emblem {
+        width: 220px;
+        height: 220px;
+    }
 }
 
-/* Footer Styles */
-.yoga-footer {
-    background-color: var(--yoga-charcoal);
-    color: var(--yoga-white);
-    padding: 60px 0 20px;
-    font-family: 'Lato', sans-serif;
-    border-top: 5px solid var(--yoga-saffron);
-}
-
-.footer-widget {
-    margin-bottom: 30px;
-}
-
-.footer-widget h4 {
-    color: var(--yoga-saffron);
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5em;
-    margin-bottom: 20px;
-    position: relative;
-    display: inline-block;
-}
-
-.footer-widget h4::after {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 2px;
-    background: var(--yoga-sage);
-    margin-top: 5px;
-}
-
-/* Logo Widget */
-.footer-logo {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
-.footer-logo h3 {
-    margin: 0;
-    color: var(--yoga-white);
-    font-size: 1.4em;
-}
-
+/* Footer now uses the site-wide footer (css/emerald-forest-light.css);
+   only this page-specific accent line remains. */
 .namaste-text {
     font-style: italic;
     color: var(--yoga-sage);
-    font-size: 1.1em;
-}
-
-/* Contact List */
-.footer-contact {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.footer-contact li {
-    margin-bottom: 15px;
-    display: flex;
-    align-items: flex-start;
     font-size: 1.05em;
-}
-
-.footer-contact i {
-    color: var(--yoga-saffron);
-    margin-right: 15px;
-    font-size: 1.2em;
-    margin-top: 3px;
-}
-
-/* Social & Links */
-.footer-social {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 20px 0;
-    display: flex;
-    gap: 15px;
-}
-
-.footer-social li a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    color: var(--yoga-white);
-    transition: all 0.3s ease;
-}
-
-.footer-social li a:hover {
-    background: var(--yoga-saffron);
-    color: white;
-    transform: translateY(-3px);
-}
-
-.footer-links {
-    margin-top: 20px;
-}
-
-.footer-links a {
-    color: var(--yoga-sage);
-    text-decoration: none;
-    font-weight: 700;
-    transition: color 0.3s ease;
-    margin: 0 5px;
-}
-
-.footer-links a:hover {
-    color: var(--yoga-saffron);
-}
-
-/* Copyright */
-.footer-bottom {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    margin-top: 40px;
-    padding-top: 20px;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.9em;
+    margin-top: 8px;
 }
