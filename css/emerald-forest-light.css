@@ -1006,6 +1006,8 @@ a:hover {
 .about-media {
   flex: 0 0 40%;
   position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
 }
 
 .about-media::before {
@@ -1041,6 +1043,23 @@ a:hover {
   border-radius: var(--radius);
   box-shadow: var(--shadow-md);
   display: block;
+}
+
+/* The 67 Grand Blvd source photos have a large "1FL"/"2FL" watermark
+   baked into the bottom-right corner of the file itself (not a CSS
+   issue) — it's subtle in a wide desktop crop but glaring at mobile's
+   tighter crop. Anchoring the crop toward the top-left, wherever these
+   two specific photos are used, keeps the watermark out of frame
+   without touching any other property's photos. */
+img[src*="fl1Grand.jpg"],
+img[src*="2ndflGrand.jpg"] {
+  object-position: 15% 0%;
+  /* object-position alone isn't enough crop margin in narrower containers
+     (e.g. the About-the-Property image) to clear the watermark, which
+     sits well inside the frame, not right at the edge — scale up so
+     there's room to crop it out entirely. Requires the parent to clip
+     overflow (see .about-media, .portfolio-media). */
+  transform: scale(1.55);
 }
 
 .about-copy {
@@ -1206,6 +1225,18 @@ a:hover {
 
 .portfolio-badge.available {
   color: var(--clr-primary-dark);
+}
+
+/* Distinguishes which unit a photo belongs to (both units share the same
+   building exterior) — bottom-right, opposite the Unavailable badge, so
+   they never collide. */
+.portfolio-badge.floor-label {
+  top: auto;
+  left: auto;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(38, 70, 83, 0.85);
+  color: #fff;
 }
 
 .portfolio-body {
@@ -1411,7 +1442,13 @@ a:hover {
 .feedback-slide {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  /* Short duration on purpose: this is a crossfade between two different
+     blocks of text, not two images, so the outgoing and incoming slide are
+     both partially visible (and readable) for the length of this
+     transition. At the old 0.6s that window was long enough for both
+     testimonials to visibly overlap into unreadable text; keeping it brief
+     makes it read as a quick blend instead. */
+  transition: opacity 0.25s ease, transform 0.25s ease;
   position: absolute;
   top: 0;
   left: 0;

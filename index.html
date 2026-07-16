@@ -51,20 +51,33 @@
 		{
 			"@context": "https://schema.org",
 			"@type": "LocalBusiness",
+			"@id": "https://cvpproperties.com/#business",
 			"name": "CVP Properties 4.0 LLC",
 			"description": "Quality maintained rental properties in Binghamton NY and Broome County. Comfortable, reliable rentals for families and professionals.",
 			"url": "https://cvpproperties.com",
 			"telephone": "+1-518-405-9055",
+			"image": "https://cvpproperties.com/img/icons/cvpnew.png",
 			"address": {
 				"@type": "PostalAddress",
+				"streetAddress": "67 Grand Blvd",
 				"addressLocality": "Binghamton",
 				"addressRegion": "NY",
+				"postalCode": "13905",
 				"addressCountry": "US"
+			},
+			"geo": {
+				"@type": "GeoCoordinates",
+				"latitude": 42.0987,
+				"longitude": -75.9180
 			},
 			"areaServed": [
 				{
 					"@type": "City",
 					"name": "Binghamton"
+				},
+				{
+					"@type": "City",
+					"name": "Johnson City"
 				},
 				{
 					"@type": "AdministrativeArea",
@@ -73,9 +86,49 @@
 			],
 			"serviceType": "Residential Rental Properties",
 			"priceRange": "$$",
+			"openingHoursSpecification": {
+				"@type": "OpeningHoursSpecification",
+				"dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+				"opens": "09:00",
+				"closes": "18:00"
+			},
 			"sameAs": [
 				"https://abnb.me/195NQrPoeGb",
 				"https://www.facebook.com/marketplace/item/387536530465532/"
+			]
+		}
+		</script>
+
+	<!-- FAQ Structured Data - targets common "Binghamton housing" search questions -->
+	<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "FAQPage",
+			"mainEntity": [
+				{
+					"@type": "Question",
+					"name": "What areas does CVP Properties serve for Binghamton housing?",
+					"acceptedAnswer": {
+						"@type": "Answer",
+						"text": "CVP Properties 4.0 LLC offers quality maintained apartments and housing throughout Binghamton, Johnson City, and Broome County, NY, for families, students, and professionals."
+					}
+				},
+				{
+					"@type": "Question",
+					"name": "How do I schedule a tour of a Binghamton apartment for rent?",
+					"acceptedAnswer": {
+						"@type": "Answer",
+						"text": "You can request a tour directly on cvpproperties.com through the Request & Schedule form, or call (518) 405-9055 to speak with us directly."
+					}
+				},
+				{
+					"@type": "Question",
+					"name": "Are CVP Properties rentals well maintained?",
+					"acceptedAnswer": {
+						"@type": "Answer",
+						"text": "Yes. Every CVP Properties rental in Binghamton and Broome County is professionally maintained and inspected between tenants, with fast response times for maintenance requests."
+					}
+				}
 			]
 		}
 		</script>
@@ -357,6 +410,7 @@
 								<img src="img/portfolio/fl1Grand.jpg" class="img-responsive"
 									alt="67 Grand Blvd Apartment 1 exterior - Quality 3-bedroom rental property in Binghamton NY">
 								<span class="portfolio-badge unavailable">Unavailable</span>
+								<span class="portfolio-badge floor-label">1st Floor</span>
 							</a>
 							<div class="portfolio-body">
 								<h3>67 Grand Blvd., Apt 1, Binghamton</h3>
@@ -370,6 +424,7 @@
 								<img src="img/portfolio/2ndflGrand.jpg" class="img-responsive"
 									alt="67 Grand Blvd Apartment 2 second floor - Spacious Broome County rental in heart of Binghamton">
 								<span class="portfolio-badge unavailable">Unavailable</span>
+								<span class="portfolio-badge floor-label">2nd Floor</span>
 							</a>
 							<div class="portfolio-body">
 								<h3>67 Grand Blvd., Apt 2, Binghamton</h3>
