@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, TrendingUp, TrendingDown, FileText, Folder, Settings2, Upload, LogOut } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, TrendingDown, FileText, Folder, Settings2, Upload, LogOut, Briefcase } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { StickyNote } from './StickyNote';
 import { useStore } from '@/store/useStore';
@@ -16,6 +16,7 @@ const navItems = [
     { name: 'Income', href: '/income', icon: TrendingUp },
     { name: 'Expenses', href: '/expenses', icon: TrendingDown },
     { name: 'Depreciation Schedule', href: '/assets', icon: FileText },
+    { name: 'Landlord Toolbox', href: '/toolbox', icon: Briefcase },
 ];
 
 export function AppSidebar() {
@@ -80,7 +81,7 @@ export function AppSidebar() {
                 <div className="space-y-2">
                     <h4 className="text-[10px] font-black text-white px-3 mb-2 uppercase tracking-[0.3em] opacity-80">Operational Views</h4>
                     {navItems.map((item) => {
-                        const isActive = pathname === item.href;
+                        const isActive = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
                         return (
                             <Link
                                 key={item.href}
