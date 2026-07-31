@@ -92,7 +92,32 @@ body.yoga-page {
 /* Premium Hero (Home) - kept compact rather than a full 100vh slab */
 .yoga-hero {
     height: 88vh;
+    /* svh excludes mobile browser chrome (address bar) so the vertically
+       centered hero content doesn't get its top clipped off-screen. */
+    height: 88svh;
     min-height: 560px;
+}
+
+@media (max-width: 768px) {
+    .yoga-hero {
+        /* The site header is position:fixed, so this section actually
+           renders starting at the very top of the page, behind it — the
+           header's opaque background then visually hides whatever content
+           is underneath it. Forcing a fixed viewport-relative height here
+           and centering content within it meant the panel's top (when tall)
+           sat behind the header, or its bottom (when padded down to clear
+           the header) spilled past the section into whatever comes next.
+           Dropping the height constraint and sizing purely from content
+           (top-anchored, with clearance for the header) means the section
+           is always exactly as tall as it needs to be — nothing can ever
+           end up hidden behind the header or bleeding into the next
+           section, regardless of how long the content is. */
+        height: auto;
+        min-height: 0;
+        align-items: flex-start;
+        padding-top: 160px;
+        padding-bottom: 60px;
+    }
 }
 
 .yoga-hero-panel {

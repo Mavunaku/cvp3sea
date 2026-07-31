@@ -326,6 +326,9 @@ a:hover {
 .modern-hero {
   position: relative;
   height: 100vh;
+  /* svh excludes mobile browser chrome (address bar) so vertically-centered
+     content doesn't get its top pushed off-screen while it's visible. */
+  height: 100svh;
   min-height: 700px;
   overflow: hidden;
   display: flex;
@@ -1010,32 +1013,6 @@ a:hover {
   border-radius: var(--radius);
 }
 
-.about-media::before {
-  content: attr(data-index);
-  position: absolute;
-  top: -14px;
-  left: -14px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--clr-primary);
-  color: #fff;
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: 14px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-sm);
-  z-index: 2;
-}
-
-.about-row.reverse .about-media::before {
-  left: auto;
-  right: -14px;
-}
-
 .about-media img {
   width: 100%;
   height: 260px;
@@ -1377,6 +1354,17 @@ img[src*="2ndflGrand.jpg"] {
   transition: transform 0.6s ease;
 }
 
+/* Circular badge emblems (e.g. the Greek Peak yoga seal) — the source art has
+   a solid black square canvas behind the circle, so a rectangular crop shows
+   black corners. Constrain to a small centered circle instead. */
+.discover-card .yoga-emblem-img {
+  width: 150px;
+  height: 150px;
+  margin: 20px auto 0;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .discover-card:hover img {
   transform: scale(1.06);
 }
@@ -1420,6 +1408,24 @@ img[src*="2ndflGrand.jpg"] {
   align-items: center;
 }
 
+/* Discover Places — Upstate NY waterfall backdrop, darkened for text contrast */
+.discover-col {
+  background:
+    linear-gradient(180deg, rgba(27, 67, 50, 0.72) 0%, rgba(27, 67, 50, 0.55) 60%, rgba(27, 67, 50, 0.75) 100%),
+    url('../img/discovery-hero.jpg') center/cover no-repeat;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 32px 24px;
+}
+
+.discover-col .combined-section-title {
+  color: #fff !important;
+  border-bottom-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.discover-col p {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
 .combined-section-title {
   font-size: 22px;
 
@@ -1432,11 +1438,28 @@ img[src*="2ndflGrand.jpg"] {
 }
 
 /* ===== Tenant Feedback / Reviews — Rotating Slider ===== */
+.feedback-col {
+  padding: 32px 24px;
+}
+
 .feedback-slider-container {
   position: relative;
   max-width: 700px;
   margin: 0 auto;
-  min-height: 280px;
+  min-height: 130px;
+}
+
+/* Older testimonial markup (plain <img> + .clearfix, no .testimonial-person
+   wrapper) ships full-size 512x512 source photos with nothing constraining
+   them — cap them to a small avatar so the card doesn't balloon in height. */
+.testimonial-item > img {
+  display: block;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 8px;
+  border: 2px solid var(--clr-primary-light);
 }
 
 .feedback-slide {
@@ -1466,7 +1489,7 @@ img[src*="2ndflGrand.jpg"] {
 .testimonial-item {
   background: var(--clr-card-bg);
   border-radius: var(--radius);
-  padding: 36px 34px;
+  padding: 18px 24px;
   box-shadow: var(--shadow-md);
   margin-bottom: 0;
   border: 1px solid rgba(42, 157, 143, 0.10);
@@ -1522,7 +1545,7 @@ img[src*="2ndflGrand.jpg"] {
 /* Slider dots */
 .feedback-dots {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 12px;
 }
 
 .feedback-dots .dot {
@@ -1955,6 +1978,7 @@ img[src*="2ndflGrand.jpg"] {
   display: flex;
   flex-wrap: wrap;
   margin: 0 -15px;
+  row-gap: 30px;
 }
 
 .activity-card {

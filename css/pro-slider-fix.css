@@ -16,6 +16,13 @@
     /* Reduced height as requested (approx 85% of viewport),
        keeping it modern but slightly smaller than full screen */
     height: 85vh;
+    /* svh = "small viewport height" — excludes mobile browser chrome
+       (address bar, etc). Plain vh uses the LARGEST possible viewport, so
+       on mobile the real visible area is shorter than 85vh while the address
+       bar is showing, which pushed the top of this vertically-centered
+       caption off-screen and clipped it. Unsupported browsers just ignore
+       this line and keep the vh value above. */
+    height: 85svh;
     min-height: 600px;
     /* Ensure visibility on small screens */
     overflow: hidden;
@@ -296,6 +303,7 @@
 @media (max-width: 992px) {
     .sl-slider-wrapper {
         height: 75vh;
+        height: 75svh;
     }
 
     .slide-caption h1,
@@ -311,6 +319,7 @@
 @media (max-width: 768px) {
     .sl-slider-wrapper {
         height: 80vh;
+        height: 80svh;
         /* More height on mobile for content stacking */
     }
 
