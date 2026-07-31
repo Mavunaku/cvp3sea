@@ -38,7 +38,10 @@ export const useUIStore = create<UIState>((set) => ({
     closeNotes: () => set({ isNotesOpen: false }),
 
     logout: () => {
-        document.cookie = "auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-        window.location.href = '/login';
+        // Cookie is httpOnly (set by app/api/login), so it can only be cleared
+        // via a server response — document.cookie can't touch it from here.
+        fetch('/api/logout', { method: 'POST' }).finally(() => {
+            window.location.href = '/login';
+        });
     },
 }));

@@ -69,6 +69,17 @@ interface AppState {
     exportState: () => any;
 }
 
+// Debounces syncToDatabase() so a burst of mutations (bulk import, rapid edits)
+// collapses into a single upload instead of one full-table sync per mutation.
+let syncDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+function scheduleSync(get: () => AppState) {
+    if (syncDebounceTimer) clearTimeout(syncDebounceTimer);
+    syncDebounceTimer = setTimeout(() => {
+        syncDebounceTimer = null;
+        get().syncToDatabase();
+    }, 800);
+}
+
 export const useStore = create<AppState>()(
     persist(
         (set, get) => ({
@@ -207,7 +218,7 @@ export const useStore = create<AppState>()(
                         ],
                     };
 
-                    setTimeout(() => get().syncToDatabase(), 0);
+                    scheduleSync(get);
                     return newState;
                 }),
 
@@ -254,7 +265,7 @@ export const useStore = create<AppState>()(
                         transactions: [...state.transactions, ...transactionsWithIds],
                     };
 
-                    setTimeout(() => get().syncToDatabase(), 0);
+                    scheduleSync(get);
                     return newState;
                 }),
 
@@ -272,7 +283,7 @@ export const useStore = create<AppState>()(
                             t.id === id ? { ...t, ...updates, ...extraUpdates } : t
                         ),
                     };
-                    setTimeout(() => get().syncToDatabase(), 0);
+                    scheduleSync(get);
                     return newState;
                 }),
 
@@ -291,7 +302,7 @@ export const useStore = create<AppState>()(
                             ids.includes(t.id) ? { ...t, nySource: enabled } : t
                         ),
                     };
-                    setTimeout(() => get().syncToDatabase(), 0);
+                    scheduleSync(get);
                     return newState;
                 }),
 
@@ -300,7 +311,7 @@ export const useStore = create<AppState>()(
                     const newState = {
                         assets: [...state.assets, { ...asset, id: uuidv4() }],
                     };
-                    setTimeout(() => get().syncToDatabase(), 0);
+                    scheduleSync(get);
                     return newState;
                 }),
 
@@ -309,7 +320,7 @@ export const useStore = create<AppState>()(
                     const newState = {
                         assets: state.assets.map((a) => (a.id === id ? { ...a, ...updates } : a)),
                     };
-                    setTimeout(() => get().syncToDatabase(), 0);
+                    scheduleSync(get);
                     return newState;
                 }),
 
@@ -326,7 +337,7 @@ export const useStore = create<AppState>()(
                     const newState = {
                         projects: [...state.projects, { ...project, id: uuidv4() }],
                     };
-                    setTimeout(() => get().syncToDatabase(), 0);
+                    scheduleSync(get);
                     return newState;
                 }),
 
@@ -335,7 +346,7 @@ export const useStore = create<AppState>()(
                     const newState = {
                         projects: state.projects.map((p) => (p.id === id ? { ...p, ...updates } : p)),
                     };
-                    setTimeout(() => get().syncToDatabase(), 0);
+                    scheduleSync(get);
                     return newState;
                 }),
 
@@ -352,7 +363,7 @@ export const useStore = create<AppState>()(
             setMembers: (members) =>
                 set(() => {
                     const newState = { members };
-                    setTimeout(() => get().syncToDatabase(), 0);
+                    scheduleSync(get);
                     return newState;
                 }),
 
@@ -361,7 +372,7 @@ export const useStore = create<AppState>()(
                     const newState = {
                         members: [...state.members, { ...member, id: uuidv4() }],
                     };
-                    setTimeout(() => get().syncToDatabase(), 0);
+                    scheduleSync(get);
                     return newState;
                 }),
 
@@ -370,7 +381,7 @@ export const useStore = create<AppState>()(
                     const newState = {
                         members: state.members.map((m) => (m.id === id ? { ...m, ...updates } : m)),
                     };
-                    setTimeout(() => get().syncToDatabase(), 0);
+                    scheduleSync(get);
                     return newState;
                 }),
 
@@ -388,7 +399,7 @@ export const useStore = create<AppState>()(
                     const newState = {
                         years: [...state.years, year],
                     };
-                    setTimeout(() => get().syncToDatabase(), 0);
+                    scheduleSync(get);
                     return newState;
                 }),
 
@@ -406,7 +417,7 @@ export const useStore = create<AppState>()(
                         assets: state.assets.filter((a) => !projectIdsToDelete.includes(a.projectId || '')),
                     };
 
-                    setTimeout(() => get().syncToDatabase(), 0);
+                    scheduleSync(get);
                     return newState;
                 }),
 
@@ -442,7 +453,7 @@ export const useStore = create<AppState>()(
                         projects: [...state.projects, ...newProjects],
                         assets: [...state.assets, ...newAssets],
                     };
-                    setTimeout(() => get().syncToDatabase(), 0);
+                    scheduleSync(get);
                     return newState;
                 }),
 
@@ -450,7 +461,7 @@ export const useStore = create<AppState>()(
             setSelectedProject: (projectId) => set({ selectedProjectId: projectId }),
             setNotes: (notes) => {
                 set({ notes });
-                setTimeout(() => get().syncToDatabase(), 1000);
+                scheduleSync(get);
             },
 
             getSummary: () => {
@@ -472,7 +483,7 @@ export const useStore = create<AppState>()(
                     members: importedState.members || [],
                     years: importedState.years || [],
                 });
-                setTimeout(() => get().syncToDatabase(), 0);
+                scheduleSync(get);
             },
 
             exportState: () => {

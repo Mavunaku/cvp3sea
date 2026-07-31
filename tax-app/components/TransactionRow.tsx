@@ -119,7 +119,12 @@ export function TransactionRow({ transaction, onUpdate, onDelete }: TransactionR
                         </button>
                     )}
                     <button
-                        onClick={() => onDelete(transaction.id)}
+                        onClick={() => {
+                            const label = transaction.description || 'this transaction';
+                            if (window.confirm(`Delete "${label}" ($${transaction.amount.toFixed(2)})? This cannot be undone.`)) {
+                                onDelete(transaction.id);
+                            }
+                        }}
                         className="text-muted-foreground hover:text-destructive transition-colors"
                         title="Delete"
                     >

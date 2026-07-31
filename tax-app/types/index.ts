@@ -7,8 +7,8 @@ export type ExpensePillar = 'Taxes Paid' | 'Interest Expense' | 'Repairs' | 'Uti
 export const EXPENSE_PILLARS: Record<ExpensePillar, string[]> = {
     'Taxes Paid': ['Excise', 'Local Income', 'Real Estate', 'Personal Property', 'Sales Tax', 'Federal Highway'],
     'Interest Expense': ['Loan Interest', 'Loan Principal'],
-    'Repairs': ['Roof', 'Landscaping', 'Painting', 'Plumbing', 'Windows', 'Electrical', 'Furniture', 'Appliances', 'Extermination', 'Equipment', 'Cleaning', 'Parking Lot'],
-    'Utilities': ['Water', 'Gas', 'Electricity', 'Phone', 'Cable', 'Internet'],
+    'Repairs': ['Roof', 'Landscaping', 'Painting', 'Plumbing', 'Windows', 'Electrical', 'Furniture', 'Appliances', 'Extermination', 'Equipment', 'Cleaning', 'Parking Lot', 'Other'],
+    'Utilities': ['Water & Sewer', 'Gas', 'Electricity', 'NYSEG', 'Phone', 'Cable', 'Internet'],
     'Travels': ['Auto & Travel', 'Business Meals (50% Deductible)', 'Travel Meals (50% Deductible)', 'Entertainment (Non-Deductible)'],
     'General Business': ['Advertising', 'Insurance', 'Legal/Professional Fees', 'Wages/Salaries', 'Other']
 };

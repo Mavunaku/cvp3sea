@@ -20,25 +20,31 @@ export default function LoginPage() {
         setLoading(true);
         setError(false);
 
-        if (password === 'admin123') {
-            try {
-                // Set cookie for middleware
-                document.cookie = "auth-token=true; path=/; max-age=86400";
+        try {
+            // Password is checked server-side (app/api/login) so it never
+            // ships in the client JS bundle — the cookie it sets is httpOnly too.
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password }),
+            });
 
-                // Set userId and load data from Supabase
-                // We use a static UUID because the DB expects UUID type, not 'admin' string
-                const ADMIN_UUID = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
-                setUserId(ADMIN_UUID);
-                await loadFromDatabase(ADMIN_UUID);
-
-                // Redirect to dashboard
-                router.push('/');
-            } catch (err) {
-                console.error('Failed to load user data:', err);
+            if (!res.ok) {
                 setError(true);
                 setLoading(false);
+                return;
             }
-        } else {
+
+            // Set userId and load data from Supabase
+            // We use a static UUID because the DB expects UUID type, not 'admin' string
+            const ADMIN_UUID = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+            setUserId(ADMIN_UUID);
+            await loadFromDatabase(ADMIN_UUID);
+
+            // Redirect to dashboard
+            router.push('/');
+        } catch (err) {
+            console.error('Failed to load user data:', err);
             setError(true);
             setLoading(false);
         }

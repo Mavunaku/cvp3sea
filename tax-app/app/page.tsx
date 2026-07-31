@@ -13,12 +13,21 @@ import { SyncStatusIndicator } from "@/components/SyncStatusIndicator";
 import { useEffect } from 'react';
 import { useStore } from '@/store/useStore';
 
+// Module-scoped: survives client-side navigation between pages, resets on a hard refresh.
+// Prevents re-fetching (and overwriting) local state every time the user navigates back here,
+// which was racing with in-flight background syncs and wiping out just-added transactions.
+let hasLoadedThisSession = false;
+
 export default function Home() {
     const { loadFromDatabase, userId, setUserId } = useStore();
 
     useEffect(() => {
+        if (hasLoadedThisSession) return;
+
         // Data Persistence: Reload if missing (e.g. on refresh)
         const ADMIN_UUID = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+
+        hasLoadedThisSession = true;
 
         // Always try to load on mount if we're supposed to be logged in
         // Since we ignore real auth for now, we force the admin user

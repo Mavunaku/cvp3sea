@@ -14,6 +14,20 @@ interface GroupedExpenseTableProps {
 }
 
 export function GroupedExpenseTable({ transactions, onUpdate, onDelete }: GroupedExpenseTableProps) {
+    // Flag transactions sharing the same date + description + amount as another
+    // one in this list — a strong signal of an accidental double-entry.
+    const duplicateIds = new Set<string>();
+    const seen = new Map<string, string[]>();
+    transactions.forEach(t => {
+        const key = `${t.date}|${(t.description || '').trim().toLowerCase()}|${t.amount}`;
+        const ids = seen.get(key) || [];
+        ids.push(t.id);
+        seen.set(key, ids);
+    });
+    seen.forEach(ids => {
+        if (ids.length > 1) ids.forEach(id => duplicateIds.add(id));
+    });
+
     // Group transactions by Pillar
     const groups: Record<string, Transaction[]> = {
         'Taxes Paid': [],
@@ -63,6 +77,7 @@ export function GroupedExpenseTable({ transactions, onUpdate, onDelete }: Groupe
                         subtotal={subtotal}
                         onUpdate={onUpdate}
                         onDelete={onDelete}
+                        duplicateIds={duplicateIds}
                     />
                 );
             })}
@@ -76,13 +91,15 @@ function PillarSection({
     transactions,
     subtotal,
     onUpdate,
-    onDelete
+    onDelete,
+    duplicateIds
 }: {
     pillar: string,
     transactions: Transaction[],
     subtotal: number,
     onUpdate: (id: string, updates: Partial<Transaction>) => void;
     onDelete: (id: string) => void;
+    duplicateIds: Set<string>;
 }) {
     const [isOpen, setIsOpen] = useState(true);
 
@@ -112,6 +129,7 @@ function PillarSection({
                     transaction={t}
                     onUpdate={onUpdate}
                     onDelete={onDelete}
+                    isDuplicate={duplicateIds.has(t.id)}
                 />
             ))}
             {isOpen && transactions.length === 0 && (

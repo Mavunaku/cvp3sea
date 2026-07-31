@@ -258,9 +258,11 @@ export async function syncTransactions(userId: string, transactions: Transaction
                 }));
                 const { error: retryError } = await supabase.from('ledger_entries').upsert(fallbackRecords);
                 if (retryError) throw retryError;
-            } else if (error.code === '42703') {
+            } else if (error.code === '42703' || error.code === 'PGRST204') {
                 // ledger_entries missing the capitalize_life column — run the
                 // migration to persist per-item depreciation lives. Retry without it.
+                // (PGRST204 is PostgREST's "column not in schema cache" code, returned
+                // via the Supabase JS client; 42703 is the raw Postgres equivalent.)
                 console.warn('ledger_entries missing capitalize_life column — run the migration to persist per-improvement depreciation years. Falling back.');
                 const fallbackRecords = transactionRecords.map(({ capitalize_life, ...rest }) => rest);
                 const { error: retryError } = await supabase.from('ledger_entries').upsert(fallbackRecords);
@@ -305,12 +307,14 @@ export async function syncAssets(userId: string, assets: Asset[]) {
         const { error } = await supabase.from('assets').upsert(assetRecords);
 
         if (error) {
-            // 42703 = undefined_column. This happens if the newer asset columns
-            // (config + disposition) haven't been migrated onto the live DB yet.
+            // 42703 = undefined_column (raw Postgres); PGRST204 = PostgREST's
+            // "column not in schema cache" equivalent, returned via the Supabase JS
+            // client. Either means the newer asset columns (config + disposition)
+            // haven't been migrated onto the live DB yet.
             // Fall back to the original base columns so saving still works, and
             // warn — the extra fields will start persisting once the migrations
             // (supabase_migration_asset_fields.sql + _disposition.sql) are run.
-            if (error.code === '42703') {
+            if (error.code === '42703' || error.code === 'PGRST204') {
                 console.warn('Assets table missing newer columns — run the asset migrations to persist depreciation config & sale data. Falling back to base columns.');
                 const baseRecords = assets.map((a) => ({
                     id: a.id,

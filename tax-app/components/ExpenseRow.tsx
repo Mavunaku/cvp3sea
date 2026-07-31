@@ -13,9 +13,10 @@ interface ExpenseRowProps {
     transaction: Transaction;
     onUpdate: (id: string, updates: Partial<Transaction>) => void;
     onDelete: (id: string) => void;
+    isDuplicate?: boolean;
 }
 
-export function ExpenseRow({ transaction, onUpdate, onDelete }: ExpenseRowProps) {
+export function ExpenseRow({ transaction, onUpdate, onDelete, isDuplicate }: ExpenseRowProps) {
     const { projects, years } = useStore();
     const isCapitalized = transaction.capitalize;
 
@@ -42,11 +43,18 @@ export function ExpenseRow({ transaction, onUpdate, onDelete }: ExpenseRowProps)
 
             {/* Description */}
             <td className="p-2 align-middle min-w-[120px]">
-                <EditableCell
-                    value={transaction.description}
-                    placeholder="Description"
-                    onSave={(val) => onUpdate(transaction.id, { description: String(val) })}
-                />
+                <div className="flex items-center gap-1.5">
+                    <EditableCell
+                        value={transaction.description}
+                        placeholder="Description"
+                        onSave={(val) => onUpdate(transaction.id, { description: String(val) })}
+                    />
+                    {isDuplicate && (
+                        <span title="Possible duplicate: another transaction has the same date, description, and amount.">
+                            <AlertCircle className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+                        </span>
+                    )}
+                </div>
             </td>
 
             {/* PROJECT */}
@@ -195,7 +203,12 @@ export function ExpenseRow({ transaction, onUpdate, onDelete }: ExpenseRowProps)
             {/* Actions */}
             <td className="p-2 align-middle text-right w-12">
                 <button
-                    onClick={() => onDelete(transaction.id)}
+                    onClick={() => {
+                        const label = transaction.description || 'this transaction';
+                        if (window.confirm(`Delete "${label}" ($${transaction.amount.toFixed(2)})? This cannot be undone.`)) {
+                            onDelete(transaction.id);
+                        }
+                    }}
                     className="text-muted-foreground hover:text-destructive transition-colors"
                     title="Delete"
                 >
