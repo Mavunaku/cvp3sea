@@ -43,7 +43,7 @@ export function DashboardStats() {
 
     return (
         <div className="space-y-4">
-            <div className="flex justify-between items-center bg-slate-50 dark:bg-slate-900/40 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm print:hidden">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 bg-slate-50 dark:bg-slate-900/40 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm print:hidden">
                 <div className="flex items-center gap-3">
                     <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
                         {showTaxForm ? <LayoutDashboard className="h-5 w-5 text-blue-600" /> : <FileText className="h-5 w-5 text-blue-600" />}
@@ -55,7 +55,7 @@ export function DashboardStats() {
                         </p>
                     </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                     {showTaxForm ? (
                         <button
                             onClick={() => setTaxView('cashflow')}
@@ -65,7 +65,7 @@ export function DashboardStats() {
                             Review Cash Flow
                         </button>
                     ) : (
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
                             <button
                                 onClick={() => setTaxView('scheduleC')}
                                 className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all shadow-sm active:scale-95 border bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-500"
@@ -92,7 +92,7 @@ export function DashboardStats() {
                         </div>
                     )}
                     {!showTaxForm && (
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
                             <button
                                 onClick={() => setIsLedgerOpen(true)}
                                 className="flex items-center gap-2 bg-white dark:bg-slate-900 hover:bg-slate-50 border border-slate-200 dark:border-slate-700 px-4 py-2 rounded-xl text-sm font-bold transition-all shadow-sm active:scale-95 text-slate-900 dark:text-slate-100"

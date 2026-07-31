@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
-import { FileWarning, ArrowRight, Briefcase } from 'lucide-react';
+import { FileWarning, ArrowRight, Briefcase, FileSignature, RefreshCcw } from 'lucide-react';
 
 const tools = [
     {
@@ -10,6 +10,20 @@ const tools = [
         description: 'Generate an official, print-ready itemized deduction letter for a departing tenant\'s security deposit — refund, zero-balance, or amount-owed, calculated automatically.',
         href: '/toolbox/security-deposit',
         icon: FileWarning,
+        available: true,
+    },
+    {
+        name: 'Residential Lease Agreement',
+        description: 'Generate a full, print-ready residential lease contract — term, rent, deposit, occupants, pets, utilities, and standard clauses — from a short form.',
+        href: '/toolbox/lease-agreement',
+        icon: FileSignature,
+        available: true,
+    },
+    {
+        name: 'Notice of Lease Renewal',
+        description: 'Offer a tenant a lease renewal, with or without a rent increase — auto-calculates the dollar and percentage change and flags large increases.',
+        href: '/toolbox/lease-renewal',
+        icon: RefreshCcw,
         available: true,
     },
 ];
@@ -51,7 +65,7 @@ export default function ToolboxPage() {
 
                 <div className="relative bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 p-6 flex flex-col items-center justify-center text-center opacity-70">
                     <p className="text-xs font-black uppercase tracking-widest text-slate-400">More Tools Coming Soon</p>
-                    <p className="text-[11px] text-slate-400 mt-1.5">Lease renewal notices, rent increase letters, move-in checklists, and more.</p>
+                    <p className="text-[11px] text-slate-400 mt-1.5">Move-in/move-out checklists, late rent notices, and more.</p>
                 </div>
             </div>
         </div>

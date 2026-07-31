@@ -1,8 +1,9 @@
 'use client';
 
+import { useState } from "react";
 import { Transaction, TransactionType } from "@/types";
 import { TransactionRow } from "./TransactionRow";
-import { Plus } from "lucide-react";
+import { Plus, Search, X } from "lucide-react";
 import { useStore } from "@/store/useStore";
 import { ExportButton } from "./ExportButton";
 import { GroupedExpenseTable } from "./GroupedExpenseTable";
@@ -24,6 +25,11 @@ export function LedgerTable({ type }: LedgerTableProps) {
         selectedProjectId,
         toggleAllNySource
     } = useStore();
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const [dateFrom, setDateFrom] = useState('');
+    const [dateTo, setDateTo] = useState('');
+    const hasActiveFilter = searchQuery.trim() !== '' || dateFrom !== '' || dateTo !== '';
 
     // Filter by Global Context (Project/Year) using unified logic
     const contextFilteredTransactions = filterTransactions(transactions, projects, selectedYear, selectedProjectId);
@@ -48,8 +54,19 @@ export function LedgerTable({ type }: LedgerTableProps) {
         new Date(b.date).getTime() - new Date(a.date).getTime()
     );
 
-    // Select All Logic
-    const visibleTransactions = sortedTransactions;
+    // Search/date-range narrows what's shown in the rows only — totals below
+    // always reflect the full period so filtering never silently changes your numbers.
+    const displayedTransactions = sortedTransactions.filter(t => {
+        if (searchQuery.trim() && !t.description?.toLowerCase().includes(searchQuery.trim().toLowerCase())) {
+            return false;
+        }
+        if (dateFrom && t.date < dateFrom) return false;
+        if (dateTo && t.date > dateTo) return false;
+        return true;
+    });
+
+    // Select All Logic — scoped to what's currently visible (respects search/date filter)
+    const visibleTransactions = displayedTransactions;
     const allNyChecked = visibleTransactions.length > 0 && visibleTransactions.every(t => t.nySource ?? true);
     const someNyChecked = visibleTransactions.some(t => t.nySource ?? true) && !allNyChecked;
 
@@ -84,6 +101,49 @@ export function LedgerTable({ type }: LedgerTableProps) {
                     <Plus className="mr-2 h-4 w-4" />
                     Add {type}
                 </button>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+                <div className="relative flex-1 min-w-[180px]">
+                    <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search description..."
+                        className="w-full h-9 pl-8 pr-3 rounded-md border bg-card text-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                    />
+                </div>
+                <div className="flex items-center gap-1.5 text-sm">
+                    <label className="text-xs text-muted-foreground">From</label>
+                    <input
+                        type="date"
+                        value={dateFrom}
+                        onChange={(e) => setDateFrom(e.target.value)}
+                        className="h-9 px-2 rounded-md border bg-card text-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                    />
+                    <label className="text-xs text-muted-foreground">To</label>
+                    <input
+                        type="date"
+                        value={dateTo}
+                        onChange={(e) => setDateTo(e.target.value)}
+                        className="h-9 px-2 rounded-md border bg-card text-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                    />
+                </div>
+                {hasActiveFilter && (
+                    <button
+                        onClick={() => { setSearchQuery(''); setDateFrom(''); setDateTo(''); }}
+                        className="inline-flex items-center gap-1 h-9 px-2.5 rounded-md text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted"
+                    >
+                        <X className="h-3.5 w-3.5" />
+                        Clear
+                    </button>
+                )}
+                {hasActiveFilter && (
+                    <span className="text-xs text-muted-foreground">
+                        Showing {displayedTransactions.length} of {sortedTransactions.length}
+                    </span>
+                )}
             </div>
 
             <div className="rounded-xl border bg-card overflow-hidden shadow-sm">
@@ -151,14 +211,16 @@ export function LedgerTable({ type }: LedgerTableProps) {
 
                         {type === 'income' ? (
                             <tbody className="[&_tr:last-child]:border-0">
-                                {sortedTransactions.length === 0 ? (
+                                {displayedTransactions.length === 0 ? (
                                     <tr>
                                         <td colSpan={10} className="h-24 text-center text-muted-foreground">
-                                            No transactions found. Click &quot;Add {type}&quot; to start.
+                                            {hasActiveFilter
+                                                ? 'No transactions match your search/filter.'
+                                                : `No transactions found. Click "Add ${type}" to start.`}
                                         </td>
                                     </tr>
                                 ) : (
-                                    sortedTransactions.map((t) => (
+                                    displayedTransactions.map((t) => (
                                         <TransactionRow
                                             key={t.id}
                                             transaction={t}
@@ -170,7 +232,7 @@ export function LedgerTable({ type }: LedgerTableProps) {
                             </tbody>
                         ) : (
                             <GroupedExpenseTable
-                                transactions={sortedTransactions}
+                                transactions={displayedTransactions}
                                 onUpdate={editTransaction}
                                 onDelete={deleteTransaction}
                             />

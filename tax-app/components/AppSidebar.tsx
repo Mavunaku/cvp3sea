@@ -64,9 +64,6 @@ export function AppSidebar() {
 
             <div className="relative z-10 p-8">
                 <div className="flex items-center gap-3 mb-1">
-                    <div className="w-8 h-8 rounded-lg bg-[#2a9d8f] flex items-center justify-center shadow-lg shadow-[#2a9d8f]/20">
-                        <LayoutDashboard className="h-5 w-5 text-white" />
-                    </div>
                     <h1 className="text-2xl font-black tracking-tighter text-white">
                         Tax Ledger
                     </h1>
