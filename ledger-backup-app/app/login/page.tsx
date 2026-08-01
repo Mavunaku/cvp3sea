@@ -20,7 +20,7 @@ export default function LoginPage() {
         setLoading(true);
         setError(false);
 
-        if (password === 'admin123') {
+        if (password === 'Mavunaku656!') {
             try {
                 // Set cookie for middleware
                 document.cookie = "auth-token=true; path=/; max-age=86400";

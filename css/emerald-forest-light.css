@@ -1392,7 +1392,8 @@ img[src*="2ndflGrand.jpg"] {
 
 .discover-col,
 .feedback-col,
-.yoga-col {
+.yoga-col,
+.greekpeak-col {
   flex: 1;
   min-width: 300px;
   /* Ensure readability */
@@ -1423,6 +1424,24 @@ img[src*="2ndflGrand.jpg"] {
 }
 
 .discover-col p {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Greek Peak Activities — nature backdrop, same treatment as Discover Places */
+.greekpeak-col {
+  background:
+    linear-gradient(180deg, rgba(38, 70, 83, 0.72) 0%, rgba(38, 70, 83, 0.55) 60%, rgba(38, 70, 83, 0.78) 100%),
+    url('../img/2112/forest.jpg') center/cover no-repeat;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 32px 24px;
+}
+
+.greekpeak-col .combined-section-title {
+  color: #fff !important;
+  border-bottom-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.greekpeak-col p {
   color: rgba(255, 255, 255, 0.9) !important;
 }
 

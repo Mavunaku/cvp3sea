@@ -9,7 +9,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function testInsert() {
     const email = 'admin@example.com';
-    const password = 'admin123';
+    const password = 'Mavunaku656!';
 
     // SKIP AUTH (Because we know RLS is disabled and Auth fails rate limit)
     const userIdToUse = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
