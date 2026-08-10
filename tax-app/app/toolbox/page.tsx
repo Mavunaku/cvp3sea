@@ -2,9 +2,16 @@
 
 import Link from 'next/link';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
-import { FileWarning, ArrowRight, Briefcase, FileSignature, RefreshCcw } from 'lucide-react';
+import { FileWarning, ArrowRight, Briefcase, FileSignature, RefreshCcw, Building2 } from 'lucide-react';
 
 const tools = [
+    {
+        name: 'Modify Properties',
+        description: 'Toggle each rental\'s Available/Unavailable status on the "Our Properties" cards across cvpproperties.com.',
+        href: '/toolbox/modify-properties',
+        icon: Building2,
+        available: true,
+    },
     {
         name: 'Notice of Security Deposit Itemization',
         description: 'Generate an official, print-ready itemized deduction letter for a departing tenant\'s security deposit — refund, zero-balance, or amount-owed, calculated automatically.',
