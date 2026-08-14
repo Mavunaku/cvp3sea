@@ -443,13 +443,6 @@ export function SecurityDepositItemization() {
                                 <p className="text-slate-500 text-xs">Property Manager / Authorized Representative</p>
                                 <p className="text-slate-500 text-xs">{landlordName || '[Landlord / Property Manager Name]'}</p>
                             </div>
-
-                            <hr className="border-slate-200" />
-                            <p className="text-[10px] text-slate-400 text-center">
-                                This document constitutes formal notice of security deposit disposition pursuant to applicable
-                                landlord-tenant law. This tool provides a planning template only and does not constitute legal
-                                advice — confirm requirements under your state and local law before sending.
-                            </p>
                         </div>
                     </div>
                 </div>
