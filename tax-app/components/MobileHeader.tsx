@@ -17,7 +17,7 @@ export function MobileHeader() {
     const title = currentProject ? currentProject.name : (selectedYear || 'Select Project');
 
     return (
-        <header className="sticky top-0 z-40 w-full bg-black/80 backdrop-blur-xl border-b border-white/10 md:hidden">
+        <header className="sticky top-0 z-40 w-full bg-black/80 backdrop-blur-xl border-b border-white/10 md:hidden print:hidden">
             <div className="flex flex-col">
                 <div className="flex h-16 items-center justify-between px-4">
                     <div className="flex items-center gap-2">

@@ -1,8 +1,11 @@
 'use client';
 
-import { useState, Fragment } from 'react';
-import { Printer, ArrowLeft } from 'lucide-react';
+import { useEffect, useState, Fragment } from 'react';
+import { Printer, ArrowLeft, Save, RotateCcw, Check } from 'lucide-react';
 import Link from 'next/link';
+import { loadDraft, saveDraft, clearDraft } from '@/lib/draftStorage';
+
+const DRAFT_KEY = 'toolbox-draft-lease-agreement';
 
 const todayISO = () => new Date().toISOString().split('T')[0];
 
@@ -28,7 +31,22 @@ interface Clause {
     body: React.ReactNode;
 }
 
+interface LeaseAgreementDraft {
+    tenantNames: string; propertyStreet: string; unitLabel: string; propertyCityStateZip: string;
+    bedrooms: number; bathrooms: number; parkingDescription: string; garageAvailable: boolean; garageFee: number;
+    dateOfAgreement: string; termLength: string; termStart: string;
+    monthlyRent: number; rentDueDay: number; bouncedCheckFee: number; guarantorRequired: boolean;
+    lateDeemedAfterDays: number; lateGraceDays: number; lateFeePerDay: number; lateFeeMax: number;
+    utilitiesByLandlord: string; electricFixedFee: number; otherTenantUtilities: string;
+    securityDeposit: number; petsAllowed: boolean; rentersInsuranceRequired: boolean; additionalTerms: string;
+    landlordName: string; contactPhone: string; representativeName: string;
+}
+
 export function ResidentialLeaseAgreement() {
+    // Plain SSR-safe defaults — this component is server-rendered, and the
+    // server has no localStorage, so the initial state (both server and the
+    // client's first hydration pass) must match. The saved draft, if any,
+    // is applied client-side afterward via the hydration effect below.
     const [tenantNames, setTenantNames] = useState('');
     const [propertyStreet, setPropertyStreet] = useState('');
     const [unitLabel, setUnitLabel] = useState('');
@@ -64,6 +82,110 @@ export function ResidentialLeaseAgreement() {
     const [landlordName, setLandlordName] = useState('CVP Properties 4.0 LLC');
     const [contactPhone, setContactPhone] = useState('(518) 405-9055');
     const [representativeName, setRepresentativeName] = useState('Valentian Paulsen');
+    const [savedFlash, setSavedFlash] = useState(false);
+
+    // Hydrated is REACT STATE, not a ref — see SecurityDepositItemization
+    // for why: setting it inside the same effect that calls all the setters
+    // means React batches everything into one render, so the auto-save
+    // effect never observes a stale mid-hydration snapshot.
+    const [hydrated, setHydrated] = useState(false);
+    useEffect(() => {
+        const draft = loadDraft<LeaseAgreementDraft>(DRAFT_KEY);
+        if (draft) {
+            if (draft.tenantNames !== undefined) setTenantNames(draft.tenantNames);
+            if (draft.propertyStreet !== undefined) setPropertyStreet(draft.propertyStreet);
+            if (draft.unitLabel !== undefined) setUnitLabel(draft.unitLabel);
+            if (draft.propertyCityStateZip !== undefined) setPropertyCityStateZip(draft.propertyCityStateZip);
+            if (draft.bedrooms !== undefined) setBedrooms(draft.bedrooms);
+            if (draft.bathrooms !== undefined) setBathrooms(draft.bathrooms);
+            if (draft.parkingDescription !== undefined) setParkingDescription(draft.parkingDescription);
+            if (draft.garageAvailable !== undefined) setGarageAvailable(draft.garageAvailable);
+            if (draft.garageFee !== undefined) setGarageFee(draft.garageFee);
+            if (draft.dateOfAgreement !== undefined) setDateOfAgreement(draft.dateOfAgreement);
+            if (draft.termLength !== undefined) setTermLength(draft.termLength);
+            if (draft.termStart !== undefined) setTermStart(draft.termStart);
+            if (draft.monthlyRent !== undefined) setMonthlyRent(draft.monthlyRent);
+            if (draft.rentDueDay !== undefined) setRentDueDay(draft.rentDueDay);
+            if (draft.bouncedCheckFee !== undefined) setBouncedCheckFee(draft.bouncedCheckFee);
+            if (draft.guarantorRequired !== undefined) setGuarantorRequired(draft.guarantorRequired);
+            if (draft.lateDeemedAfterDays !== undefined) setLateDeemedAfterDays(draft.lateDeemedAfterDays);
+            if (draft.lateGraceDays !== undefined) setLateGraceDays(draft.lateGraceDays);
+            if (draft.lateFeePerDay !== undefined) setLateFeePerDay(draft.lateFeePerDay);
+            if (draft.lateFeeMax !== undefined) setLateFeeMax(draft.lateFeeMax);
+            if (draft.utilitiesByLandlord !== undefined) setUtilitiesByLandlord(draft.utilitiesByLandlord);
+            if (draft.electricFixedFee !== undefined) setElectricFixedFee(draft.electricFixedFee);
+            if (draft.otherTenantUtilities !== undefined) setOtherTenantUtilities(draft.otherTenantUtilities);
+            if (draft.securityDeposit !== undefined) setSecurityDeposit(draft.securityDeposit);
+            if (draft.petsAllowed !== undefined) setPetsAllowed(draft.petsAllowed);
+            if (draft.rentersInsuranceRequired !== undefined) setRentersInsuranceRequired(draft.rentersInsuranceRequired);
+            if (draft.additionalTerms !== undefined) setAdditionalTerms(draft.additionalTerms);
+            if (draft.landlordName !== undefined) setLandlordName(draft.landlordName);
+            if (draft.contactPhone !== undefined) setContactPhone(draft.contactPhone);
+            if (draft.representativeName !== undefined) setRepresentativeName(draft.representativeName);
+        }
+        setHydrated(true);
+    }, []);
+
+    const currentDraft = () => ({
+        tenantNames, propertyStreet, unitLabel, propertyCityStateZip, bedrooms, bathrooms,
+        parkingDescription, garageAvailable, garageFee, dateOfAgreement, termLength, termStart,
+        monthlyRent, rentDueDay, bouncedCheckFee, guarantorRequired, lateDeemedAfterDays,
+        lateGraceDays, lateFeePerDay, lateFeeMax, utilitiesByLandlord, electricFixedFee,
+        otherTenantUtilities, securityDeposit, petsAllowed, rentersInsuranceRequired,
+        additionalTerms, landlordName, contactPhone, representativeName,
+    });
+
+    useEffect(() => {
+        if (!hydrated) return;
+        saveDraft(DRAFT_KEY, currentDraft());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [hydrated, tenantNames, propertyStreet, unitLabel, propertyCityStateZip, bedrooms, bathrooms,
+        parkingDescription, garageAvailable, garageFee, dateOfAgreement, termLength, termStart,
+        monthlyRent, rentDueDay, bouncedCheckFee, guarantorRequired, lateDeemedAfterDays,
+        lateGraceDays, lateFeePerDay, lateFeeMax, utilitiesByLandlord, electricFixedFee,
+        otherTenantUtilities, securityDeposit, petsAllowed, rentersInsuranceRequired,
+        additionalTerms, landlordName, contactPhone, representativeName]);
+
+    const handleSave = () => {
+        saveDraft(DRAFT_KEY, currentDraft());
+        setSavedFlash(true);
+        setTimeout(() => setSavedFlash(false), 1500);
+    };
+
+    const handleClear = () => {
+        if (!window.confirm('Clear this form and start over? This cannot be undone.')) return;
+        clearDraft(DRAFT_KEY);
+        setTenantNames('');
+        setPropertyStreet('');
+        setUnitLabel('');
+        setPropertyCityStateZip('');
+        setBedrooms(3);
+        setBathrooms(2);
+        setParkingDescription('');
+        setGarageAvailable(false);
+        setGarageFee(200);
+        setDateOfAgreement(todayISO());
+        setTermLength('1 (one) Year');
+        setTermStart('');
+        setMonthlyRent(0);
+        setRentDueDay(1);
+        setBouncedCheckFee(45);
+        setGuarantorRequired(false);
+        setLateDeemedAfterDays(7);
+        setLateGraceDays(3);
+        setLateFeePerDay(15);
+        setLateFeeMax(45);
+        setUtilitiesByLandlord('Gas, Water, Sewage, Heat, Garbage, Snow Removal & Lawn Care');
+        setElectricFixedFee(50);
+        setOtherTenantUtilities('Cable, Internet');
+        setSecurityDeposit(0);
+        setPetsAllowed(false);
+        setRentersInsuranceRequired(true);
+        setAdditionalTerms('');
+        setLandlordName('CVP Properties 4.0 LLC');
+        setContactPhone('(518) 405-9055');
+        setRepresentativeName('Valentian Paulsen');
+    };
 
     const handlePrint = () => window.print();
 
@@ -247,9 +369,31 @@ export function ResidentialLeaseAgreement() {
         <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,420px)_1fr] gap-6 print:block">
             {/* ===================== FORM ===================== */}
             <div className="space-y-6 print:hidden">
-                <Link href="/toolbox" className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
-                    <ArrowLeft className="h-4 w-4" /> Back to Landlord Toolbox
-                </Link>
+                <div className="flex items-center justify-between gap-3">
+                    <Link href="/toolbox" className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
+                        <ArrowLeft className="h-4 w-4" /> Back to Landlord Toolbox
+                    </Link>
+                    <div className="flex items-center gap-2">
+                        {savedFlash && (
+                            <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600">
+                                <Check className="h-3.5 w-3.5" /> Saved
+                            </span>
+                        )}
+                        <button
+                            onClick={handleSave}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#2a9d8f]/10 text-[#2a9d8f] hover:bg-[#2a9d8f]/20 transition-colors"
+                        >
+                            <Save className="h-3.5 w-3.5" /> Save
+                        </button>
+                        <button
+                            onClick={handleClear}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+                        >
+                            <RotateCcw className="h-3.5 w-3.5" /> Clear
+                        </button>
+                    </div>
+                </div>
+                <p className="text-[11px] text-slate-400 -mt-3">Your entries save automatically and will be here next time you open this tool.</p>
 
                 <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-5">
                     <h2 className="text-sm font-black uppercase tracking-widest text-slate-500">Parties &amp; Premises</h2>

@@ -1,8 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-import { Printer, ArrowLeft } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Printer, ArrowLeft, Save, RotateCcw, Check } from 'lucide-react';
 import Link from 'next/link';
+import { loadDraft, saveDraft, clearDraft } from '@/lib/draftStorage';
+
+const DRAFT_KEY = 'toolbox-draft-lease-renewal';
 
 const todayISO = () => new Date().toISOString().split('T')[0];
 
@@ -16,7 +19,18 @@ const formatDate = (iso: string) => {
 const fmtMoney = (n: number) =>
     `$${Math.abs(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
+interface LeaseRenewalDraft {
+    tenantName: string; propertyStreet: string; propertyUnit: string; propertyCityStateZip: string;
+    dateOfNotice: string; currentTermEnd: string; newTermStart: string; newTermEnd: string;
+    currentRent: number; newRent: number; responseDeadline: string; additionalTerms: string;
+    landlordName: string; contactPhone: string; representativeName: string;
+}
+
 export function LeaseRenewalNotice() {
+    // Plain SSR-safe defaults — this component is server-rendered, and the
+    // server has no localStorage, so the initial state (both server and the
+    // client's first hydration pass) must match. The saved draft, if any,
+    // is applied client-side afterward via the hydration effect below.
     const [tenantName, setTenantName] = useState('');
     const [propertyStreet, setPropertyStreet] = useState('');
     const [propertyUnit, setPropertyUnit] = useState('');
@@ -32,6 +46,74 @@ export function LeaseRenewalNotice() {
     const [landlordName, setLandlordName] = useState('CVP Properties 4.0 LLC');
     const [contactPhone, setContactPhone] = useState('(518) 405-9055');
     const [representativeName, setRepresentativeName] = useState('Valentian Paulsen');
+    const [savedFlash, setSavedFlash] = useState(false);
+
+    // Hydrated is REACT STATE, not a ref — see SecurityDepositItemization
+    // for why: setting it inside the same effect that calls all the setters
+    // means React batches everything into one render, so the auto-save
+    // effect never observes a stale mid-hydration snapshot.
+    const [hydrated, setHydrated] = useState(false);
+    useEffect(() => {
+        const draft = loadDraft<LeaseRenewalDraft>(DRAFT_KEY);
+        if (draft) {
+            if (draft.tenantName !== undefined) setTenantName(draft.tenantName);
+            if (draft.propertyStreet !== undefined) setPropertyStreet(draft.propertyStreet);
+            if (draft.propertyUnit !== undefined) setPropertyUnit(draft.propertyUnit);
+            if (draft.propertyCityStateZip !== undefined) setPropertyCityStateZip(draft.propertyCityStateZip);
+            if (draft.dateOfNotice !== undefined) setDateOfNotice(draft.dateOfNotice);
+            if (draft.currentTermEnd !== undefined) setCurrentTermEnd(draft.currentTermEnd);
+            if (draft.newTermStart !== undefined) setNewTermStart(draft.newTermStart);
+            if (draft.newTermEnd !== undefined) setNewTermEnd(draft.newTermEnd);
+            if (draft.currentRent !== undefined) setCurrentRent(draft.currentRent);
+            if (draft.newRent !== undefined) setNewRent(draft.newRent);
+            if (draft.responseDeadline !== undefined) setResponseDeadline(draft.responseDeadline);
+            if (draft.additionalTerms !== undefined) setAdditionalTerms(draft.additionalTerms);
+            if (draft.landlordName !== undefined) setLandlordName(draft.landlordName);
+            if (draft.contactPhone !== undefined) setContactPhone(draft.contactPhone);
+            if (draft.representativeName !== undefined) setRepresentativeName(draft.representativeName);
+        }
+        setHydrated(true);
+    }, []);
+
+    const currentDraft = () => ({
+        tenantName, propertyStreet, propertyUnit, propertyCityStateZip, dateOfNotice,
+        currentTermEnd, newTermStart, newTermEnd, currentRent, newRent, responseDeadline,
+        additionalTerms, landlordName, contactPhone, representativeName,
+    });
+
+    useEffect(() => {
+        if (!hydrated) return;
+        saveDraft(DRAFT_KEY, currentDraft());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [hydrated, tenantName, propertyStreet, propertyUnit, propertyCityStateZip, dateOfNotice,
+        currentTermEnd, newTermStart, newTermEnd, currentRent, newRent, responseDeadline,
+        additionalTerms, landlordName, contactPhone, representativeName]);
+
+    const handleSave = () => {
+        saveDraft(DRAFT_KEY, currentDraft());
+        setSavedFlash(true);
+        setTimeout(() => setSavedFlash(false), 1500);
+    };
+
+    const handleClear = () => {
+        if (!window.confirm('Clear this form and start over? This cannot be undone.')) return;
+        clearDraft(DRAFT_KEY);
+        setTenantName('');
+        setPropertyStreet('');
+        setPropertyUnit('');
+        setPropertyCityStateZip('');
+        setDateOfNotice(todayISO());
+        setCurrentTermEnd('');
+        setNewTermStart('');
+        setNewTermEnd('');
+        setCurrentRent(0);
+        setNewRent(0);
+        setResponseDeadline('');
+        setAdditionalTerms('');
+        setLandlordName('CVP Properties 4.0 LLC');
+        setContactPhone('(518) 405-9055');
+        setRepresentativeName('Valentian Paulsen');
+    };
 
     const rentDelta = (newRent || 0) - (currentRent || 0);
     const pctChange = currentRent ? (rentDelta / currentRent) * 100 : 0;
@@ -49,9 +131,31 @@ export function LeaseRenewalNotice() {
         <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,420px)_1fr] gap-6 print:block">
             {/* ===================== FORM ===================== */}
             <div className="space-y-6 print:hidden">
-                <Link href="/toolbox" className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
-                    <ArrowLeft className="h-4 w-4" /> Back to Landlord Toolbox
-                </Link>
+                <div className="flex items-center justify-between gap-3">
+                    <Link href="/toolbox" className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
+                        <ArrowLeft className="h-4 w-4" /> Back to Landlord Toolbox
+                    </Link>
+                    <div className="flex items-center gap-2">
+                        {savedFlash && (
+                            <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600">
+                                <Check className="h-3.5 w-3.5" /> Saved
+                            </span>
+                        )}
+                        <button
+                            onClick={handleSave}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#2a9d8f]/10 text-[#2a9d8f] hover:bg-[#2a9d8f]/20 transition-colors"
+                        >
+                            <Save className="h-3.5 w-3.5" /> Save
+                        </button>
+                        <button
+                            onClick={handleClear}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+                        >
+                            <RotateCcw className="h-3.5 w-3.5" /> Clear
+                        </button>
+                    </div>
+                </div>
+                <p className="text-[11px] text-slate-400 -mt-3">Your entries save automatically and will be here next time you open this tool.</p>
 
                 <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-5">
                     <h2 className="text-sm font-black uppercase tracking-widest text-slate-500">Notice Details</h2>

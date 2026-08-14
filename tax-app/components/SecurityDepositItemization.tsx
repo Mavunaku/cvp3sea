@@ -1,8 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-import { Printer, Plus, Trash2, ArrowLeft } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Printer, Plus, Trash2, ArrowLeft, Save, RotateCcw, Check } from 'lucide-react';
 import Link from 'next/link';
+import { loadDraft, saveDraft, clearDraft } from '@/lib/draftStorage';
+
+const DRAFT_KEY = 'toolbox-draft-security-deposit';
 
 interface DeductionItem {
     id: string;
@@ -32,7 +35,18 @@ const formatDate = (iso: string) => {
 const fmtMoney = (n: number) =>
     `$${Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
+interface SecurityDepositDraft {
+    tenantName: string; propertyStreet: string; propertyUnit: string; propertyCityStateZip: string;
+    forwardingAddress: string; dateOfNotice: string; leaseStart: string; leaseEnd: string;
+    landlordName: string; contactPhone: string; representativeName: string; depositHeld: number;
+    deductions: DeductionItem[];
+}
+
 export function SecurityDepositItemization() {
+    // Plain SSR-safe defaults — this component is server-rendered, and the
+    // server has no localStorage, so the initial state (both server and the
+    // client's first hydration pass) must match. The saved draft, if any,
+    // is applied client-side afterward via the hydration effect below.
     const [tenantName, setTenantName] = useState('');
     const [propertyStreet, setPropertyStreet] = useState('');
     const [propertyUnit, setPropertyUnit] = useState('');
@@ -46,6 +60,75 @@ export function SecurityDepositItemization() {
     const [representativeName, setRepresentativeName] = useState('Valentian Paulsen');
     const [depositHeld, setDepositHeld] = useState<number>(0);
     const [deductions, setDeductions] = useState<DeductionItem[]>(starterDeductions);
+    const [savedFlash, setSavedFlash] = useState(false);
+
+    // Hydrated is REACT STATE, not a ref. Setting it inside the same effect
+    // that calls all the setters means React batches all of those updates
+    // into one render — so by the time the auto-save effect below sees
+    // hydrated flip to true, it's on a render where the field values are
+    // ALSO already updated. (A ref-based flag flips synchronously, ahead of
+    // that batched re-render, so auto-save's first pass would still read
+    // stale/blank closures and immediately clobber the just-loaded draft.)
+    const [hydrated, setHydrated] = useState(false);
+    useEffect(() => {
+        const draft = loadDraft<SecurityDepositDraft>(DRAFT_KEY);
+        if (draft) {
+            if (draft.tenantName !== undefined) setTenantName(draft.tenantName);
+            if (draft.propertyStreet !== undefined) setPropertyStreet(draft.propertyStreet);
+            if (draft.propertyUnit !== undefined) setPropertyUnit(draft.propertyUnit);
+            if (draft.propertyCityStateZip !== undefined) setPropertyCityStateZip(draft.propertyCityStateZip);
+            if (draft.forwardingAddress !== undefined) setForwardingAddress(draft.forwardingAddress);
+            if (draft.dateOfNotice !== undefined) setDateOfNotice(draft.dateOfNotice);
+            if (draft.leaseStart !== undefined) setLeaseStart(draft.leaseStart);
+            if (draft.leaseEnd !== undefined) setLeaseEnd(draft.leaseEnd);
+            if (draft.landlordName !== undefined) setLandlordName(draft.landlordName);
+            if (draft.contactPhone !== undefined) setContactPhone(draft.contactPhone);
+            if (draft.representativeName !== undefined) setRepresentativeName(draft.representativeName);
+            if (draft.depositHeld !== undefined) setDepositHeld(draft.depositHeld);
+            if (draft.deductions !== undefined) setDeductions(draft.deductions);
+        }
+        setHydrated(true);
+    }, []);
+
+    const currentDraft = () => ({
+        tenantName, propertyStreet, propertyUnit, propertyCityStateZip, forwardingAddress,
+        dateOfNotice, leaseStart, leaseEnd, landlordName, contactPhone, representativeName,
+        depositHeld, deductions,
+    });
+
+    // Auto-save on every change, once hydration has settled, so the draft
+    // is never lost even if the landlord forgets to click Save.
+    useEffect(() => {
+        if (!hydrated) return;
+        saveDraft(DRAFT_KEY, currentDraft());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [hydrated, tenantName, propertyStreet, propertyUnit, propertyCityStateZip, forwardingAddress,
+        dateOfNotice, leaseStart, leaseEnd, landlordName, contactPhone, representativeName,
+        depositHeld, deductions]);
+
+    const handleSave = () => {
+        saveDraft(DRAFT_KEY, currentDraft());
+        setSavedFlash(true);
+        setTimeout(() => setSavedFlash(false), 1500);
+    };
+
+    const handleClear = () => {
+        if (!window.confirm('Clear this form and start over? This cannot be undone.')) return;
+        clearDraft(DRAFT_KEY);
+        setTenantName('');
+        setPropertyStreet('');
+        setPropertyUnit('');
+        setPropertyCityStateZip('');
+        setForwardingAddress('');
+        setDateOfNotice(todayISO());
+        setLeaseStart('');
+        setLeaseEnd('');
+        setLandlordName('CVP Properties 4.0 LLC');
+        setContactPhone('(518) 405-9055');
+        setRepresentativeName('Valentian Paulsen');
+        setDepositHeld(0);
+        setDeductions(starterDeductions.map(d => ({ ...d, id: newId() })));
+    };
 
     const totalDeductions = deductions.reduce((sum, d) => sum + (Number.isFinite(d.amount) ? d.amount : 0), 0);
     const netBalance = depositHeld - totalDeductions;
@@ -74,9 +157,31 @@ export function SecurityDepositItemization() {
         <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,420px)_1fr] gap-6 print:block">
             {/* ===================== FORM (hidden when printing) ===================== */}
             <div className="space-y-6 print:hidden">
-                <Link href="/toolbox" className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
-                    <ArrowLeft className="h-4 w-4" /> Back to Landlord Toolbox
-                </Link>
+                <div className="flex items-center justify-between gap-3">
+                    <Link href="/toolbox" className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
+                        <ArrowLeft className="h-4 w-4" /> Back to Landlord Toolbox
+                    </Link>
+                    <div className="flex items-center gap-2">
+                        {savedFlash && (
+                            <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600">
+                                <Check className="h-3.5 w-3.5" /> Saved
+                            </span>
+                        )}
+                        <button
+                            onClick={handleSave}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#2a9d8f]/10 text-[#2a9d8f] hover:bg-[#2a9d8f]/20 transition-colors"
+                        >
+                            <Save className="h-3.5 w-3.5" /> Save
+                        </button>
+                        <button
+                            onClick={handleClear}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+                        >
+                            <RotateCcw className="h-3.5 w-3.5" /> Clear
+                        </button>
+                    </div>
+                </div>
+                <p className="text-[11px] text-slate-400 -mt-3">Your entries save automatically and will be here next time you open this tool.</p>
 
                 <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-5">
                     <h2 className="text-sm font-black uppercase tracking-widest text-slate-500">Notice Details</h2>

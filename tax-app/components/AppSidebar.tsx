@@ -46,7 +46,7 @@ export function AppSidebar() {
 
     return (
         <aside
-            className="hidden md:flex w-72 flex-col h-screen sticky top-0 border-r border-white/10 bg-black overflow-hidden group/sidebar"
+            className="hidden md:flex w-72 flex-col h-screen sticky top-0 border-r border-white/10 bg-black overflow-hidden group/sidebar print:hidden"
             onMouseMove={handleMouseMove}
         >
             {/* Interactive Sidebar Background */}
