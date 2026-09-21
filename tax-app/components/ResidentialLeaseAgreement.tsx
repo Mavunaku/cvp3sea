@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, Fragment } from 'react';
+import { useEffect, useRef, useState, Fragment } from 'react';
 import { Printer, ArrowLeft, Save, RotateCcw, Check, Download } from 'lucide-react';
 import Link from 'next/link';
 import { loadDraft, saveDraft, clearDraft } from '@/lib/draftStorage';
@@ -208,6 +208,32 @@ export function ResidentialLeaseAgreement() {
     };
 
     const handlePrint = () => window.print();
+
+    // Real .docx / .pdf downloads of the lease as currently filled in. The
+    // text is read back from the on-screen preview so the file always matches
+    // what's shown; the export libraries load only when a button is clicked.
+    const previewRef = useRef<HTMLDivElement>(null);
+    const [exporting, setExporting] = useState<null | 'docx' | 'pdf'>(null);
+    const handleDownload = async (kind: 'docx' | 'pdf') => {
+        if (!previewRef.current) return;
+        setExporting(kind);
+        try {
+            const { extractLease, buildLeaseDocx, buildLeasePdf, downloadBlob, leaseFileName } = await import('@/lib/leaseExport');
+            const data = extractLease(previewRef.current, {
+                landlordName: landlordName || '[Landlord]',
+                representativeName,
+                tenantList: tenantNames.trim() || '[Tenant Name(s)]',
+                guarantorRequired,
+            });
+            const blob = kind === 'docx' ? await buildLeaseDocx(data) : await buildLeasePdf(data);
+            downloadBlob(blob, leaseFileName(tenantNames.trim(), kind));
+        } catch (err) {
+            console.error('Lease download failed', err);
+            alert('Sorry, that download failed. You can still use Print / Save as PDF.');
+        } finally {
+            setExporting(null);
+        }
+    };
 
     const propertyLine = [propertyStreet, propertyCityStateZip].filter(Boolean).join(', ') || '[Property Address]';
     const tenantList = tenantNames.trim() || '[Tenant Name(s)]';
@@ -725,6 +751,29 @@ export function ResidentialLeaseAgreement() {
                     <Printer className="h-4 w-4" /> Print / Save as PDF
                 </button>
 
+                <div className="space-y-2">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Download This Lease (filled in)</p>
+                    <div className="grid grid-cols-2 gap-3">
+                        <button
+                            onClick={() => handleDownload('docx')}
+                            disabled={exporting !== null}
+                            className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest bg-[#2a9d8f] text-white hover:bg-[#238a7e] disabled:opacity-60 transition-colors"
+                        >
+                            <Download className="h-4 w-4" /> {exporting === 'docx' ? 'Preparing…' : 'Word (.docx)'}
+                        </button>
+                        <button
+                            onClick={() => handleDownload('pdf')}
+                            disabled={exporting !== null}
+                            className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest bg-[#2a9d8f] text-white hover:bg-[#238a7e] disabled:opacity-60 transition-colors"
+                        >
+                            <Download className="h-4 w-4" /> {exporting === 'pdf' ? 'Preparing…' : 'PDF'}
+                        </button>
+                    </div>
+                    <p className="text-[11px] text-slate-400 leading-relaxed">
+                        Includes everything you entered above, exactly as shown in the preview.
+                    </p>
+                </div>
+
                 {/* Blank fill-in copies of the full lease (files live in
                     public/lease-template). They're a snapshot of the clause
                     text — regenerate them whenever the clauses above change. */}
@@ -747,7 +796,7 @@ export function ResidentialLeaseAgreement() {
                         </a>
                     </div>
                     <p className="text-[11px] text-slate-400 leading-relaxed">
-                        Blank copy with fill-in blanks. For a lease already filled in with the details above, use Print / Save as PDF.
+                        Blank copy with fill-in blanks, for handwriting or for your lawyer.
                     </p>
                 </div>
             </div>
@@ -755,7 +804,7 @@ export function ResidentialLeaseAgreement() {
             {/* ===================== LIVE PREVIEW ===================== */}
             <div className="print:w-full">
                 <div className="xl:sticky xl:top-6">
-                    <div className="bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-slate-200 print:shadow-none print:border-none print:rounded-none mx-auto max-w-[850px]">
+                    <div ref={previewRef} className="bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-slate-200 print:shadow-none print:border-none print:rounded-none mx-auto max-w-[850px]">
                         <div className="bg-slate-900 text-white px-10 py-8">
                             <p className="text-xs font-bold uppercase tracking-widest text-slate-400">State of NY</p>
                             <h1 className="text-2xl font-black uppercase tracking-tight">Lease Agreement</h1>
