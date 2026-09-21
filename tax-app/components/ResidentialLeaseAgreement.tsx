@@ -34,13 +34,22 @@ interface Clause {
 interface LeaseAgreementDraft {
     tenantNames: string; propertyStreet: string; unitLabel: string; propertyCityStateZip: string;
     bedrooms: number; bathrooms: number; parkingDescription: string; garageAvailable: boolean; garageFee: number;
-    dateOfAgreement: string; termLength: string; termStart: string;
+    dateOfAgreement: string; termLength: string; termStart: string; holdoverPercent: number;
     monthlyRent: number; rentDueDay: number; bouncedCheckFee: number; guarantorRequired: boolean;
-    lateDeemedAfterDays: number; lateGraceDays: number; lateFeePerDay: number; lateFeeMax: number;
+    lateGraceDays: number; lateFeePerDay: number; lateFeeMax: number;
     utilitiesByLandlord: string; electricFixedFee: number; otherTenantUtilities: string;
     securityDeposit: number; petsAllowed: boolean; rentersInsuranceRequired: boolean; additionalTerms: string;
-    landlordName: string; contactPhone: string; representativeName: string;
+    landlordName: string; contactPhone: string; representativeName: string; landlordNoticeAddress: string;
+    quietHours: string; guestDays: number;
 }
+
+// New York caps residential late fees at the lesser of $50 or 5% of the
+// monthly rent, and bars charging one before the rent is 5 days late
+// (RPL §238-a). The lease text below is computed from these so a fee entered
+// in the form can never print above the legal limit.
+const NY_LATE_FEE_MAX_DOLLARS = 50;
+const NY_LATE_FEE_MAX_RENT_PERCENT = 0.05;
+const NY_LATE_FEE_MIN_GRACE_DAYS = 5;
 
 export function ResidentialLeaseAgreement() {
     // Plain SSR-safe defaults — this component is server-rendered, and the
@@ -60,13 +69,13 @@ export function ResidentialLeaseAgreement() {
     const [dateOfAgreement, setDateOfAgreement] = useState(todayISO());
     const [termLength, setTermLength] = useState('1 (one) Year');
     const [termStart, setTermStart] = useState('');
+    const [holdoverPercent, setHoldoverPercent] = useState<number>(150);
 
     const [monthlyRent, setMonthlyRent] = useState<number>(0);
     const [rentDueDay, setRentDueDay] = useState<number>(1);
     const [bouncedCheckFee, setBouncedCheckFee] = useState<number>(45);
     const [guarantorRequired, setGuarantorRequired] = useState(false);
-    const [lateDeemedAfterDays, setLateDeemedAfterDays] = useState<number>(7);
-    const [lateGraceDays, setLateGraceDays] = useState<number>(3);
+    const [lateGraceDays, setLateGraceDays] = useState<number>(5);
     const [lateFeePerDay, setLateFeePerDay] = useState<number>(15);
     const [lateFeeMax, setLateFeeMax] = useState<number>(45);
 
@@ -82,6 +91,9 @@ export function ResidentialLeaseAgreement() {
     const [landlordName, setLandlordName] = useState('CVP Properties 4.0 LLC');
     const [contactPhone, setContactPhone] = useState('(518) 405-9055');
     const [representativeName, setRepresentativeName] = useState('Valentian Paulsen');
+    const [landlordNoticeAddress, setLandlordNoticeAddress] = useState('');
+    const [quietHours, setQuietHours] = useState('10:00 p.m. and 8:00 a.m.');
+    const [guestDays, setGuestDays] = useState<number>(14);
     const [savedFlash, setSavedFlash] = useState(false);
 
     // Hydrated is REACT STATE, not a ref — see SecurityDepositItemization
@@ -104,11 +116,11 @@ export function ResidentialLeaseAgreement() {
             if (draft.dateOfAgreement !== undefined) setDateOfAgreement(draft.dateOfAgreement);
             if (draft.termLength !== undefined) setTermLength(draft.termLength);
             if (draft.termStart !== undefined) setTermStart(draft.termStart);
+            if (draft.holdoverPercent !== undefined) setHoldoverPercent(draft.holdoverPercent);
             if (draft.monthlyRent !== undefined) setMonthlyRent(draft.monthlyRent);
             if (draft.rentDueDay !== undefined) setRentDueDay(draft.rentDueDay);
             if (draft.bouncedCheckFee !== undefined) setBouncedCheckFee(draft.bouncedCheckFee);
             if (draft.guarantorRequired !== undefined) setGuarantorRequired(draft.guarantorRequired);
-            if (draft.lateDeemedAfterDays !== undefined) setLateDeemedAfterDays(draft.lateDeemedAfterDays);
             if (draft.lateGraceDays !== undefined) setLateGraceDays(draft.lateGraceDays);
             if (draft.lateFeePerDay !== undefined) setLateFeePerDay(draft.lateFeePerDay);
             if (draft.lateFeeMax !== undefined) setLateFeeMax(draft.lateFeeMax);
@@ -122,6 +134,9 @@ export function ResidentialLeaseAgreement() {
             if (draft.landlordName !== undefined) setLandlordName(draft.landlordName);
             if (draft.contactPhone !== undefined) setContactPhone(draft.contactPhone);
             if (draft.representativeName !== undefined) setRepresentativeName(draft.representativeName);
+            if (draft.landlordNoticeAddress !== undefined) setLandlordNoticeAddress(draft.landlordNoticeAddress);
+            if (draft.quietHours !== undefined) setQuietHours(draft.quietHours);
+            if (draft.guestDays !== undefined) setGuestDays(draft.guestDays);
         }
         setHydrated(true);
     }, []);
@@ -129,10 +144,11 @@ export function ResidentialLeaseAgreement() {
     const currentDraft = () => ({
         tenantNames, propertyStreet, unitLabel, propertyCityStateZip, bedrooms, bathrooms,
         parkingDescription, garageAvailable, garageFee, dateOfAgreement, termLength, termStart,
-        monthlyRent, rentDueDay, bouncedCheckFee, guarantorRequired, lateDeemedAfterDays,
+        holdoverPercent, monthlyRent, rentDueDay, bouncedCheckFee, guarantorRequired,
         lateGraceDays, lateFeePerDay, lateFeeMax, utilitiesByLandlord, electricFixedFee,
         otherTenantUtilities, securityDeposit, petsAllowed, rentersInsuranceRequired,
-        additionalTerms, landlordName, contactPhone, representativeName,
+        additionalTerms, landlordName, contactPhone, representativeName, landlordNoticeAddress,
+        quietHours, guestDays,
     });
 
     useEffect(() => {
@@ -141,10 +157,11 @@ export function ResidentialLeaseAgreement() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [hydrated, tenantNames, propertyStreet, unitLabel, propertyCityStateZip, bedrooms, bathrooms,
         parkingDescription, garageAvailable, garageFee, dateOfAgreement, termLength, termStart,
-        monthlyRent, rentDueDay, bouncedCheckFee, guarantorRequired, lateDeemedAfterDays,
+        holdoverPercent, monthlyRent, rentDueDay, bouncedCheckFee, guarantorRequired,
         lateGraceDays, lateFeePerDay, lateFeeMax, utilitiesByLandlord, electricFixedFee,
         otherTenantUtilities, securityDeposit, petsAllowed, rentersInsuranceRequired,
-        additionalTerms, landlordName, contactPhone, representativeName]);
+        additionalTerms, landlordName, contactPhone, representativeName, landlordNoticeAddress,
+        quietHours, guestDays]);
 
     const handleSave = () => {
         saveDraft(DRAFT_KEY, currentDraft());
@@ -167,12 +184,12 @@ export function ResidentialLeaseAgreement() {
         setDateOfAgreement(todayISO());
         setTermLength('1 (one) Year');
         setTermStart('');
+        setHoldoverPercent(150);
         setMonthlyRent(0);
         setRentDueDay(1);
         setBouncedCheckFee(45);
         setGuarantorRequired(false);
-        setLateDeemedAfterDays(7);
-        setLateGraceDays(3);
+        setLateGraceDays(5);
         setLateFeePerDay(15);
         setLateFeeMax(45);
         setUtilitiesByLandlord('Gas, Water, Sewage, Heat, Garbage, Snow Removal & Lawn Care');
@@ -185,6 +202,9 @@ export function ResidentialLeaseAgreement() {
         setLandlordName('CVP Properties 4.0 LLC');
         setContactPhone('(518) 405-9055');
         setRepresentativeName('Valentian Paulsen');
+        setLandlordNoticeAddress('');
+        setQuietHours('10:00 p.m. and 8:00 a.m.');
+        setGuestDays(14);
     };
 
     const handlePrint = () => window.print();
@@ -192,6 +212,18 @@ export function ResidentialLeaseAgreement() {
     const propertyLine = [propertyStreet, propertyCityStateZip].filter(Boolean).join(', ') || '[Property Address]';
     const tenantList = tenantNames.trim() || '[Tenant Name(s)]';
     const unitDescription = unitLabel.trim() || '[Unit / Floor]';
+
+    // Late fee as it will actually print: never above the NY cap, never
+    // charged before day 5.
+    const nyLateFeeCap = monthlyRent > 0
+        ? Math.min(NY_LATE_FEE_MAX_DOLLARS, monthlyRent * NY_LATE_FEE_MAX_RENT_PERCENT)
+        : NY_LATE_FEE_MAX_DOLLARS;
+    const printedLateFeeMax = Math.min(lateFeeMax, nyLateFeeCap);
+    const printedLateFeePerDay = Math.min(lateFeePerDay, printedLateFeeMax);
+    const printedGraceDays = Math.max(lateGraceDays, NY_LATE_FEE_MIN_GRACE_DAYS);
+    const lateFeeAdjusted = lateFeeMax > nyLateFeeCap || lateGraceDays < NY_LATE_FEE_MIN_GRACE_DAYS;
+    const depositOverCap = monthlyRent > 0 && securityDeposit > monthlyRent;
+    const holdoverDailyRate = monthlyRent > 0 ? ((monthlyRent / 30) * (holdoverPercent / 100)) : 0;
 
     const clauses: Clause[] = [
         {
@@ -225,6 +257,22 @@ export function ResidentialLeaseAgreement() {
             ),
         },
         {
+            title: 'Holdover',
+            body: (
+                <>
+                    If Tenant remains in possession of the Premises after the expiration or termination of the Term without
+                    Landlord&apos;s written consent, Tenant shall pay Landlord use and occupancy for each day of the holdover at
+                    a daily rate equal to <strong>{holdoverPercent}%</strong> of the daily rent
+                    {monthlyRent > 0 ? <> (currently <strong>{fmtMoney(holdoverDailyRate)}</strong> per day)</> : ''}, calculated
+                    by dividing the monthly rent by thirty (30). Tenant shall also be liable for all damages resulting from the
+                    holdover, including any lost rent or expense caused by Landlord&apos;s inability to deliver possession to a
+                    new tenant, together with reasonable attorney&apos;s fees and costs. To the extent permitted by law,
+                    Landlord&apos;s acceptance of any payment after the Term is accepted as use and occupancy only and does not
+                    renew this Agreement, create a new tenancy, or waive Landlord&apos;s right to recover possession.
+                </>
+            ),
+        },
+        {
             title: 'Rent',
             body: (
                 <>
@@ -244,16 +292,18 @@ export function ResidentialLeaseAgreement() {
         {
             title: 'Guaranty',
             body: guarantorRequired
-                ? 'A guarantor IS required for the Tenant.'
+                ? 'A guarantor IS required for the Tenant. Each guarantor shall sign a separate written guaranty in a form acceptable to Landlord at or before the signing of this Agreement, and delivery of the signed guaranty is a condition of this Agreement. By signing, each guarantor unconditionally guarantees, jointly and severally with Tenant, the full and timely payment of rent and all other sums due, and the performance of all of Tenant’s obligations, during the Term. Landlord may proceed against a guarantor without first proceeding against Tenant.'
                 : 'A guarantor is NOT required for the Tenant.',
         },
         {
             title: 'Late Fee',
             body: (
                 <>
-                    A late fee will be charged if rent is not paid on time. Rent paid after {lateDeemedAfterDays} days of each
-                    month will be deemed as late; and if rent is not paid within {lateGraceDays} days after such due date, Tenant
-                    agrees to pay {fmtMoney(lateFeePerDay)} a day up to {fmtMoney(lateFeeMax)}.
+                    If rent is not received in full within <strong>{printedGraceDays}</strong> days after its due date, Tenant
+                    shall pay a late fee of <strong>{fmtMoney(printedLateFeePerDay)}</strong> for each day thereafter until the
+                    rent is paid, not to exceed <strong>{fmtMoney(printedLateFeeMax)}</strong> in total for any late payment. In
+                    no event shall late fees exceed the maximum permitted by New York law, which is currently the lesser of fifty
+                    dollars ($50) or five percent (5%) of the monthly rent.
                 </>
             ),
         },
@@ -280,14 +330,56 @@ export function ResidentialLeaseAgreement() {
                     full refund of the security deposit if Tenant returns possession of the Premises to Landlord in the same
                     condition as accepted, ordinary wear and tear excepted. Within the timeframe required by applicable law
                     after the termination of this Agreement, Landlord will return the security deposit to Tenant (minus any
-                    amount applied by Landlord in accordance with this section). Any reason for retaining a portion of the
-                    security deposit will be explained in writing.
+                    amount applied by Landlord in accordance with this section). Landlord may apply the security deposit to
+                    unpaid rent, late fees, and utilities; to the cost of repairing damage beyond ordinary wear and tear; to
+                    cleaning the Premises; and to the removal and disposal of property abandoned by Tenant. Landlord will provide
+                    Tenant with a written itemized statement of any amount retained, within the time required by law. The
+                    security deposit is not a limit on Tenant&apos;s liability, and Tenant remains responsible for any amount owed
+                    to Landlord in excess of the deposit. Landlord will hold the security deposit as required by New York law
+                    and will provide Tenant with the name and address of the institution holding it.
+                </>
+            ),
+        },
+        {
+            title: 'Move-In and Move-Out Inspections',
+            body: (
+                <>
+                    <strong>Move-In.</strong> Within seven (7) days after the Term begins, Tenant shall inspect the Premises, note
+                    in writing any existing damage or defect on the move-in condition report provided by Landlord, and return the
+                    signed report to Landlord. Any condition not noted in a timely written report is presumed to have been in
+                    good condition at move-in. Landlord may photograph or record the condition of the Premises at move-in for its
+                    records.
+                    <br />
+                    <strong>Move-Out.</strong> Tenant may request an inspection of the Premises before move-out, as provided by
+                    New York law. Landlord will notify Tenant in writing of that right and will offer an inspection date, and
+                    Tenant may be present. An inspection does not release Tenant from liability for damage beyond ordinary wear
+                    and tear, including damage not identified at the inspection.
                 </>
             ),
         },
         {
             title: 'Use of Premises',
-            body: 'The Premises will be occupied only by Tenant and Tenant’s immediate family and used only for residential purposes. Tenant will not engage in any objectionable conduct, including behavior which will make the Premises less fit to live in, will cause dangerous, hazardous or unsanitary conditions or will interfere with the rights of others to enjoy their property. Tenant will be liable for any damage occurring to the Premises and any damage to or loss of the contents thereof which is done by Tenant or Tenant’s guests or invitees.',
+            body: 'The Premises will be occupied only by the Tenant(s) named in this Agreement and any other occupants permitted by law, and used only for residential purposes. Tenant will not engage in any objectionable conduct, including behavior which will make the Premises less fit to live in, will cause dangerous, hazardous or unsanitary conditions or will interfere with the rights of others to enjoy their property. Tenant will be liable for any damage occurring to the Premises and any damage to or loss of the contents thereof which is done by Tenant or Tenant’s guests or invitees.',
+        },
+        {
+            title: 'Quiet Hours; Guests',
+            body: (
+                <>
+                    (a) <strong>Quiet Hours.</strong> Between <strong>{quietHours || '[quiet hours]'}</strong> each day, Tenant,
+                    all occupants, and their guests shall keep noise, music, and activity at a level that does not disturb
+                    neighbors or other occupants of the building. At all other times, Tenant shall not make or permit noise or
+                    activity that unreasonably disturbs others. Repeated disturbances after written notice are a breach of
+                    this Agreement.
+                    <br />(b) <strong>Guests.</strong> Tenant may have guests, and is responsible for their conduct and for any
+                    damage they cause. No guest may stay in the Premises for more than <strong>{guestDays || 0}</strong>{' '}
+                    consecutive days without Landlord&apos;s prior written consent. A person who stays longer without consent is
+                    not a permitted occupant.
+                    <br />(c) <strong>Occupants.</strong> Only the Tenant(s) named in this Agreement, and other occupants
+                    permitted by New York law, may live in the Premises. Within thirty (30) days after Landlord&apos;s written
+                    request, Tenant shall give Landlord the names of all persons occupying the Premises. Tenant is responsible
+                    for ensuring that all occupants and guests comply with this Agreement.
+                </>
+            ),
         },
         {
             title: 'Condition of the Premises',
@@ -296,6 +388,10 @@ export function ResidentialLeaseAgreement() {
         {
             title: 'Maintenance and Repairs',
             body: 'Tenant will maintain the Premises, including all appliances and fixtures (and furnishings), in clean, sanitary and good condition and repair. Tenant will not remove Landlord’s appliances and fixtures (and furnishings) from the Premises for any purpose. If repairs other than general maintenance are required, Tenant will notify Landlord for such repairs. In the event of default by Tenant, Tenant will reimburse Landlord for the cost of any repairs or replacement.',
+        },
+        {
+            title: 'Notice of Hazards; Winter Care',
+            body: 'Tenant shall promptly notify Landlord in writing of any leak, water intrusion, mold, pest activity, heating, plumbing or electrical failure, or other condition that may cause damage to the Premises or endanger health or safety. To the extent permitted by law, Tenant shall be responsible for damage that results from Tenant’s failure to give prompt notice or from Tenant’s negligence. During cold weather, Tenant shall keep the Premises heated to at least fifty-five (55) degrees Fahrenheit at all times, including when Tenant is away, to prevent frozen pipes. Tenant shall not disable, remove, or tamper with any smoke detector, carbon monoxide detector, or other fire safety equipment, shall replace batteries as needed, and shall promptly report any malfunction to Landlord.',
         },
         {
             title: 'Compliance',
@@ -327,6 +423,10 @@ export function ResidentialLeaseAgreement() {
             title: 'Liability',
             body: 'Landlord is not responsible or liable for any loss, claim, damage or expense as a result of any accident, injury or damage to any person or property occurring anywhere on the Premises, unless resulting from the negligence or willful misconduct of Landlord.',
         },
+        {
+            title: 'Indemnification',
+            body: 'To the fullest extent permitted by law, Tenant shall indemnify, defend, and hold harmless Landlord and its members, managers, employees, and agents from and against any claim, loss, liability, damage, or expense, including reasonable attorney’s fees, arising from (a) Tenant’s breach of this Agreement or (b) the acts or omissions of Tenant or Tenant’s family members, guests, invitees, or pets, except to the extent caused by the negligence or willful misconduct of Landlord.',
+        },
         ...(rentersInsuranceRequired ? [{
             title: 'Renter’s Insurance',
             body: 'Tenant is required to obtain, and maintain at all times during the Term, a renter’s insurance policy. Tenant will name Landlord as an interested party or additional insured. Tenant will provide Landlord with a certificate or proof of insurance upon request.',
@@ -344,16 +444,75 @@ export function ResidentialLeaseAgreement() {
             body: 'Tenant will deliver and surrender to Landlord possession of the Premises immediately upon the expiration of the Term or the termination of this Agreement, clean and in as good condition and repair as the Premises was at the commencement of the Term, reasonable wear and tear excepted.',
         },
         {
+            title: 'Default and Remedies',
+            body: (
+                <>
+                    (a) <strong>Events of Default.</strong> Each of the following is a default by Tenant: (i) failure to pay
+                    rent or any other sum when due; (ii) failure to perform any other obligation under this Agreement that is
+                    not cured within ten (10) days after written notice from Landlord, or such shorter period as the law permits
+                    where the breach cannot be cured or endangers persons or property; and (iii) use of the Premises for any
+                    unlawful purpose.
+                    <br />(b) <strong>Remedies.</strong> Upon a default, and after giving any notice required by law, Landlord
+                    may, to the extent permitted by law, terminate this Agreement or Tenant&apos;s right to possession, commence
+                    a proceeding to recover possession of the Premises, and recover all unpaid rent, late fees, and other sums
+                    owed, together with damages, the cost of repair and cleaning, and reasonable attorney&apos;s fees and costs.
+                    <br />(c) <strong>Reletting.</strong> If Landlord recovers possession before the end of the Term, Tenant
+                    remains liable for rent for the balance of the Term, less amounts Landlord actually receives from reletting
+                    after using the efforts to relet the Premises that the law requires.
+                    <br />(d) <strong>No Waiver; Remedies Cumulative.</strong> To the extent permitted by law, Landlord&apos;s
+                    acceptance of a partial or late payment, or delay or failure to exercise any right, is not a waiver of that
+                    or any other right or default. Landlord&apos;s remedies are cumulative.
+                    <br />(e) <strong>Notice Periods.</strong> Nothing in this section shortens any notice or cure period
+                    required by law.
+                </>
+            ),
+        },
+        {
             title: 'Subordination',
             body: 'This Agreement and Tenant’s right under it shall be subject and subordinate to the lien, operation and effect of each existing or future mortgage, deed of trust, ground lease and/or any other similar instrument of encumbrance covering any or all of the Premises, if any, and each renewal, modification, consolidation, replacement or extension thereof.',
         },
         {
+            title: 'Notices',
+            body: (
+                <>
+                    All notices under this Agreement must be in writing. Notices to Tenant may be delivered by hand, sent by
+                    first-class or certified mail addressed to Tenant at the Premises, or sent by email to any email address
+                    Tenant has provided to Landlord in writing. Notices to Landlord must be delivered by hand or sent by
+                    first-class or certified mail to <strong>{landlordNoticeAddress.trim() || '[Landlord Notice Address]'}</strong>,
+                    or to any other address Landlord designates in writing. A notice sent by mail is considered given three (3)
+                    days after mailing, and a notice delivered by hand or email is considered given on delivery, except where
+                    the law prescribes a different rule for a particular notice.
+                </>
+            ),
+        },
+        {
             title: 'Disputes',
-            body: 'Any dispute arising from this Agreement shall be resolved through mediation, then binding arbitration. If the dispute cannot be resolved through mediation, then the dispute will be resolved through binding arbitration conducted in accordance with the rules of the American Arbitration Association.',
+            body: (
+                <>
+                    (a) <strong>Mediation and Arbitration of Monetary Claims.</strong> Any claim for money arising out of this
+                    Agreement, including claims concerning security deposit deductions, repair or damage charges, unpaid
+                    utilities, and late fees, shall first be submitted to mediation. If the claim is not resolved through
+                    mediation, it shall be finally resolved by binding arbitration administered by the American Arbitration
+                    Association under its applicable rules. Only the monetary claims described in this subsection are subject
+                    to mediation and arbitration. No other dispute under this Agreement, including any matter concerning
+                    possession of the Premises, is subject to this subsection.
+                    <br />(b) <strong>Attorney&apos;s Fees and Costs.</strong> In any proceeding arising out of this Agreement,
+                    the prevailing Party shall be entitled to recover its reasonable attorney&apos;s fees and costs from the
+                    non-prevailing Party. This provision applies equally to Landlord and Tenant.
+                    <br />(c) <strong>Governing Law; Waivers.</strong> This Agreement shall be governed by and construed in
+                    accordance with the laws of the State of New York. To the fullest extent permitted by law, each Party
+                    knowingly and voluntarily waives any right to a trial by jury and to participate in a class action in
+                    connection with any dispute arising out of this Agreement.
+                </>
+            ),
         },
         {
             title: 'Amendments',
             body: 'This Agreement may be amended or modified only by a written agreement signed by the Parties.',
+        },
+        {
+            title: 'Severability; Counterparts',
+            body: 'If any provision of this Agreement is found to be invalid or unenforceable, that provision shall be enforced to the maximum extent permitted by law, or modified to the minimum extent necessary to make it enforceable, and the remaining provisions shall continue in full force and effect. Time is of the essence with respect to Tenant’s payment obligations. This Agreement may be signed in counterparts and by electronic signature, each of which is an original and all of which together are one instrument.',
         },
         {
             title: 'Entire Agreement',
@@ -443,6 +602,9 @@ export function ResidentialLeaseAgreement() {
                         <Field label="Term Starts">
                             <input type="date" value={termStart} onChange={e => setTermStart(e.target.value)} className="input" />
                         </Field>
+                        <Field label="Holdover Rate (% of daily rent)" hint="Charged per day if tenant stays past the term">
+                            <input type="number" value={holdoverPercent || ''} onChange={e => setHoldoverPercent(Number(e.target.value) || 0)} className="input font-mono" />
+                        </Field>
                     </div>
                 </div>
 
@@ -466,11 +628,8 @@ export function ResidentialLeaseAgreement() {
 
                     <div className="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-3">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Late Fee</span>
-                        <div className="grid grid-cols-3 gap-3">
-                            <Field label="Late After (days)">
-                                <input type="number" value={lateDeemedAfterDays || ''} onChange={e => setLateDeemedAfterDays(Number(e.target.value) || 0)} className="input font-mono" />
-                            </Field>
-                            <Field label="Grace (days)">
+                        <div className="grid grid-cols-2 gap-3">
+                            <Field label="Grace (days)" hint="NY minimum: 5">
                                 <input type="number" value={lateGraceDays || ''} onChange={e => setLateGraceDays(Number(e.target.value) || 0)} className="input font-mono" />
                             </Field>
                             <Field label="$/day">
@@ -480,6 +639,13 @@ export function ResidentialLeaseAgreement() {
                         <Field label="Max Late Fee ($)">
                             <input type="number" value={lateFeeMax || ''} onChange={e => setLateFeeMax(Number(e.target.value) || 0)} className="input font-mono" />
                         </Field>
+                        <p className={`text-[11px] leading-relaxed ${lateFeeAdjusted ? 'text-amber-600 font-semibold' : 'text-slate-400'}`}>
+                            NY limit{monthlyRent > 0 ? ' for this rent' : ''}: the lesser of $50 or 5% of monthly rent
+                            {monthlyRent > 0 ? ` (${fmtMoney(nyLateFeeCap)})` : ''}, and not before day {NY_LATE_FEE_MIN_GRACE_DAYS}.
+                            {lateFeeAdjusted
+                                ? ` Your entries exceed this, so the lease will print a ${printedGraceDays}-day grace and a ${fmtMoney(printedLateFeeMax)} maximum.`
+                                : ''}
+                        </p>
                     </div>
                 </div>
 
@@ -499,10 +665,28 @@ export function ResidentialLeaseAgreement() {
                 </div>
 
                 <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-5">
+                    <h2 className="text-sm font-black uppercase tracking-widest text-slate-500">House Rules</h2>
+                    <div className="grid grid-cols-2 gap-3">
+                        <Field label="Quiet Hours" hint='Reads: "Between ___ each day"'>
+                            <input value={quietHours} onChange={e => setQuietHours(e.target.value)} className="input" />
+                        </Field>
+                        <Field label="Max Guest Stay (days)" hint="Consecutive days without consent">
+                            <input type="number" value={guestDays || ''} onChange={e => setGuestDays(Number(e.target.value) || 0)} className="input font-mono" />
+                        </Field>
+                    </div>
+                </div>
+
+                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 space-y-5">
                     <h2 className="text-sm font-black uppercase tracking-widest text-slate-500">Deposit, Pets &amp; Insurance</h2>
                     <Field label="Security Deposit ($)">
                         <input type="number" value={securityDeposit || ''} onChange={e => setSecurityDeposit(Number(e.target.value) || 0)} placeholder="1500" className="input font-mono" />
                     </Field>
+                    {depositOverCap && (
+                        <p className="text-[11px] leading-relaxed text-amber-600 font-semibold -mt-2">
+                            New York limits a security deposit to one month&apos;s rent ({fmtMoney(monthlyRent)}). A larger deposit
+                            can make the lease unlawful and expose you to penalties.
+                        </p>
+                    )}
                     <label className="flex items-center gap-2 text-xs font-bold text-slate-600 dark:text-slate-300">
                         <input type="checkbox" checked={petsAllowed} onChange={e => setPetsAllowed(e.target.checked)} className="h-3.5 w-3.5" />
                         Pets allowed
@@ -527,6 +711,9 @@ export function ResidentialLeaseAgreement() {
                         </Field>
                         <Field label="Signed By (Authorized Rep.)">
                             <input value={representativeName} onChange={e => setRepresentativeName(e.target.value)} className="input" />
+                        </Field>
+                        <Field label="Landlord Notice Address" span2 hint="Where tenants must send written notices">
+                            <input value={landlordNoticeAddress} onChange={e => setLandlordNoticeAddress(e.target.value)} placeholder="Street, City, State ZIP" className="input" />
                         </Field>
                     </div>
                 </div>
@@ -588,6 +775,17 @@ export function ResidentialLeaseAgreement() {
                                     <p className="font-black text-slate-900 pt-1 text-center">{tenantList}</p>
                                 </div>
                             </div>
+
+                            {guarantorRequired && (
+                                <div className="grid grid-cols-2 gap-8 pt-2">
+                                    <div className="space-y-1">
+                                        <div className="w-full border-b border-slate-400 mt-10" />
+                                        <p className="font-black text-slate-900 pt-1 text-center">Guarantor Signature</p>
+                                        <div className="w-full border-b border-slate-400 mt-6" />
+                                        <p className="font-black text-slate-900 pt-1 text-center">Guarantor Full Name</p>
+                                    </div>
+                                </div>
+                            )}
 
                             <hr className="border-slate-200 mt-4" />
                             <p className="text-[10px] text-slate-400 text-center">
