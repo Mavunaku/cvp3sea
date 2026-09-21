@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, Fragment } from 'react';
-import { Printer, ArrowLeft, Save, RotateCcw, Check } from 'lucide-react';
+import { Printer, ArrowLeft, Save, RotateCcw, Check, Download } from 'lucide-react';
 import Link from 'next/link';
 import { loadDraft, saveDraft, clearDraft } from '@/lib/draftStorage';
 
@@ -724,6 +724,32 @@ export function ResidentialLeaseAgreement() {
                 >
                     <Printer className="h-4 w-4" /> Print / Save as PDF
                 </button>
+
+                {/* Blank fill-in copies of the full lease (files live in
+                    public/lease-template). They're a snapshot of the clause
+                    text — regenerate them whenever the clauses above change. */}
+                <div className="space-y-2">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Blank Lease Template</p>
+                    <div className="grid grid-cols-2 gap-3">
+                        <a
+                            href="/lease-template/Residential-Lease-Agreement.docx"
+                            download
+                            className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-[#2a9d8f] hover:text-[#2a9d8f] transition-colors"
+                        >
+                            <Download className="h-4 w-4" /> Word (.docx)
+                        </a>
+                        <a
+                            href="/lease-template/Residential-Lease-Agreement.pdf"
+                            download
+                            className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-[#2a9d8f] hover:text-[#2a9d8f] transition-colors"
+                        >
+                            <Download className="h-4 w-4" /> PDF
+                        </a>
+                    </div>
+                    <p className="text-[11px] text-slate-400 leading-relaxed">
+                        Blank copy with fill-in blanks. For a lease already filled in with the details above, use Print / Save as PDF.
+                    </p>
+                </div>
             </div>
 
             {/* ===================== LIVE PREVIEW ===================== */}
