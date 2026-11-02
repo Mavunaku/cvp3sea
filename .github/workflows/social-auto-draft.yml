@@ -8,6 +8,10 @@ on:
   schedule:
     - cron: "13 */2 * * *" # every 2 hours
   workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/social-auto-draft.yml"
 
 jobs:
   draft:
