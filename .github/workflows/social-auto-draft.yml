@@ -1,0 +1,33 @@
+name: Auto-draft social campaigns
+
+# Picks up any 'new' campaign submitted through the Landlord Toolbox's Social
+# Media & Marketing tool, builds a Reel for it, and marks it 'drafted' so it's
+# ready for review in the app. Nothing here ever posts to Instagram/Facebook —
+# that always needs an explicit human Approve.
+on:
+  schedule:
+    - cron: "13 */2 * * *" # every 2 hours
+  workflow_dispatch: {}
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install ffmpeg and fonts
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core
+
+      - name: Draft new campaigns
+        working-directory: automation/social
+        env:
+          # Supabase anon key — safe to be here, it's the same key already
+          # shipped in the tax-app's public browser bundle and is restricted
+          # by this table's row-level security policy.
+          SUPABASE_URL: https://nrqzesbghxvbhzudqzbs.supabase.co
+          SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ycXplc2JnaHh2Ymh6dWRxemJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwODY1NjcsImV4cCI6MjA4NjY2MjU2N30.dqh1mHHFAL1-7mlUGIs9PxukdvMLwbXWZo8yTObjcPw
+        run: node auto_process.js
