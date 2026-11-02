@@ -61,8 +61,11 @@ if (!cfg.images || cfg.images.length === 0) {
 
 const secondsEach = cfg.secondsEach ?? 2.6;
 const fps = 30;
-const W = 1080;
-const H = 1920;
+// True 4K vertical. Instagram itself will downscale to 1080x1920 on upload —
+// this resolution is for a full-quality download/archive of the reel.
+const W = 2160;
+const H = 3840;
+const SCALE = W / 1080; // all pixel constants below are authored at 1080-wide and scaled up
 const fadeDur = 0.35;
 const cardDur = 1.8;
 const brandColor = cfg.brandColor ?? "#1f3d2e";
@@ -75,13 +78,15 @@ let textFileCount = 0;
 // Writes `text` to a temp file and returns a drawtext filter fragment that reads
 // from it — avoids fragile escaping of apostrophes/colons in on-screen copy. Fades
 // in over the first 0.35s instead of popping on, so it reads as animated, not static.
-function captionFilter(text, { fontsize = 56, y = `h-420` } = {}) {
+// `fontsize`/`y` are authored as if W were 1080 and scaled internally, so callers
+// don't need to think about the actual render resolution.
+function captionFilter(text, { fontsize = 56, y = `h-${Math.round(420 * SCALE)}` } = {}) {
   const file = path.join(tmpDir, `text${textFileCount++}.txt`);
   fs.writeFileSync(file, text, "utf8");
   return (
     `drawtext=fontfile='${ffPath(FONT_BOLD)}':textfile='${ffPath(file)}':` +
-    `fontcolor=white:fontsize=${fontsize}:line_spacing=10:` +
-    `x=(w-text_w)/2:y=${y}:box=1:boxcolor=black@0.45:boxborderw=24:` +
+    `fontcolor=white:fontsize=${Math.round(fontsize * SCALE)}:line_spacing=${Math.round(10 * SCALE)}:` +
+    `x=(w-text_w)/2:y=${y}:box=1:boxcolor=black@0.45:boxborderw=${Math.round(24 * SCALE)}:` +
     `alpha='if(lt(t,0.35),t/0.35,1)'`
   );
 }

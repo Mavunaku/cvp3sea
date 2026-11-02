@@ -15,6 +15,7 @@ import {
     CheckCircle2,
     Instagram,
     Facebook,
+    Download,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -148,6 +149,36 @@ export default function SocialMediaPage() {
         if (error) {
             setCampaigns(previous);
             alert(`Couldn't update status: ${error.message}`);
+        }
+        setBusyId(null);
+    };
+
+    // A rejected campaign isn't worth keeping around — delete it outright
+    // (row + its uploaded photos/reel) instead of leaving a "Rejected" card
+    // sitting in the queue forever.
+    const storagePathOf = (url: string) => {
+        const marker = '/storage/v1/object/public/social-media/';
+        const i = url.indexOf(marker);
+        return i === -1 ? null : url.slice(i + marker.length);
+    };
+
+    const rejectCampaign = async (c: SocialCampaign) => {
+        if (!confirm(`Delete "${c.title}"? This can't be undone.`)) return;
+        setBusyId(c.id);
+        const previous = campaigns;
+        setCampaigns(prev => prev.filter(x => x.id !== c.id));
+
+        const paths = [...c.image_urls, ...(c.reel_url ? [c.reel_url] : [])]
+            .map(storagePathOf)
+            .filter((p): p is string => !!p);
+        if (paths.length > 0) {
+            await supabase.storage.from('social-media').remove(paths);
+        }
+
+        const { error } = await supabase.from('social_campaigns').delete().eq('id', c.id);
+        if (error) {
+            setCampaigns(previous);
+            alert(`Couldn't delete: ${error.message}`);
         }
         setBusyId(null);
     };
@@ -328,13 +359,23 @@ export default function SocialMediaPage() {
                                             <ThumbsUp className="h-3.5 w-3.5" /> Approve
                                         </button>
                                         <button
-                                            onClick={() => setStatus(c.id, 'rejected')}
+                                            onClick={() => rejectCampaign(c)}
                                             disabled={busyId === c.id}
                                             className="flex items-center gap-1.5 text-slate-500 text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-rose-300 hover:text-rose-600 disabled:opacity-50"
                                         >
                                             <ThumbsDown className="h-3.5 w-3.5" /> Reject
                                         </button>
                                     </div>
+                                )}
+
+                                {c.status === 'approved' && c.reel_url && (
+                                    <a
+                                        href={c.reel_url}
+                                        download
+                                        className="inline-flex items-center gap-1.5 bg-slate-900 dark:bg-[#2a9d8f] text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:opacity-90"
+                                    >
+                                        <Download className="h-3.5 w-3.5" /> Download 4K
+                                    </a>
                                 )}
                             </div>
                         );
