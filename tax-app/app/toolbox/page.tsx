@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
-import { FileWarning, ArrowRight, Briefcase, FileSignature, RefreshCcw, Building2 } from 'lucide-react';
+import { FileWarning, ArrowRight, Briefcase, FileSignature, RefreshCcw, Building2, Megaphone } from 'lucide-react';
 
 const tools = [
     {
@@ -31,6 +31,13 @@ const tools = [
         description: 'Offer a tenant a lease renewal, with or without a rent increase — auto-calculates the dollar and percentage change and flags large increases.',
         href: '/toolbox/lease-renewal',
         icon: RefreshCcw,
+        available: true,
+    },
+    {
+        name: 'Social Media & Marketing',
+        description: 'Attach photos (or a video) and a draft idea for a retreat, listing, or promo — get a drafted Reel, caption, and hashtags staged for your review before anything posts.',
+        href: '/toolbox/social-media',
+        icon: Megaphone,
         available: true,
     },
 ];
