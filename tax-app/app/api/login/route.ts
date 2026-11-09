@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 
 // Server-side only: ADMIN_PASSWORD has no NEXT_PUBLIC_ prefix, so it never
-// ships in the client JS bundle (unlike the old client-side string compare).
+// ships in the client JS bundle. There is deliberately NO fallback value:
+// if ADMIN_PASSWORD is not set on the server, nobody can log in.
 export async function POST(request: Request) {
     const { password } = await request.json();
-    const expected = process.env.ADMIN_PASSWORD || 'Mavunaku656!';
+    const expected = process.env.ADMIN_PASSWORD;
 
-    if (!expected || password !== expected) {
+    if (!expected || typeof password !== 'string' || password !== expected) {
         return NextResponse.json({ ok: false }, { status: 401 });
     }
 
