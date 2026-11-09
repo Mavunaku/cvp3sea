@@ -1,0 +1,421 @@
+/**
+ * Yoga page: a warmer, more traditional Indian / yogic look.
+ * Saffron, marigold and deep maroon, Devanagari lettering (ॐ, योग), lotus and mandala motifs,
+ * and a scalloped temple-arch edge under the hero.
+ * Only linked from yoga.html. Delete that one <link> line to go back to the previous look.
+ */
+
+body.page-yoga {
+  --saffron: #e8871e;
+  --marigold: #f4b63f;
+  --kumkum: #c8442a;
+  --maroon: #6b1f2a;
+  --ivory: #fff7e8;
+  --sandal: #f8e6c4;
+  --ink: #3a1f14;
+
+  --yoga-saffron: #e8871e;
+  --yoga-sand: #f4b63f;
+  --yoga-sage: #e8871e;
+  --yoga-charcoal: #3a1f14;
+  --yoga-cream: #fff7e8;
+  background-color: var(--ivory);
+  background-image:
+    radial-gradient(ellipse 70% 40% at 100% 0%, rgba(244, 182, 63, .12), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(200, 68, 42, .06), transparent 70%);
+  color: var(--ink);
+}
+.deva { font-family: 'Tiro Devanagari Hindi', 'Noto Serif Devanagari', serif; }
+
+/* ---------- headings ---------- */
+body.page-yoga h1, body.page-yoga h2, body.page-yoga h3, body.page-yoga h4 {
+  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  color: var(--maroon);
+}
+body.page-yoga h2 { font-size: 43px; font-weight: 700; letter-spacing: .2px; line-height: 1.1; margin-bottom: 4px; }
+body.page-yoga h2::after {
+  content: '';
+  display: block;
+  width: 190px;
+  height: 32px;
+  margin: 10px 0 18px;
+  background: url(../img/yoga/lotus-divider.svg) left center / contain no-repeat;
+}
+body.page-yoga .text-center h2::after { margin-left: auto; margin-right: auto; background-position: center; }
+body.page-yoga p { color: var(--ink); }
+
+/* ---------- sections ---------- */
+body.page-yoga .yoga-section.alt-bg {
+  background: linear-gradient(180deg, var(--sandal) 0%, #fdf0d6 100%);
+}
+body.page-yoga .yoga-section > .container { position: relative; z-index: 1; }
+body.page-yoga #host::before,
+body.page-yoga #contact::before {
+  content: '';
+  position: absolute;
+  width: 560px;
+  height: 560px;
+  background: url(../img/yoga/mandala.svg) center / contain no-repeat;
+  opacity: .16;
+  pointer-events: none;
+  animation: mandalaSpin 160s linear infinite;
+}
+body.page-yoga #host::before { right: -190px; top: -150px; }
+body.page-yoga #contact::before { left: -200px; bottom: -220px; }
+@keyframes mandalaSpin { to { transform: rotate(360deg); } }
+
+body.page-yoga .yoga-icon { color: var(--saffron); }
+
+/* ---------- hero ---------- */
+body.page-yoga .yoga-banner::before {
+  background:
+    radial-gradient(ellipse 62% 66% at 50% 52%, rgba(46, 18, 8, .74) 0%, rgba(46, 18, 8, .5) 52%, rgba(46, 18, 8, 0) 84%),
+    linear-gradient(180deg, rgba(46, 18, 8, .42) 0%, rgba(46, 18, 8, 0) 26%);
+}
+/* scalloped temple-arch edge where the hero meets the page */
+body.page-yoga .yoga-hero { overflow: visible; min-height: 680px; padding-top: 84px; padding-bottom: 20px; }
+body.page-yoga .yoga-hero::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 20px;
+  z-index: 3;
+  background:
+    radial-gradient(circle at 50% 0, transparent 17px, var(--ivory) 18px) 0 0 / 38px 20px repeat-x;
+}
+body.page-yoga .yoga-hero-panel { padding-bottom: 50px; }
+body.page-yoga .yoga-om {
+  display: block;
+  font-family: 'Tiro Devanagari Hindi', 'Noto Serif Devanagari', serif;
+  font-size: 78px;
+  line-height: 1;
+  color: var(--marigold);
+  text-shadow: 0 0 28px rgba(244, 182, 63, .55), 0 2px 10px rgba(0, 0, 0, .45);
+  margin-bottom: 6px;
+  animation: lotusFloat 5s ease-in-out infinite;
+}
+body.page-yoga .yoga-eyebrow {
+  color: var(--marigold);
+  border-color: rgba(244, 182, 63, .7);
+  background: rgba(46, 18, 8, .28);
+  letter-spacing: 2.4px;
+}
+body.page-yoga .yoga-hero-panel h1 {
+  color: #fff;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 76px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  line-height: 1.02;
+  margin: 12px 0 14px;
+}
+body.page-yoga .yoga-hero-panel h1::after { display: none; }
+body.page-yoga .yoga-hero-panel p { color: #fff; font-size: 19px; }
+body.page-yoga .yoga-deva {
+  margin: 16px auto 0;
+  font-family: 'Tiro Devanagari Hindi', 'Noto Serif Devanagari', serif;
+  font-size: 20px;
+  letter-spacing: 3px;
+  color: var(--marigold);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, .55);
+}
+body.page-yoga .yoga-chip {
+  background: rgba(255, 236, 200, .14);
+  border-color: rgba(244, 182, 63, .55);
+}
+body.page-yoga .yoga-chip i { color: var(--marigold); }
+
+/* ---------- buttons ---------- */
+body.page-yoga .btn-yoga {
+  background: linear-gradient(135deg, #f8c85f 0%, #e8871e 100%);
+  color: #3a1405;
+  box-shadow: 0 12px 28px rgba(232, 135, 30, .38);
+}
+body.page-yoga .btn-yoga:hover { background: linear-gradient(135deg, #ffd674 0%, #f0922a 100%); color: #3a1405; }
+body.page-yoga .btn-yoga-secondary { color: var(--maroon); border-color: var(--saffron); }
+body.page-yoga .btn-yoga-secondary:hover { background: var(--saffron); color: #fff; }
+body.page-yoga .btn-yoga-secondary.btn-yoga-secondary-light { color: #fff; border-color: rgba(255, 236, 200, .85); }
+body.page-yoga .btn-yoga-secondary.btn-yoga-secondary-light:hover { background: #fff; color: var(--maroon); }
+
+/* ---------- host section ---------- */
+body.page-yoga .host-pullquote {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 23px;
+  line-height: 1.35;
+  font-style: italic;
+  color: var(--maroon);
+  opacity: 1;
+  border-left: 3px solid var(--kumkum);
+}
+body.page-yoga .host-badge {
+  position: relative;
+  width: 132px;
+  height: 132px;
+  overflow: visible;
+  border: 3px solid var(--marigold);
+  box-shadow: 0 0 0 6px var(--ivory), 0 0 0 8px var(--saffron), 0 14px 30px rgba(107, 31, 42, .2);
+}
+body.page-yoga .host-badge img { border-radius: 50%; position: relative; z-index: 1; }
+body.page-yoga .host-badge::before {
+  content: '';
+  position: absolute;
+  inset: -62px;
+  background: url(../img/yoga/mandala.svg) center / contain no-repeat;
+  opacity: .5;
+  animation: mandalaSpin 120s linear infinite;
+}
+body.page-yoga .host-step {
+  background: #fffcf5;
+  border: 1px solid rgba(201, 138, 27, .25);
+  border-bottom: 4px solid var(--saffron);
+  box-shadow: 0 12px 30px rgba(107, 31, 42, .07);
+}
+body.page-yoga .host-step-num {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--saffron), var(--kumkum));
+  box-shadow: 0 0 0 4px rgba(244, 182, 63, .35);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 20px;
+}
+body.page-yoga .host-step h3 { font-size: 24px; font-weight: 700; }
+body.page-yoga .host-step p { color: rgba(58, 31, 20, .82); }
+
+/* ---------- practice accordion ---------- */
+body.page-yoga .practice-intro-note { color: rgba(58, 31, 20, .75); }
+body.page-yoga .practice-item {
+  background: #fffcf5;
+  border: 1px solid rgba(201, 138, 27, .22);
+  border-left: 4px solid var(--saffron);
+  box-shadow: 0 12px 30px rgba(107, 31, 42, .06);
+}
+body.page-yoga .practice-item summary {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 25px;
+  font-weight: 700;
+  color: var(--maroon);
+}
+body.page-yoga .practice-item summary:hover { background: rgba(244, 182, 63, .12); }
+body.page-yoga .practice-item summary::after { color: var(--kumkum); }
+body.page-yoga .practice-item-body li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  top: .62em;
+  background: var(--marigold);
+  transform: rotate(45deg);
+  font-size: 0;
+}
+body.page-yoga .practice-item-body strong { color: var(--maroon); }
+
+/* ---------- contact + footer ---------- */
+body.page-yoga #contact .form-control:focus { border-color: var(--saffron); box-shadow: 0 0 0 4px rgba(232, 135, 30, .18); }
+body.page-yoga #footer { background: linear-gradient(180deg, #3a1a12 0%, #241009 100%); }
+body.page-yoga .footer-col h4 { color: var(--marigold); }
+
+@media (max-width: 767px) {
+  body.page-yoga h2 { font-size: 34px; }
+  body.page-yoga .yoga-hero-panel h1 { font-size: 46px; }
+  body.page-yoga .yoga-om { font-size: 58px; }
+  body.page-yoga #host::before, body.page-yoga #contact::before { width: 360px; height: 360px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.page-yoga #host::before, body.page-yoga #contact::before,
+  body.page-yoga .host-badge::before, body.page-yoga .yoga-om { animation: none; }
+}
+
+/* ---------- marigold garland (toran) ---------- */
+body.page-yoga .yoga-garland {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 75px;
+  background: url(../img/yoga/gold-chain.svg) repeat-x 0 0 / 160px 75px;
+  pointer-events: none;
+  z-index: 4;
+  filter: drop-shadow(0 4px 5px rgba(60, 25, 8, .28));
+}
+body.page-yoga .yoga-garland-hero { top: 78px; }
+body.page-yoga .yoga-garland-top { top: 0; }
+body.page-yoga #practice { padding-top: 104px; }
+body.page-yoga #footer { position: relative; padding-top: 96px; }
+
+/* ---------- paisley pattern (kept soft so text stays easy to read) ---------- */
+body.page-yoga .yoga-section.alt-bg {
+  background:
+    linear-gradient(rgba(253, 240, 214, .8), rgba(253, 240, 214, .8)),
+    url(../img/yoga/paisley.svg) 0 0 / 170px 170px,
+    linear-gradient(180deg, var(--sandal) 0%, #fdf0d6 100%);
+}
+body.page-yoga #practice {
+  background:
+    linear-gradient(rgba(255, 247, 232, .86), rgba(255, 247, 232, .86)),
+    url(../img/yoga/paisley.svg) 60px 40px / 190px 190px;
+}
+body.page-yoga #footer {
+  background:
+    linear-gradient(rgba(36, 16, 9, .9), rgba(36, 16, 9, .9)),
+    url(../img/yoga/paisley.svg) 0 0 / 160px 160px,
+    #241009;
+}
+body.page-yoga .host-step,
+body.page-yoga .practice-item { background-color: #fffcf5; }
+
+@media (max-width: 767px) {
+  body.page-yoga .yoga-garland { height: 56px; background-size: 120px 56px; }
+  body.page-yoga .yoga-garland-hero { top: 70px; }
+  body.page-yoga #practice { padding-top: 84px; }
+}
+
+/* =====================================================================
+   Modern refinement: same palette and motifs, but lighter and calmer.
+   (delete everything below this line to go back to the more ornate version)
+   ===================================================================== */
+
+/* more space, cleaner sections */
+body.page-yoga .yoga-section { padding: 92px 0; }
+body.page-yoga .yoga-section-tight { padding: 80px 0; }
+body.page-yoga .yoga-section.alt-bg {
+  background:
+    linear-gradient(rgba(255, 247, 232, .9), rgba(255, 247, 232, .9)),
+    url(../img/yoga/paisley.svg) 0 0 / 170px 170px,
+    linear-gradient(180deg, #fbeccc 0%, #fff3df 100%);
+}
+body.page-yoga #practice { background: none; padding-top: 92px; }
+body.page-yoga #footer {
+  background:
+    linear-gradient(rgba(36, 16, 9, .94), rgba(36, 16, 9, .94)),
+    url(../img/yoga/paisley.svg) 0 0 / 160px 160px,
+    #241009;
+  padding-top: 84px;
+}
+body.page-yoga #host::before, body.page-yoga #contact::before { opacity: .09; }
+
+/* garland: smaller, only at the very top and the footer; the hero edge becomes a smooth curve */
+body.page-yoga .yoga-garland { height: 56px; background-size: 120px 56px; filter: drop-shadow(0 3px 4px rgba(60, 25, 8, .2)); }
+body.page-yoga .yoga-garland-hero { top: 80px; }
+body.page-yoga #practice .yoga-garland { display: none; }
+body.page-yoga .yoga-hero::after {
+  left: -3%;
+  right: -3%;
+  height: 64px;
+  background: var(--ivory);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+
+/* hero: calmer */
+body.page-yoga .yoga-hero { min-height: 640px; }
+body.page-yoga .yoga-om { font-size: 62px; }
+body.page-yoga .yoga-hero-panel h1 { font-weight: 600; font-size: 72px; letter-spacing: 0; }
+body.page-yoga .yoga-eyebrow { background: transparent; border: 0; padding: 0 0 6px; letter-spacing: 3px; }
+body.page-yoga .yoga-chip {
+  border: 0;
+  background: rgba(255, 255, 255, .16);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+body.page-yoga .yoga-deva { font-size: 18px; letter-spacing: 4px; opacity: .95; }
+body.page-yoga .yoga-deva-en {
+  margin: 6px auto 0;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 17px;
+  font-style: italic;
+  letter-spacing: 2px;
+  color: var(--marigold);
+  opacity: .95;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, .55);
+}
+
+/* headings: smaller, lighter divider */
+body.page-yoga h2 { font-size: 46px; font-weight: 600; }
+body.page-yoga h2::after { width: 150px; height: 26px; margin: 8px 0 20px; }
+
+/* cards: big soft corners, no heavy borders */
+body.page-yoga .host-step {
+  border: 1px solid rgba(201, 138, 27, .14);
+  border-radius: 24px;
+  box-shadow: 0 22px 44px -22px rgba(107, 31, 42, .28);
+  padding: 30px 24px;
+}
+body.page-yoga .host-step-num { box-shadow: 0 0 0 5px rgba(244, 182, 63, .22); }
+body.page-yoga .practice-item {
+  border: 1px solid rgba(201, 138, 27, .16);
+  border-radius: 22px;
+  box-shadow: 0 20px 40px -24px rgba(107, 31, 42, .3);
+  background: #fffdf8;
+}
+body.page-yoga .practice-item[open] { border-color: rgba(232, 135, 30, .4); }
+body.page-yoga .practice-item summary { font-size: 25px; padding: 22px 28px; }
+body.page-yoga .host-badge::before { opacity: .38; }
+body.page-yoga .host-pullquote { font-size: 24px; border-left-width: 2px; }
+
+@media (max-width: 767px) {
+  body.page-yoga .yoga-section { padding: 64px 0; }
+  body.page-yoga .yoga-section-tight { padding: 56px 0; }
+  body.page-yoga .yoga-hero { min-height: 600px; }
+  body.page-yoga .yoga-hero-panel h1 { font-size: 46px; }
+  body.page-yoga h2 { font-size: 34px; }
+  body.page-yoga .yoga-garland { height: 44px; background-size: 94px 44px; }
+  body.page-yoga .yoga-garland-hero { top: 70px; }
+}
+body.page-yoga .yoga-hero { overflow: hidden; }
+/* fuller garland tile: slightly bigger, sits clear of the menu */
+body.page-yoga .yoga-garland { height: 60px; background-size: 128px 55px; }
+body.page-yoga .yoga-garland-hero { top: 90px; }
+/* gold chain swag (replaces the flower garland): fine and light, so slightly shorter */
+body.page-yoga .yoga-garland { height: 52px; background-size: 140px 58px; filter: drop-shadow(0 3px 4px rgba(40, 18, 4, .35)); }
+body.page-yoga .yoga-garland-hero { top: 84px; }
+@media (max-width: 767px) {
+  body.page-yoga .yoga-garland { height: 40px; background-size: 100px 41px; }
+  body.page-yoga .yoga-garland-hero { top: 74px; }
+}
+
+/* gold chain: off for now (delete this line to bring it back) */
+body.page-yoga .yoga-garland { display: none; }
+body.page-yoga #footer { padding-top: 64px; }
+
+/* ---------- Retreat teaser (links to the Rishikesh & Holi retreat page) ---------- */
+body.page-yoga .retreat-card {
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  background: #fffdf8;
+  border: 1px solid rgba(201, 138, 27, .16);
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 34px 70px -34px rgba(107, 31, 42, .4);
+}
+body.page-yoga .retreat-media { position: relative; display: block; min-height: 460px; overflow: hidden; }
+body.page-yoga .retreat-media img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: 55% 50%;
+  transition: transform .9s cubic-bezier(.2, .7, .2, 1);
+}
+body.page-yoga .retreat-media:hover img { transform: scale(1.04); }
+body.page-yoga .retreat-badge {
+  position: absolute; left: 22px; top: 22px;
+  padding: 8px 16px; border-radius: 999px;
+  background: rgba(255, 253, 248, .92); color: var(--maroon);
+  font: 700 12px/1 'Inter', sans-serif; letter-spacing: 1.6px; text-transform: uppercase;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .18);
+}
+body.page-yoga .retreat-body { padding: 54px 52px; display: flex; flex-direction: column; justify-content: center; }
+body.page-yoga .retreat-eyebrow {
+  font: 700 12px/1 'Inter', sans-serif; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--kumkum); margin-bottom: 14px;
+}
+body.page-yoga .retreat-body h2 { font-size: 40px; margin-bottom: 4px; }
+body.page-yoga .retreat-body p { font-size: 17px; line-height: 1.65; margin-bottom: 20px; }
+body.page-yoga .retreat-meta { list-style: none; padding: 0; margin: 0 0 8px; }
+body.page-yoga .retreat-meta li { display: flex; align-items: center; gap: 12px; padding: 7px 0; font-size: 15.5px; color: var(--ink); }
+body.page-yoga .retreat-meta i { width: 20px; text-align: center; color: var(--saffron); }
+body.page-yoga .retreat-cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 8px; }
+body.page-yoga .retreat-cta .btn-yoga, body.page-yoga .retreat-cta .btn-yoga-secondary { margin-top: 12px; }
+
+@media (max-width: 991px) {
+  body.page-yoga .retreat-card { grid-template-columns: 1fr; }
+  body.page-yoga .retreat-media { min-height: 300px; }
+  body.page-yoga .retreat-body { padding: 36px 28px 40px; }
+  body.page-yoga .retreat-body h2 { font-size: 32px; }
+}

@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
+# drafts and the private tax app are not part of the public site
+Disallow: /drafts/
+Disallow: /tax-app/
+
 Sitemap: https://cvpproperties.com/sitemap.xml

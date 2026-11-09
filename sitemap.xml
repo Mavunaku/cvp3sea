@@ -1,39 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://cvpproperties.com/</loc>
-    <lastmod>2026-08-01</lastmod>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image><image:loc>https://cvpproperties.com/img/og/home.jpg</image:loc></image:image>
   </url>
   <url>
-    <loc>https://cvpproperties.com/67GrandBLVD</loc>
-    <lastmod>2026-08-01</lastmod>
+    <loc>https://cvpproperties.com/67GrandBLVD.html</loc>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image><image:loc>https://cvpproperties.com/img/og/67grand-apt1.jpg</image:loc></image:image>
   </url>
   <url>
-    <loc>https://cvpproperties.com/67GrandBLVD2FL</loc>
-    <lastmod>2026-08-01</lastmod>
+    <loc>https://cvpproperties.com/67GrandBLVD2FL.html</loc>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image><image:loc>https://cvpproperties.com/img/og/67grand-apt2.jpg</image:loc></image:image>
   </url>
   <url>
-    <loc>https://cvpproperties.com/2112KypriotisDr1FL</loc>
-    <lastmod>2026-08-01</lastmod>
+    <loc>https://cvpproperties.com/2112KypriotisDr1FL.html</loc>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image><image:loc>https://cvpproperties.com/img/og/2112-kypriotis.jpg</image:loc></image:image>
   </url>
   <url>
-    <loc>https://cvpproperties.com/todo</loc>
-    <lastmod>2026-08-01</lastmod>
+    <loc>https://cvpproperties.com/yoga.html</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image><image:loc>https://cvpproperties.com/img/og/yoga.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://cvpproperties.com/todo.html</loc>
+    <lastmod>2026-11-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://cvpproperties.com/yoga</loc>
-    <lastmod>2026-08-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <image:image><image:loc>https://cvpproperties.com/img/og/todo.jpg</image:loc></image:image>
   </url>
 </urlset>

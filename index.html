@@ -17,10 +17,36 @@
 	<meta charset="utf-8">
 	<!-- Always force latest IE rendering engine or request Chrome Frame -->
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>Binghamton Apartments &amp; Housing | CVP Properties 4.0</title>
+	<title>Binghamton Apartments &amp; Housing for Rent | CVP Properties</title>
 	<!-- Meta Description -->
-	<meta name="description"
-		content="Looking for Binghamton apartments or housing? CVP Properties 4.0 LLC offers quality maintained apartments and housing for rent in Binghamton NY and Broome County. Schedule a tour today.">
+	<meta name="description" content="Quality maintained apartments and housing for rent in Binghamton NY and Broome County. See available homes and schedule a tour with CVP Properties.">
+	<!-- SEO:start -->
+	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+	<meta name="theme-color" content="#6b1f2a">
+	<link rel="icon" href="/favicon.ico" sizes="any">
+	<link rel="icon" type="image/png" sizes="32x32" href="/img/icons/favicon-32.png">
+	<link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png">
+	<meta property="og:site_name" content="CVP Properties 4.0">
+	<meta property="og:locale" content="en_US">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://cvpproperties.com/">
+	<meta property="og:title" content="Binghamton Apartments &amp; Housing for Rent | CVP Properties">
+	<meta property="og:description" content="Quality maintained apartments and housing for rent in Binghamton NY and Broome County. See available homes and schedule a tour with CVP Properties.">
+	<meta property="og:image" content="https://cvpproperties.com/img/og/home.jpg">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:alt" content="Downtown Binghamton at sunset, home of CVP Properties rentals">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Binghamton Apartments &amp; Housing for Rent | CVP Properties">
+	<meta name="twitter:description" content="Quality maintained apartments and housing for rent in Binghamton NY and Broome County. See available homes and schedule a tour with CVP Properties.">
+	<meta name="twitter:image" content="https://cvpproperties.com/img/og/home.jpg">
+	<meta name="twitter:image:alt" content="Downtown Binghamton at sunset, home of CVP Properties rentals">
+	<link rel="preload" as="image" href="/img/hero/opt/home-sunset-1080.webp" media="(max-width: 767px)" fetchpriority="high">
+	<link rel="preload" as="image" href="/img/hero/opt/home-sunset-2000.webp" media="(min-width: 768px) and (max-width: 999px), (min-width: 1000px) and (max-width: 1599px) and (max-resolution: 1.49dppx)" fetchpriority="high">
+	<link rel="preload" as="image" href="/img/hero/opt/home-sunset-2000.webp" media="(min-width: 1600px), (min-width: 1000px) and (min-resolution: 1.5dppx)" fetchpriority="high">
+	<!-- SEO:end -->
+	<script type="application/ld+json" data-seo="1">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://cvpproperties.com/"}]}</script>
+	<script type="application/ld+json" data-seo="1">{"@context": "https://schema.org", "@type": "WebSite", "name": "CVP Properties 4.0", "url": "https://cvpproperties.com/", "inLanguage": "en-US"}</script>
 	<meta name="keywords"
 		content="Binghamton apartments, Binghamton housing, Upstate NY housing, rental properties Binghamton NY, Broome County rentals, Binghamton student housing, apartments for rent Binghamton, 2 bedroom apartments Binghamton, 3 bedroom apartments Binghamton, off-campus housing Binghamton, Greek Peak yoga, Greek Peak activities, CVP Properties">
 	<meta name="author" content="CVP Properties 4.0 LLC">
@@ -31,22 +57,8 @@
 	<link rel="canonical" href="https://cvpproperties.com/">
 
 	<!-- Open Graph / Facebook -->
-	<meta property="og:type" content="website">
-	<meta property="og:url" content="https://cvpproperties.com/">
-	<meta property="og:title" content="Binghamton Apartments &amp; Housing | CVP Properties 4.0">
-	<meta property="og:description"
-		content="Quality maintained apartments and housing for rent in Binghamton NY and Broome County. Reliable, comfortable rentals for families, students, and professionals.">
-	<meta property="og:image" content="https://cvpproperties.com/img/icons/cvpnew.png">
-
-	<!-- Twitter -->
-	<meta property="twitter:card" content="summary_large_image">
-	<meta property="twitter:url" content="https://cvpproperties.com/">
-	<meta property="twitter:title" content="Binghamton Apartments &amp; Housing | CVP Properties 4.0">
-	<meta property="twitter:description"
-		content="Quality maintained apartments and housing for rent in Binghamton NY and Broome County.">
-	<meta property="twitter:image" content="https://cvpproperties.com/img/icons/cvpnew.png">
-
-	<!-- JSON-LD Structured Data -->
+<!-- Twitter -->
+<!-- JSON-LD Structured Data -->
 	<script type="application/ld+json">
 		{
 			"@context": "https://schema.org",
@@ -179,6 +191,11 @@
 	<link rel="stylesheet" href="css/main.css">
 	<!-- Emerald Forest Light Theme (overrides) -->
 	<link rel="stylesheet" href="css/emerald-forest-light.css">
+	<!-- Shared modern top menu and logo (delete this line to go back to the old menu) -->
+	<link rel="stylesheet" href="css/nav-modern.css">
+	<!-- Site-wide modern design (delete this line to go back to the previous look) -->
+	<link rel="stylesheet" href="css/site-modern.css">
+	<link rel="stylesheet" href="css/notify-me.css">
 
 	<!-- Modernizer Script for old Browsers -->
 	<script src="js/modernizr-2.6.2.min.js"></script>
@@ -198,7 +215,7 @@
 
 </head>
 
-<body id="body">
+<body id="body" class="page-home">
 
 	<!-- preloader (disabled) -->
 
@@ -215,20 +232,21 @@
 
 				<!-- logo -->
 				<div class="navbar-brand">
-					<a href="/">CVP Properties 4.0
-						<img id="logocvp" src="/img/icons/cvpnew-removebg-preview.png"
-							alt="CVP Properties 4.0 Company Logo - Quality Housing Broome County"></a>
-				</div>
+						<a href="/" aria-label="CVP Properties 4.0, home">
+							<span class="brand-text"><b>CVP</b><small>Properties 4.0</small></span>
+							<img id="logocvp" src="/img/icons/cvpnew-removebg-preview.png"
+								alt="CVP Properties 4.0 company logo"></a>
+					</div>
 			</div>
 
 			<!-- main nav -->
 			<nav class="collapse navbar-collapse navbar-right" role="navigation">
 								<ul id="nav" class="nav navbar-nav">
-					<li><a href="#body">HOME</a></li>
-					<li><a href="#about">CVP STORY</a></li>
-					<li><a href="#portfolio">OUR PROPERTIES</a></li>
-					<li><a href="/todo.html" class="external">TO DO LIST</a></li>
-					<li><a href="#request-schedule">REQUEST &amp; SCHEDULE</a></li>
+					<li><a href="#body">Home</a></li>
+					<li><a href="#about">CVP Story</a></li>
+					<li><a href="#portfolio">Our Properties</a></li>
+					<li><a href="/todo.html" class="external">To Do List</a></li>
+					<li><a href="#request-schedule">Request &amp; Schedule</a></li>
 				</ul>
 			</nav>
 
@@ -243,7 +261,7 @@
 		<section id="luxury-hero" class="modern-hero">
 			<!-- Background Layer -->
 			<div class="hero-bg-container">
-				<div class="hero-bg-img" style="background-image: url('img/binghamton-aerial.jpg');"></div>
+				<div class="hero-bg-img hb-home" style="background-position: center 30%;"></div>
 				<div class="hero-mesh-overlay"></div>
 				<div class="hero-luxury-overlay"></div>
 			</div>
@@ -261,7 +279,7 @@
 					<div class="col-md-7">
 						<div class="hero-glass-panel wow animated fadeInLeft" data-wow-duration="1.2s">
 							<span class="hero-eyebrow">Binghamton &amp; Broome County</span>
-							<h1 class="hero-title">Binghamton Apartments<br>&amp; Housing You'll Love</h1>
+							<h1 class="hero-title">Binghamton Apartments &amp; Housing You'll Love</h1>
 							<p class="hero-description">
 								Real homes, real care. CVP Properties offers well-kept apartments and housing for rent in Binghamton NY and Broome County for families, students, and professionals.
 							</p>
@@ -292,7 +310,7 @@
 								</li>
 								<li>
 									<span class="why-icon"><i class="fa fa-phone"></i></span>
-									<div><strong>Always Reachable</strong><p>Real people, real support &mdash; <a href="tel:+15184059055">give us a call</a>.</p></div>
+									<div><strong>Always Reachable</strong><p>Real people, real support. <a href="tel:+15184059055">Give us a call</a>.</p></div>
 								</li>
 								<li>
 									<span class="why-icon"><i class="fa fa-star"></i></span>
@@ -376,23 +394,20 @@
 
 					<div class="about-row wow animated fadeInUp">
 						<div class="about-media" data-index="01">
-							<img src="img/about_how_it_began.png"
+							<img loading="lazy" decoding="async" src="img/about_how_it_began.png" srcset="/img/opt/about_how_it_began-512.webp 512w, /img/opt/about_how_it_began-1024.webp 1024w" sizes="(max-width: 767px) 90vw, 480px"
 								alt="Property manager welcoming a family to their new CVP rental home in Binghamton NY">
 						</div>
 						<div class="about-copy">
 							<span class="card-label">How It All Began</span>
 							<p>CVP Properties emerged from a shared vision to create residential spaces tailored to families
 								and busy professionals. With a deep understanding of modern lifestyle demands, we set out to
-								build quality maintained properties that serve as comfortable havens — offering the
-								reliability and care that every resident deserves. Today, CVP Properties stands as a
-								symbol of excellence, delivering unparalleled living experiences in Binghamton and
-								Broome County.</p>
+								build quality maintained properties that work as comfortable havens, with the reliability and care every resident deserves. Today we bring that to Binghamton and Broome County.</p>
 						</div>
 					</div>
 
 					<div class="about-row reverse wow animated fadeInUp">
 						<div class="about-media" data-index="02">
-							<img src="img/about_binghamton_scene.png"
+							<img loading="lazy" decoding="async" src="img/about_binghamton_scene.png" srcset="/img/opt/about_binghamton_scene-512.webp 512w, /img/opt/about_binghamton_scene-1024.webp 1024w" sizes="(max-width: 767px) 90vw, 480px"
 								alt="Tree-lined autumn streets of Binghamton NY neighborhood in Broome County">
 						</div>
 						<div class="about-copy">
@@ -401,8 +416,7 @@
 								sporting events, and strolling through charming neighborhoods. Binghamton's diverse
 								culinary scene ranges from international cuisines to farm-to-table experiences. With a
 								strong sense of community, Binghamton hosts the Spiedie Fest and Balloon Rally, the LUMA
-								Projection Arts Festival, First Friday Art Walks, and more — ensuring there's always
-								something exciting happening.</p>
+								Projection Arts Festival, First Friday Art Walks, and more, so there's always something happening.</p>
 						</div>
 					</div>
 
@@ -420,14 +434,14 @@
 					<div class="sec-title text-center wow animated fadeInDown">
 						<span class="sec-eyebrow">The Portfolio</span>
 						<h2>Binghamton Apartments for Rent</h2>
-						<p><i>Quality maintained rental properties in Binghamton — find your next comfortable home.</i></p>
+						<p><i>Quality maintained rental properties in Binghamton. Find your next comfortable home.</i></p>
 					</div>
 
-					<ul class="project-wrapper wow animated fadeInUp">
+					<ul class="project-wrapper">
 
 						<li class="portfolio-item" data-property-slug="67GrandBLVD">
 							<a href="/67GrandBLVD.html" class="portfolio-media">
-								<img src="img/portfolio/fl1Grand.jpg" class="img-responsive"
+								<img loading="lazy" decoding="async" src="img/portfolio/fl1Grand.jpg" srcset="/img/portfolio/opt/fl1Grand-480.webp 480w, /img/portfolio/opt/fl1Grand-960.webp 960w" sizes="(max-width: 767px) 92vw, 380px" class="img-responsive"
 									alt="67 Grand Blvd Apartment 1 exterior - Quality 3-bedroom rental property in Binghamton NY">
 								<span class="portfolio-badge unavailable">Unavailable</span>
 								<span class="portfolio-badge floor-label">1st Floor</span>
@@ -441,7 +455,7 @@
 
 						<li class="portfolio-item" data-property-slug="67GrandBLVD2FL">
 							<a href="/67GrandBLVD2FL.html" class="portfolio-media">
-								<img src="img/portfolio/2ndflGrand.jpg" class="img-responsive"
+								<img loading="lazy" decoding="async" src="img/portfolio/2ndflGrand.jpg" srcset="/img/portfolio/opt/2ndflGrand-480.webp 480w, /img/portfolio/opt/2ndflGrand-960.webp 960w" sizes="(max-width: 767px) 92vw, 380px" class="img-responsive"
 									alt="67 Grand Blvd Apartment 2 second floor - Spacious Broome County rental in heart of Binghamton">
 								<span class="portfolio-badge unavailable">Unavailable</span>
 								<span class="portfolio-badge floor-label">2nd Floor</span>
@@ -455,13 +469,13 @@
 
 						<li class="portfolio-item" data-property-slug="2112KypriotisDr1FL">
 							<a href="/2112KypriotisDr1FL.html" class="portfolio-media">
-								<img src="img/portfolio/3.jpg" class="img-responsive"
+								<img loading="lazy" decoding="async" src="img/portfolio/3.jpg" srcset="/img/portfolio/opt/3-480.webp 480w, /img/portfolio/opt/3-960.webp 960w" sizes="(max-width: 767px) 92vw, 380px" class="img-responsive"
 									alt="2112 Kypriotis Dr Greek Peak rental - Luxury mountain resort apartment in Broome County NY">
 								<span class="portfolio-badge unavailable">Unavailable</span>
 							</a>
 							<div class="portfolio-body">
 								<h3>Garden View Apt. — Greek Peak, NY</h3>
-								<p>Mountain Resort: 2-bed, 1 bath — Ski, Swim, Enjoy!</p>
+								<p>Mountain Resort: 2-bed, 1 bath. Ski, swim, enjoy!</p>
 								<a href="/2112KypriotisDr1FL.html" class="portfolio-link">View Details <i class="fa fa-arrow-right"></i></a>
 							</div>
 						</li>
@@ -680,6 +694,7 @@
 	<script src="js/neJQ.js"></script>
 	<script src="js/property-filter.js"></script>
 	<script src="js/property-status.js"></script>
+	<script src="js/notify-me.js"></script>
 
 	<!-- Rotating Tenant Feedback Slider -->
 	<script>
@@ -720,6 +735,7 @@
 	</script>
 
 
+	<script type="module" src="js/scroll-polish.js"></script>
 </body>
 
 </html>

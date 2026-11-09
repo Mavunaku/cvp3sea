@@ -1,3 +1,10 @@
+/* smaller WebP versions of the card photos (the originals stay as the fallback) */
+function cardSrcset(src) {
+    var m = /^img\/portfolio\/(fl1Grand|2ndflGrand|3)\.jpg$/.exec(src || "");
+    if (!m) return "";
+    return ' srcset="img/portfolio/opt/' + m[1] + '-480.webp 480w, img/portfolio/opt/' + m[1] + '-960.webp 960w" sizes="(max-width: 767px) 92vw, 380px"';
+}
+
 /**
  * CVP Properties 4.0 — Property Filter Logic
  * Handles the search functionality on the homepage hero section.
@@ -63,7 +70,7 @@ const rentals = [
         url: "/2112KypriotisDr1FL.html",
         image: "img/portfolio/3.jpg",
         status: "Unavailable",
-        description: "Mountain Resort: 2-bed, 1 bath — Ski, Swim, Enjoy!"
+        description: "Mountain Resort: 2-bed, 1 bath. Ski, swim, enjoy!"
     }
 ];
 
@@ -139,7 +146,7 @@ function createPropertyCard(rental) {
 
     li.innerHTML = `
         <a href="${rental.url}">
-            <img src="${rental.image}" class="img-responsive" alt="${rental.title}">
+            <img src="${rental.image}"${cardSrcset(rental.image)} loading="lazy" decoding="async" class="img-responsive" alt="${rental.title}">
         </a>
         <figcaption class="mask">
             <h3>${rental.title}</h3>

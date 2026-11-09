@@ -1,0 +1,122 @@
+/* "Notify me when available": card button and dialog */
+
+.notify-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 11px 20px;
+  border-radius: 999px;
+  border: 1.5px solid #c9a24a;
+  background: rgba(201, 162, 74, .12);
+  color: #7a5c1a;
+  font: 600 13.5px 'Inter', sans-serif;
+  letter-spacing: .3px;
+  cursor: pointer;
+  transition: background .2s, color .2s, transform .2s;
+}
+.notify-btn:hover { background: #c9a24a; color: #1c1608; transform: translateY(-2px); }
+.notify-btn:focus-visible, .nm-submit:focus-visible, .nm-close:focus-visible { outline: 3px solid rgba(31, 138, 126, .45); outline-offset: 2px; }
+.portfolio-body { display: flex; flex-direction: column; align-items: center; }
+.portfolio-body .portfolio-link { margin-top: auto; }
+.hero-btn-outline.notify-hero i { margin-right: 6px; }
+
+/* dialog */
+html.nm-open { overflow: hidden; }
+.nm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(9, 30, 28, .62);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: nmFade .25s ease;
+}
+.nm-overlay[hidden] { display: none; }
+@keyframes nmFade { from { opacity: 0; } to { opacity: 1; } }
+.nm-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  padding: 38px 34px 30px;
+  border-radius: 26px;
+  background: #fff;
+  box-shadow: 0 40px 90px rgba(0, 0, 0, .35);
+  text-align: center;
+  animation: nmRise .3s cubic-bezier(.2, .7, .2, 1);
+}
+@keyframes nmRise { from { transform: translateY(18px); opacity: 0; } to { transform: none; opacity: 1; } }
+.nm-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 0;
+  background: #f1ece3;
+  color: #15303a;
+  cursor: pointer;
+}
+.nm-close:hover { background: #e6dfd2; }
+.nm-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  margin-bottom: 14px;
+  border-radius: 50%;
+  background: rgba(201, 162, 74, .16);
+  color: #9a7728;
+  font-size: 24px;
+}
+.nm-icon.nm-ok { background: rgba(31, 138, 126, .14); color: #1f8a7e; }
+.nm-dialog h3 { margin: 0 0 8px; font: 600 26px/1.2 'Playfair Display', Georgia, serif; color: #15303a; }
+.nm-sub { margin: 0 0 20px; font-size: 15.5px; line-height: 1.6; color: #566267; }
+.nm-dialog form { text-align: left; }
+.nm-dialog label { display: block; margin-bottom: 14px; font: 600 12.5px 'Inter', sans-serif; letter-spacing: .5px; text-transform: uppercase; color: #566267; }
+.nm-dialog label span { text-transform: none; font-weight: 400; letter-spacing: 0; }
+.nm-dialog input[type=text], .nm-dialog input[type=email], .nm-dialog input[type=tel] {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px 15px;
+  border: 1.5px solid #d8dfe0;
+  border-radius: 12px;
+  background: #fff;
+  font: 400 16px 'Inter', sans-serif;
+  color: #27363b;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.nm-dialog input:focus { outline: none; border-color: #1f8a7e; box-shadow: 0 0 0 4px rgba(31, 138, 126, .15); }
+.nm-hp { position: absolute !important; left: -9999px !important; width: 1px !important; height: 1px !important; opacity: 0; }
+.nm-error { margin: 0 0 12px; padding: 10px 14px; border-radius: 12px; background: #fdecea; color: #a8321f; font-size: 14px; }
+.nm-submit {
+  width: 100%;
+  padding: 15px 22px;
+  border: 0;
+  border-radius: 999px;
+  background: #0f3b36;
+  color: #fff;
+  font: 700 14px 'Inter', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 12px 26px rgba(15, 59, 54, .25);
+  transition: background .2s, transform .2s;
+}
+.nm-submit:hover:not(:disabled) { background: #166a60; transform: translateY(-2px); }
+.nm-submit:disabled { opacity: .6; cursor: default; }
+.nm-fine { margin: 12px 0 0; text-align: center; font-size: 12.5px; color: #7b878b; }
+
+@media (max-width: 480px) { .nm-dialog { padding: 32px 22px 24px; border-radius: 22px; } }
+@media (prefers-reduced-motion: reduce) { .nm-overlay, .nm-dialog { animation: none; } }

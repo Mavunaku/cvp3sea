@@ -1441,7 +1441,7 @@ img[src*="2ndflGrand.jpg"] {
 .discover-col {
   background:
     linear-gradient(180deg, rgba(27, 67, 50, 0.72) 0%, rgba(27, 67, 50, 0.55) 60%, rgba(27, 67, 50, 0.75) 100%),
-    url('../img/discovery-hero.jpg') center/cover no-repeat;
+    url('../img/opt/discovery-hero-1024.webp') center/cover no-repeat;
   border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 32px 24px;
 }

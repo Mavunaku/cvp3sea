@@ -18,8 +18,33 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title>Things to Do in Binghamton NY | CVP Properties Guide</title>
 	<!-- Meta Description -->
-	<meta name="description"
-		content="Explore fun activities and things to do in Binghamton NY, Upstate New York, and surrounding Broome County — including Greek Peak Mountain Resort — near our quality rental properties and apartments.">
+	<meta name="description" content="Explore fun things to do in Binghamton NY and Broome County, including Greek Peak Mountain Resort, near CVP Properties rentals and apartments.">
+	<!-- SEO:start -->
+	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+	<meta name="theme-color" content="#6b1f2a">
+	<link rel="icon" href="/favicon.ico" sizes="any">
+	<link rel="icon" type="image/png" sizes="32x32" href="/img/icons/favicon-32.png">
+	<link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png">
+	<meta property="og:site_name" content="CVP Properties 4.0">
+	<meta property="og:locale" content="en_US">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://cvpproperties.com/todo.html">
+	<meta property="og:title" content="Things to Do in Binghamton NY | CVP Properties Guide">
+	<meta property="og:description" content="Explore fun things to do in Binghamton NY and Broome County, including Greek Peak Mountain Resort, near CVP Properties rentals and apartments.">
+	<meta property="og:image" content="https://cvpproperties.com/img/og/todo.jpg">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:alt" content="Misty mountain sunrise over the Southern Tier of New York">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Things to Do in Binghamton NY | CVP Properties Guide">
+	<meta name="twitter:description" content="Explore fun things to do in Binghamton NY and Broome County, including Greek Peak Mountain Resort, near CVP Properties rentals and apartments.">
+	<meta name="twitter:image" content="https://cvpproperties.com/img/og/todo.jpg">
+	<meta name="twitter:image:alt" content="Misty mountain sunrise over the Southern Tier of New York">
+	<link rel="preload" as="image" href="/img/hero/opt/todo-mountains-1080.webp" media="(max-width: 767px)" fetchpriority="high">
+	<link rel="preload" as="image" href="/img/hero/opt/todo-mountains-2000.webp" media="(min-width: 768px) and (max-width: 999px), (min-width: 1000px) and (max-width: 1599px) and (max-resolution: 1.49dppx)" fetchpriority="high">
+	<link rel="preload" as="image" href="/img/hero/opt/todo-mountains-2000.webp" media="(min-width: 1600px), (min-width: 1000px) and (min-resolution: 1.5dppx)" fetchpriority="high">
+	<!-- SEO:end -->
+	<script type="application/ld+json" data-seo="1">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://cvpproperties.com/"}, {"@type": "ListItem", "position": 2, "name": "Things to Do", "item": "https://cvpproperties.com/todo.html"}]}</script>
 	<meta name="keywords"
 		content="things to do Binghamton NY, local attractions Broome County, activities Binghamton, Binghamton parks, CVP Properties, Binghamton housing, Binghamton apartments, Upstate NY activities, things to do Upstate New York, Greek Peak activities, Greek Peak Mountain Resort">
 	<meta name="author" content="CVP Properties 4.0 LLC">
@@ -30,22 +55,8 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 	<link rel="canonical" href="https://cvpproperties.com/todo.html">
 
 	<!-- Open Graph / Facebook -->
-	<meta property="og:type" content="website">
-	<meta property="og:url" content="https://cvpproperties.com/todo.html">
-	<meta property="og:title" content="Activities & Things To Do in Binghamton NY | CVP Properties">
-	<meta property="og:description"
-		content="Discover the best local attractions and activities in Binghamton and Broome County near CVP Properties rentals.">
-	<meta property="og:image" content="https://cvpproperties.com/img/icons/cvpnew.png">
-
-	<!-- Twitter -->
-	<meta property="twitter:card" content="summary_large_image">
-	<meta property="twitter:url" content="https://cvpproperties.com/todo.html">
-	<meta property="twitter:title" content="Things To Do in Binghamton | CVP Properties">
-	<meta property="twitter:description"
-		content="Find local activities and attractions in Broome County near our rental properties.">
-	<meta property="twitter:image" content="https://cvpproperties.com/img/icons/cvpnew.png">
-
-	<!-- JSON-LD Structured Data -->
+<!-- Twitter -->
+<!-- JSON-LD Structured Data -->
 	<script type="application/ld+json">
 	{
 		"@context": "https://schema.org",
@@ -82,6 +93,11 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 	<link rel="stylesheet" href="css/main.css">
 	<!-- Emerald Forest Light Theme (overrides) -->
 	<link rel="stylesheet" href="css/emerald-forest-light.css">
+	<!-- Shared modern top menu and logo (delete this line to go back to the old menu) -->
+	<link rel="stylesheet" href="css/nav-modern.css">
+	<!-- Site-wide modern design (delete this line to go back to the previous look) -->
+	<link rel="stylesheet" href="css/site-modern.css">
+	<link rel="stylesheet" href="css/notify-me.css">
 
 	<!-- Modernizer Script for old Browsers -->
 	<script src="js/modernizr-2.6.2.min.js"></script>
@@ -101,7 +117,7 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 
 </head>
 
-<body id="body">
+<body id="body" class="page-todo">
 
 	<!-- preloader -->
 	<!--
@@ -128,20 +144,21 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 
 				<!-- logo -->
 				<div class="navbar-brand">
-					<a href="/">CVP Properties 4.0
-						<img id="logocvp" src="/img/icons/cvpnew-removebg-preview.png"
-							alt="CVP Properties 4.0 Company Logo - Quality Housing Broome County"></a>
-				</div>
+						<a href="/" aria-label="CVP Properties 4.0, home">
+							<span class="brand-text"><b>CVP</b><small>Properties 4.0</small></span>
+							<img id="logocvp" src="/img/icons/cvpnew-removebg-preview.png"
+								alt="CVP Properties 4.0 company logo"></a>
+					</div>
 				<!-- /logo -->
 			</div>
 
 			<!-- main nav -->
 			<nav class="collapse navbar-collapse navbar-right" role="navigation">
 												<ul id="nav" class="nav navbar-nav">
-					<li><a href="/index#body" class="external">HOME</a></li>
-					<li><a href="#todo">THINGS TO DO IN BING</a></li>
-					<li><a href="/index#portfolio" class="external">OUR PROPERTIES</a></li>
-					<li><a href="#request-schedule">REQUEST &amp; SCHEDULE</a></li>
+					<li><a href="/index#body" class="external">Home</a></li>
+					<li><a href="#todo">Things to Do in Bing</a></li>
+					<li><a href="/index#portfolio" class="external">Our Properties</a></li>
+					<li><a href="#request-schedule">Request &amp; Schedule</a></li>
 				</ul>
 			</nav>
 			<!-- /main nav -->
@@ -158,7 +175,7 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 		<section id="luxury-hero" class="modern-hero">
 			<!-- Background Layer -->
 			<div class="hero-bg-container">
-				<div class="hero-bg-img" style="background-image: url('img/discovery-hero.jpg');"></div>
+				<div class="hero-bg-img hb-todo" style="background-position: center 38%;"></div>
 				<div class="hero-mesh-overlay"></div>
 				<div class="hero-luxury-overlay"></div>
 			</div>
@@ -252,7 +269,7 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 					<div class="col-md-4 col-sm-6 wow animated fadeInUp">
 						<div class="activity-card" data-category="outdoors cities">
 							<div class="activity-img">
-								<img src="/TODOpics/ithaca.jpg" alt="Ithaca, NY">
+								<img loading="lazy" decoding="async" src="/TODOpics/ithaca.jpg" srcset="/TODOpics/opt/ithaca-600.webp 600w, /TODOpics/opt/ithaca-1200.webp 1200w, /TODOpics/opt/ithaca-1920.webp 1920w" sizes="(max-width: 767px) 92vw, 640px" alt="Ithaca, NY">
 								<div class="activity-overlay">
 									<a href="https://www.visitithaca.com/" class="btn btn-blue" target="_blank">Explore
 										Ithaca</a>
@@ -271,7 +288,7 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 					<div class="col-md-4 col-sm-6 wow animated fadeInUp" data-wow-delay="0.2s">
 						<div class="activity-card" data-category="outdoors">
 							<div class="activity-img">
-								<img src="/TODOpics/02.jpg" alt="Taughannock Falls State Park">
+								<img loading="lazy" decoding="async" src="/TODOpics/02.jpg" srcset="/TODOpics/opt/02-600.webp 600w, /TODOpics/opt/02-1200.webp 1200w, /TODOpics/opt/02-1800.webp 1800w" sizes="(max-width: 767px) 92vw, 640px" alt="Taughannock Falls State Park">
 								<div class="activity-overlay">
 									<a href="https://parks.ny.gov/parks/taughannockfalls/details.aspx"
 										class="btn btn-blue" target="_blank">Visit Park</a>
@@ -290,7 +307,7 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 					<div class="col-md-4 col-sm-6 wow animated fadeInUp" data-wow-delay="0.4s">
 						<div class="activity-card" data-category="outdoors">
 							<div class="activity-img">
-								<img src="/TODOpics/Watkins-Glen-Gorge-Trail-1024x768.jpg"
+								<img loading="lazy" decoding="async" src="/TODOpics/Watkins-Glen-Gorge-Trail-1024x768.jpg" srcset="/TODOpics/opt/Watkins-Glen-Gorge-Trail-1024x768-600.webp 600w, /TODOpics/opt/Watkins-Glen-Gorge-Trail-1024x768-1200.webp 1200w" sizes="(max-width: 767px) 92vw, 640px"
 									alt="Watkins Glen State Park">
 								<div class="activity-overlay">
 									<a href="https://parks.ny.gov/parks/watkinsglen/details.aspx" class="btn btn-blue"
@@ -310,7 +327,7 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 					<div class="col-md-4 col-sm-6 wow animated fadeInUp">
 						<div class="activity-card" data-category="culture cities">
 							<div class="activity-img">
-								<img src="/TODOpics/syracuse.jpg" alt="Syracuse, NY">
+								<img loading="lazy" decoding="async" src="/TODOpics/syracuse.jpg" srcset="/TODOpics/opt/syracuse-600.webp 600w, /TODOpics/opt/syracuse-1200.webp 1200w, /TODOpics/opt/syracuse-2000.webp 2000w" sizes="(max-width: 767px) 92vw, 640px" alt="Syracuse, NY">
 								<div class="activity-overlay">
 									<a href="https://www.visitsyracuse.com/" class="btn btn-blue"
 										target="_blank">Discover Syracuse</a>
@@ -329,7 +346,7 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 					<div class="col-md-4 col-sm-6 wow animated fadeInUp" data-wow-delay="0.2s">
 						<div class="activity-card" data-category="culture cities">
 							<div class="activity-img">
-								<img src="/TODOpics/bing.jpg" alt="Binghamton, NY">
+								<img loading="lazy" decoding="async" src="/TODOpics/bing.jpg" srcset="/TODOpics/opt/bing-600.webp 600w, /TODOpics/opt/bing-1200.webp 1200w" sizes="(max-width: 767px) 92vw, 640px" alt="Binghamton, NY">
 								<div class="activity-overlay">
 									<a href="https://www.visitbinghamton.org/" class="btn btn-blue"
 										target="_blank">Experience Bing</a>
@@ -348,7 +365,7 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 					<div class="col-md-4 col-sm-6 wow animated fadeInUp" data-wow-delay="0.4s">
 						<div class="activity-card" data-category="cities">
 							<div class="activity-img">
-								<img src="/TODOpics/cortl.jpg" alt="Cortland, NY">
+								<img loading="lazy" decoding="async" src="/TODOpics/cortl.jpg" srcset="/TODOpics/opt/cortl-600.webp 600w, /TODOpics/opt/cortl-1200.webp 1200w, /TODOpics/opt/cortl-1800.webp 1800w" sizes="(max-width: 767px) 92vw, 640px" alt="Cortland, NY">
 								<div class="activity-overlay">
 									<a href="https://www.experiencecortland.com/" class="btn btn-blue"
 										target="_blank">Visit Cortland</a>
@@ -376,14 +393,14 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 					<div class="sec-title text-center wow animated fadeInDown">
 						<span class="sec-eyebrow">The Portfolio</span>
 						<h2>Our Properties</h2>
-						<p><i>Quality maintained rentals — explore your next comfortable home.</i></p>
+						<p><i>Quality maintained rentals. Explore your next comfortable home.</i></p>
 					</div>
 
-					<ul class="project-wrapper wow animated fadeInUp">
+					<ul class="project-wrapper">
 
 						<li class="portfolio-item" data-property-slug="67GrandBLVD">
 							<a href="/67GrandBLVD.html" class="portfolio-media">
-								<img src="img/portfolio/fl1Grand.jpg" class="img-responsive"
+								<img loading="lazy" decoding="async" src="img/portfolio/fl1Grand.jpg" srcset="/img/portfolio/opt/fl1Grand-480.webp 480w, /img/portfolio/opt/fl1Grand-960.webp 960w" sizes="(max-width: 767px) 92vw, 380px" class="img-responsive"
 									alt="67 Grand Blvd Apartment 1 exterior - Quality 3-bedroom rental property in Binghamton NY">
 								<span class="portfolio-badge unavailable">Unavailable</span>
 								<span class="portfolio-badge floor-label">1st Floor</span>
@@ -397,7 +414,7 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 
 						<li class="portfolio-item" data-property-slug="67GrandBLVD2FL">
 							<a href="/67GrandBLVD2FL.html" class="portfolio-media">
-								<img src="img/portfolio/2ndflGrand.jpg" class="img-responsive"
+								<img loading="lazy" decoding="async" src="img/portfolio/2ndflGrand.jpg" srcset="/img/portfolio/opt/2ndflGrand-480.webp 480w, /img/portfolio/opt/2ndflGrand-960.webp 960w" sizes="(max-width: 767px) 92vw, 380px" class="img-responsive"
 									alt="67 Grand Blvd Apartment 2 second floor - Spacious Broome County rental in heart of Binghamton">
 								<span class="portfolio-badge unavailable">Unavailable</span>
 								<span class="portfolio-badge floor-label">2nd Floor</span>
@@ -411,13 +428,13 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 
 						<li class="portfolio-item" data-property-slug="2112KypriotisDr1FL">
 							<a href="/2112KypriotisDr1FL.html" class="portfolio-media">
-								<img src="img/portfolio/3.jpg" class="img-responsive"
+								<img loading="lazy" decoding="async" src="img/portfolio/3.jpg" srcset="/img/portfolio/opt/3-480.webp 480w, /img/portfolio/opt/3-960.webp 960w" sizes="(max-width: 767px) 92vw, 380px" class="img-responsive"
 									alt="2112 Kypriotis Dr Greek Peak rental - Luxury mountain resort apartment in Broome County NY">
 								<span class="portfolio-badge unavailable">Unavailable</span>
 							</a>
 							<div class="portfolio-body">
 								<h3>Garden View Apt. — Greek Peak, NY</h3>
-								<p>Mountain Resort: 2-bed, 1 bath — Ski, Swim, Enjoy!</p>
+								<p>Mountain Resort: 2-bed, 1 bath. Ski, swim, enjoy!</p>
 								<a href="/2112KypriotisDr1FL.html" class="portfolio-link">View Details <i class="fa fa-arrow-right"></i></a>
 							</div>
 						</li>
@@ -428,59 +445,6 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 		</section>
 		<!-- End Properties Section -->
 
-		<!-- ===== DISCOVER + TENANT FEEDBACK SECTION — Side by Side ===== -->
-		<section id="testimonials">
-			<div class="container">
-				<div class="discover-feedback-row wow animated fadeInUp">
-
-					<!-- LEFT: Discover Places -->
-					<div id="todo-link" class="discover-col">
-						<h2 class="combined-section-title">Discover Places</h2>
-						<p style="color: var(--clr-text-muted); font-size: 14px; margin: 0 0 20px;">Find the best local
-							attractions, parks, and dining in Broome County.</p>
-						<a href="#todo" class="btn btn-luxury-primary"
-							aria-label="Explore places and things to do in Binghamton">Explore Local Activities</a>
-					</div>
-
-					<!-- RIGHT: Tenant Feedback -->
-					<div class="feedback-col">
-						<h2 class="combined-section-title">Tenant Feedback</h2>
-
-						<div class="feedback-slider-container">
-							<div class="feedback-slide active" data-slide="0">
-								<div class="testimonial-item text-center">
-									<img src="img/otzyvy.png" alt="Tenant Brice review profile">
-									<div class="clearfix">
-										<span>Brice</span>
-										<p>Excellent Experience! The home is extremely cozy and has an absolutely
-											breathtaking view of Greek Peak Mountain. Private and luxury — 10/10
-											experience!</p>
-									</div>
-								</div>
-							</div>
-
-							<div class="feedback-slide" data-slide="1">
-								<div class="testimonial-item text-center">
-									<img src="img/otzyvy.png" alt="Tenant John review profile">
-									<div class="clearfix">
-										<span>John</span>
-										<p>Perfect location and the place is nicer than the pictures. I will definitely
-											be looking to stay there again during ski season!</p>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="feedback-dots">
-							<span class="dot active" data-target="0"></span>
-							<span class="dot" data-target="1"></span>
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</section>
-		<!-- End Discover + Feedback Section -->
 		<!-- end Testimonial section -->
 
 		<!-- Price section -->
@@ -627,6 +591,7 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 	<script src="js/wow.min.js"></script>
 	<script src="js/main.js"></script>
 	<script src="js/property-status.js"></script>
+	<script src="js/notify-me.js"></script>
 	<script src="js/timer.js"></script>
 	<script src="js/neJQ.js"></script>
 
@@ -689,6 +654,7 @@ history.replaceState(null, '', window.location.pathname.replace(/\.html$/, ''));
 		});
 	</script>
 
+	<script type="module" src="js/scroll-polish.js"></script>
 </body>
 
 </html>

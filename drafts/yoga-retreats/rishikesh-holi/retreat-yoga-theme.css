@@ -1,0 +1,182 @@
+/**
+ * Retreat page, restyled to match the /yoga page:
+ * same menu and logo, Cormorant Garamond headings, saffron / marigold / maroon palette,
+ * ivory + sandal sections with a soft paisley, lotus dividers, pill buttons, curved hero edge and footer.
+ * Content and behaviour are unchanged. Delete the <link> to this file in index.html to go back to the old look.
+ */
+
+:root{
+  --ivory:#FFF7E8; --clay:#F8E6C4;
+  --marigold:#F4B63F; --turmeric:#E8871E; --coral:#C8442A; --coral-ink:#8F2E1A;
+  --maroon:#6B1F2A; --ink:#3A1F14;
+  --tulsi:#3A1F14; --tulsi-2:#5A2A1C;
+  --muted:rgba(58,31,20,.78);
+  --shadow:0 22px 44px -22px rgba(107,31,42,.28);
+  --shadow-lg:0 30px 60px -28px rgba(107,31,42,.45);
+  --serif:'Cormorant Garamond','Playfair Display',Georgia,serif;
+  --sans:'Inter','Outfit',system-ui,sans-serif;
+  --paisley:url(../../../img/yoga/paisley.svg);
+}
+body{font-family:var(--sans);font-size:16.5px;color:var(--ink);
+  background-color:var(--ivory);
+  background-image:radial-gradient(ellipse 70% 40% at 100% 0%,rgba(244,182,63,.12),transparent 70%),radial-gradient(ellipse 60% 40% at 0% 100%,rgba(200,68,42,.06),transparent 70%);}
+
+/* ---------- headings ---------- */
+h1,h2,h3,h4{font-family:var(--serif);color:var(--maroon);letter-spacing:0;}
+h2{font-size:clamp(34px,4.2vw,50px);font-weight:600;line-height:1.08;}
+h2::after,.rooms-head h3::after{content:'';display:block;width:150px;height:26px;margin:8px 0 20px;background:url(../../../img/yoga/lotus-divider.svg) left center/contain no-repeat;}
+.sec-head h2::after,.rooms-head h3::after{margin-left:auto;margin-right:auto;background-position:center;}
+.bg-holi h2::after,.bg-forest h2::after,.bg-peacock h2::after,.rooms-head h3::after,.checks h3::after{background-image:url(../../../img/yoga/lotus-divider-light.svg);}
+.checks h3::after{margin:6px 0 16px;}
+.panel h3{font-size:clamp(28px,3vw,36px);font-weight:600;}
+.quote-line{font-size:26px;color:var(--maroon);}
+.sanskrit b,.geo .ring text{font-family:'Tiro Devanagari Hindi','Noto Serif Devanagari',serif;}
+.sanskrit b{color:var(--marigold);}
+.pill{background:rgba(232,135,30,.12);color:var(--coral-ink);border-color:rgba(232,135,30,.35);}
+.sbar{background:linear-gradient(90deg,var(--marigold),var(--turmeric),var(--coral));}
+
+/* ---------- menu + logo (same as /yoga) ---------- */
+.draft-banner{position:relative;z-index:60;}
+.topbar{position:sticky;top:0;z-index:50;margin-bottom:-78px;background:linear-gradient(180deg,rgba(46,18,8,.6) 0%,rgba(46,18,8,.3) 62%,rgba(46,18,8,0) 100%);backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:0;transition:background .35s ease,box-shadow .35s ease;}
+.topbar.scrolled{background:rgba(251,249,245,.95);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);box-shadow:0 8px 30px rgba(21,48,58,.08);}
+.topbar .wrap{max-width:1170px;height:78px;gap:26px;justify-content:flex-start;}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;}
+.brand img{width:46px;height:46px;padding:7px;background:#fff;border-radius:14px;box-shadow:0 6px 18px rgba(9,30,28,.18);}
+.brand-text{display:flex;flex-direction:column;line-height:1;}
+.brand-text b{font:700 24px/1 'Playfair Display',Georgia,serif;letter-spacing:3px;color:#fff;}
+.brand-text small{margin-top:5px;font:700 10px/1 var(--sans);letter-spacing:3px;text-transform:uppercase;color:#F2E7C9;}
+.topnav{display:flex;align-items:center;gap:30px;margin-left:auto;}
+.topnav a{color:#fff;font:600 15px var(--sans);text-decoration:none;text-shadow:0 1px 8px rgba(5,20,18,.55);transition:color .2s;}
+.topnav a:hover,.topnav a.cur{color:var(--marigold);}
+.btn-cta{display:inline-flex;align-items:center;padding:12px 24px;border-radius:999px;background:linear-gradient(135deg,#f8c85f,#e8871e);color:#3a1405;font:700 15px var(--sans);text-decoration:none;box-shadow:0 10px 24px rgba(232,135,30,.35);transition:transform .2s,box-shadow .2s;}
+.btn-cta:hover{transform:translateY(-2px);}
+.topbar.scrolled .brand-text b{color:var(--maroon);}
+.topbar.scrolled .brand-text small{color:var(--turmeric);}
+.topbar.scrolled .topnav a{color:var(--ink);text-shadow:none;}
+.topbar.scrolled .topnav a:hover,.topbar.scrolled .topnav a.cur{color:var(--coral);}
+
+/* ---------- hero: photo, shade, centred text, curved edge (like /yoga) ---------- */
+.hero{position:relative;overflow:hidden;color:#fff;text-align:center;padding:178px 0 190px;
+  background:
+    radial-gradient(ellipse 62% 66% at 50% 52%,rgba(46,18,8,.74) 0%,rgba(46,18,8,.5) 52%,rgba(46,18,8,0) 84%),
+    linear-gradient(180deg,rgba(46,18,8,.42) 0%,rgba(46,18,8,0) 26%),
+    var(--hero-img) center 42%/cover no-repeat,#3a1f14;}
+.hero::after{content:'';position:absolute;left:-3%;right:-3%;bottom:-1px;height:64px;background:var(--ivory);border-radius:50% 50% 0 0/100% 100% 0 0;z-index:3;}
+.hero-grid{grid-template-columns:1fr;justify-items:center;gap:0;}
+.hero-grid > div:first-child{display:flex;flex-direction:column;align-items:center;max-width:760px;}
+.hero h1{color:#fff;font-size:clamp(46px,6.4vw,84px);font-weight:600;line-height:1.02;text-shadow:0 2px 18px rgba(0,0,0,.55),0 1px 3px rgba(0,0,0,.4);}
+.hero h1 em{color:var(--marigold);font-style:italic;font-weight:600;}
+.hero .sub{color:#fff;font-size:20px;max-width:620px;margin-left:auto;margin-right:auto;text-shadow:0 2px 14px rgba(0,0,0,.55);}
+.sanskrit{color:rgba(255,255,255,.9);justify-content:center;}
+.sanskrit::before{background:linear-gradient(90deg,transparent,var(--marigold));}
+.sanskrit b{font-size:30px;text-shadow:0 0 24px rgba(244,182,63,.5);}
+.hero-meta{justify-content:center;}
+.hero-meta span{background:rgba(255,255,255,.16);color:#fff;box-shadow:none;border:0;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
+.hero-meta i{color:var(--marigold);}
+.status{color:#FFE2A8;justify-content:center;text-shadow:0 1px 10px rgba(0,0,0,.5);}
+.status .dot{background:var(--marigold);}
+.hero-ctas{justify-content:center;}
+.hero .btn.ghost{color:#fff;border-color:rgba(255,236,200,.85);}
+.hero .btn.ghost:hover{background:#fff;color:var(--maroon);}
+/* sacred geometry becomes a large, faint gold ornament behind the text */
+.geo{position:absolute;left:50%;top:50%;width:min(980px,130vw);max-width:none;transform:translate(-50%,-50%);margin:0;opacity:.2;z-index:0;pointer-events:none;}
+
+/* ---------- buttons ---------- */
+.btn{background:linear-gradient(135deg,#f8c85f 0%,#e8871e 100%);color:#3a1405;border:0;box-shadow:0 12px 28px rgba(232,135,30,.34);}
+.btn .arr{background:var(--maroon);color:#fff;}
+.btn:hover{box-shadow:0 14px 30px rgba(232,135,30,.5);}
+.btn.ghost{background:transparent;color:var(--maroon);border:1.5px solid var(--turmeric);box-shadow:none;}
+.btn.ghost:hover{background:var(--turmeric);color:#fff;}
+.btn.sm{padding:10px 12px 10px 20px;}
+
+/* ---------- sections: no waves, ivory / sandal with paisley, two warm dark ones ---------- */
+.flow{--wh:0px;-webkit-mask:none;mask:none;}
+.contact.flow,footer.flow{padding-top:56px;}
+section{padding:92px 0;}
+.bg-sun,.bg-aqua{background:linear-gradient(rgba(255,247,232,.93),rgba(255,247,232,.93)),var(--paisley) 0 0/190px 190px,var(--ivory);}
+.bg-rose,.bg-saffron{background:linear-gradient(rgba(255,247,232,.9),rgba(255,247,232,.9)),var(--paisley) 0 0/170px 170px,linear-gradient(180deg,#fbeccc 0%,#fff3df 100%);}
+.bg-holi{background:radial-gradient(circle at 4% 100%,rgba(244,182,63,.6),transparent 34%),linear-gradient(115deg,#f4b63f 0%,#e8871e 34%,#c8442a 70%,#6b1f2a 100%);}
+.bg-forest{background:radial-gradient(circle at 92% 6%,rgba(244,182,63,.26),transparent 40%),linear-gradient(160deg,#3a1a12,#4d2118 55%,#6b1f2a);}
+.bg-peacock{background:radial-gradient(circle at 10% 0%,rgba(244,182,63,.26),transparent 38%),linear-gradient(135deg,#4a1d22,#6b1f2a 55%,#8a3418);}
+@media(max-width:900px){.bg-holi{background:radial-gradient(circle at 4% 100%,rgba(244,182,63,.6),transparent 30%),linear-gradient(180deg,#f4b63f 0%,#e8871e 30%,#c8442a 62%,#6b1f2a 100%);}}
+.clay{background:var(--clay);}
+.bg-sun .pill,.bg-saffron .pill,.bg-rose .pill,.bg-aqua .pill{background:rgba(232,135,30,.12);border-color:rgba(232,135,30,.3);}
+.glance{background:#fffdf8;border:1px solid rgba(201,138,27,.16);box-shadow:var(--shadow);}
+.glance b{color:var(--coral);font-size:clamp(40px,5.4vw,60px);font-weight:600;}
+
+/* ---------- cards: big soft corners, quiet borders ---------- */
+.panel,.day-card,.guide,.card,.room,.note{background:#fffdf8;border:1px solid rgba(201,138,27,.14);border-radius:26px;box-shadow:var(--shadow);}
+.guide{border-top:1px solid rgba(201,138,27,.14);}
+.guide .nm{font-size:27px;font-weight:700;}
+.room h4{font-size:30px;font-weight:700;}
+.note .q{font:700 22px/1.2 var(--serif);color:var(--maroon);}
+.note{--c:#e8871e !important;}
+.note::before{width:5px;}
+.note .a a{color:var(--coral);}
+.tab[aria-selected="true"]{background:var(--maroon);border-color:var(--maroon);color:#fff;}
+.tab[aria-selected="true"] .n{background:var(--marigold);color:var(--maroon);}
+.dp[aria-pressed="true"]{background:var(--maroon);border-color:var(--maroon);}
+.perk{background:#fffdf8;}
+.v1{background:linear-gradient(160deg,#f4b63f,#c8442a);}
+.v3{background:linear-gradient(160deg,#c8442a,#8a2a2a);}
+.v4{background:linear-gradient(160deg,#5a2a1c,#3a1a12);}
+.day-top{background:linear-gradient(120deg,#6b1f2a,#8a3418);}
+.day-top h3{font-size:32px;font-weight:600;}
+.sum{background:linear-gradient(160deg,#4d2118,#3a1a12);}
+.sum h4{color:var(--marigold);font-family:var(--sans);}
+.srow.big b{font-size:38px;font-weight:600;}
+.checks{background:linear-gradient(135deg,#3a1a12,#6b1f2a);}
+.checks h3{font-size:32px;font-weight:600;}
+.room .rph.r2{background:linear-gradient(135deg,#6b1f2a,#c8442a);}
+.bt{background:#4a1d22;}
+.mapframe{border-width:4px;}
+.ok{background:#fdf0d6;color:#6b3a10;}
+.fld input,.fld textarea,.stepper{background:#fffdf8;}
+
+/* ---------- contact + footer (same footer as /yoga) ---------- */
+.contact{background:linear-gradient(rgba(36,16,9,.92),rgba(36,16,9,.92)),var(--paisley) 0 0/160px 160px,#241009;color:#fff7e8;}
+.contact h3{font-size:36px;font-weight:600;color:#fff;}
+.contact .chips a:hover{background:var(--marigold);color:#3a1405;}
+#footer.site-footer{background:linear-gradient(rgba(36,16,9,.94),rgba(36,16,9,.94)),var(--paisley) 0 0/160px 160px,#241009;padding:64px 0 0;text-align:left;color:rgba(255,247,232,.7);font-size:14px;}
+.site-footer .footer-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.1);}
+.site-footer .footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px;font-weight:700;font-size:18px;color:#fff;text-decoration:none;}
+.site-footer .footer-logo img{width:36px;height:36px;}
+.site-footer .footer-col-brand p{color:rgba(255,255,255,.6);font-size:14px;max-width:320px;margin:0;}
+.site-footer h4{color:var(--marigold);font:700 13px var(--sans);text-transform:uppercase;letter-spacing:.8px;margin:0 0 18px;}
+.site-footer ul{list-style:none;margin:0;padding:0;}
+.site-footer li{margin-bottom:12px;font-size:14px;color:rgba(255,255,255,.62);}
+.site-footer a{color:rgba(255,255,255,.62);text-decoration:none;transition:color .2s;}
+.site-footer a:hover{color:var(--marigold);}
+.site-footer li i{color:var(--marigold);width:18px;}
+.site-footer .footer-bottom{padding:22px 0;text-align:center;font-size:13px;color:rgba(255,255,255,.4);}
+.site-footer .footer-bottom p{margin:0;}
+
+@media(max-width:900px){
+  .topnav a:not(.cur){display:none;}
+  .topnav{gap:0;}
+  .topbar .wrap{gap:12px;}
+  .hero{padding:150px 0 150px;}
+  section{padding:64px 0;}
+  .site-footer .footer-grid{grid-template-columns:1fr;gap:32px;text-align:center;}
+  .site-footer .footer-logo{justify-content:center;}
+  .site-footer .footer-col-brand p{max-width:none;margin:0 auto;}
+}
+@media(max-width:600px){
+  .brand-text b{font-size:20px;}
+  h2{font-size:34px;}
+  .hero h1{font-size:46px;}
+}
+
+/* ---------- bigger "Where you'll stay" photos ---------- */
+@media(min-width:901px){
+  .stay{max-width:none;width:min(1340px,calc(100vw - 48px));position:relative;left:50%;transform:translateX(-50%);grid-template-columns:.62fr 1.7fr;gap:48px;}
+  .bt.t1{height:720px;}
+  .bt.t2,.bt.t3{height:353px;}
+  .bento{gap:16px;grid-template-columns:1.1fr 1fr;}
+  .bento .col2{gap:14px;}
+}
+
+/* ---------- hero photo: WebP, phone / laptop / large or high-resolution screen ---------- */
+.hero{--hero-img:url(img/opt/rishikesh-aerial-1920.webp);}
+@media (min-width:1600px),(min-width:1000px) and (min-resolution:1.5dppx),(min-width:1000px) and (-webkit-min-device-pixel-ratio:1.5){.hero{--hero-img:url(img/opt/rishikesh-aerial-2000.webp);}}
+@media (max-width:767px){.hero{--hero-img:url(img/opt/rishikesh-aerial-1080.webp);}}

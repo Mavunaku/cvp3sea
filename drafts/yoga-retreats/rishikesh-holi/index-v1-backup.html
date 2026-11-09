@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DRAFT — Sacred Ganges Awakening & Joyful Holi Retreat | Rishikesh, India | CVP Properties</title>
+
+<!-- Same font stack as the live /yoga page -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<style>
+  /* ===== Same palette as css/yoga-style.css — this page should read as a
+     continuation of /yoga, not a separate product. ===== */
+  :root{
+    --saffron:#e76f51;      /* muted saffron — primary accent */
+    --sage:#8ab0ab;         /* sage green — calm secondary accent */
+    --sand:#f4a261;         /* earthy sand — warm tertiary accent */
+    --charcoal:#264653;     /* headings / body text */
+    --cream:#fdfcdc;        /* page background */
+    --overlay:rgba(38,70,83,.72);
+    --card:#ffffff;
+    --shadow:0 10px 30px rgba(0,0,0,.05);
+    --shadow-lg:0 25px 60px rgba(0,0,0,.18);
+    --radius:15px;
+    --serif:'Playfair Display',serif;
+    --sans:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--cream);color:var(--charcoal);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased;}
+  #itinerary,#reserve{scroll-margin-top:220px;}
+  img{max-width:100%;display:block;}
+  a{color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+  h1,h2,h3,h4{font-family:var(--serif);margin:0 0 .5em 0;color:var(--charcoal);font-weight:700;}
+  .eyebrow{display:inline-block;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sand);border:1px solid rgba(244,162,97,.5);border-radius:30px;padding:6px 18px;margin-bottom:16px;}
+  section{padding:68px 0;}
+  .alt-bg{background:rgba(138,176,171,.1);position:relative;overflow:hidden;}
+  .section-photo-sage,.section-photo-warm{position:relative;overflow:hidden;isolation:isolate;}
+  .section-photo-sage::before,.section-photo-warm::before{content:'';position:absolute;inset:-40px;background-image:var(--bg-photo);background-size:cover;background-position:center;filter:blur(22px) saturate(1.08);transform:scale(1.1);z-index:-2;}
+  .section-photo-sage::after,.section-photo-warm::after{content:'';position:absolute;inset:0;z-index:-1;}
+  .section-photo-sage::after{background:rgba(138,176,171,.55);}
+  .section-photo-warm::after{background:rgba(253,252,220,.6);}
+  .section-photo-sage > .wrap,.section-photo-warm > .wrap{position:relative;z-index:1;}
+  .section-head{max-width:680px;margin:0 auto 42px auto;text-align:center;position:relative;z-index:1;}
+  .section-head h2{font-size:clamp(26px,3.4vw,36px);}
+  .section-head p{color:rgba(38,70,83,.75);font-size:16px;}
+
+  /* ---------- Decorative Indian motifs (lotus / mandala / toran / diya / peacock) ---------- */
+  .lotus-icon{width:30px;height:30px;color:var(--saffron);margin:0 auto 10px auto;display:block;}
+  .mandala-corner{position:absolute;width:160px;height:160px;pointer-events:none;opacity:.16;color:#fff;z-index:0;}
+  .mandala-corner.tl{top:-30px;left:-30px;}
+  .mandala-corner.br{bottom:-30px;right:-30px;transform:rotate(180deg);}
+  .diya-icon{width:22px;height:22px;color:var(--saffron);flex:0 0 auto;}
+  .diya-pair{display:inline-flex;align-items:center;gap:8px;margin:0 10px;vertical-align:middle;}
+  .peacock-feather{position:absolute;top:-10px;right:18px;width:70px;height:150px;opacity:.22;pointer-events:none;z-index:0;}
+  @media(max-width:860px){.peacock-feather{display:none;}}
+
+  /* ---------- Draft banner ---------- */
+  .draft-banner{background:var(--charcoal);color:#fff;font-size:13px;font-weight:700;text-align:center;padding:10px 16px;}
+  .draft-banner span{color:var(--sand);}
+
+  /* ---------- Top bar ---------- */
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(253,252,220,.94);backdrop-filter:blur(10px);border-bottom:1px solid rgba(38,70,83,.08);}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;color:var(--charcoal);text-decoration:none;}
+  .brand img{width:30px;height:30px;}
+  .topbar-cta{display:flex;align-items:center;gap:16px;}
+  .back-link{font-size:13px;font-weight:700;color:var(--charcoal);opacity:.7;text-decoration:none;display:flex;align-items:center;gap:6px;}
+  .back-link:hover{opacity:1;}
+
+  .pill{display:inline-flex;align-items:center;gap:6px;background:var(--saffron);color:#fff;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:999px;}
+
+  /* ---------- Buttons — pill shape, matches .btn-yoga exactly ---------- */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:2px solid var(--saffron);cursor:pointer;font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;border-radius:30px;padding:13px 28px;text-decoration:none;transition:all .25s ease;background:var(--saffron);color:#fff;}
+  .btn:hover{background:transparent;color:var(--saffron);transform:translateY(-2px);}
+  .btn-outline{background:transparent;color:var(--charcoal);border-color:var(--charcoal);}
+  .btn-outline:hover{background:var(--charcoal);color:#fff;}
+  .btn-light{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.7);color:#fff;}
+  .btn-light:hover{background:#fff;color:var(--charcoal);}
+  .btn-sm{padding:9px 18px;font-size:11px;}
+  .btn-block{width:100%;}
+  .btn:disabled{opacity:.4;cursor:not-allowed;transform:none !important;}
+
+  /* ---------- Hero — mirrors .yoga-hero / .yoga-hero-panel ---------- */
+  .hero{position:relative;color:#fff;padding:100px 0 70px 0;overflow:hidden;}
+  .hero-bg{position:absolute;inset:0;background:url('img/rishikesh-aerial.jpg') center 55%/cover no-repeat;}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(23,43,52,.42) 0%,rgba(23,43,52,.22) 45%,rgba(23,43,52,.6) 100%);}
+  .hero .wrap{position:relative;z-index:2;}
+  .hero-panel{position:relative;overflow:hidden;max-width:760px;margin:0 auto;padding:54px 46px;text-align:center;background:rgba(23,43,52,.38);border:1px solid rgba(255,255,255,.22);border-radius:24px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:var(--shadow-lg);}
+  .hero-panel > *:not(.mandala-corner){position:relative;z-index:1;}
+  .hero-icon{color:#fff;font-size:2.6em;margin-bottom:6px;animation:lotusFloat 4s ease-in-out infinite;}
+  @keyframes lotusFloat{0%{transform:translateY(0) rotate(0);}50%{transform:translateY(-8px) rotate(4deg);}100%{transform:translateY(0) rotate(0);}}
+  .hero-eyebrow{display:inline-block;font-size:.8em;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sand);border:1px solid rgba(244,162,97,.5);border-radius:30px;padding:6px 18px;margin-bottom:14px;}
+  .hero h1{font-size:clamp(28px,4.4vw,44px);font-weight:700;color:#fff;margin:6px 0 16px 0;line-height:1.2;}
+  .hero-sub{max-width:560px;margin:0 auto 22px auto;font-size:16px;color:rgba(255,255,255,.88);}
+  .hero-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:28px;}
+  .hero-chip{display:inline-flex;align-items:center;gap:8px;font-size:.85em;font-weight:700;color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:30px;padding:8px 18px;}
+  .hero-chip i{color:var(--sand);}
+  .hero-price-row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:26px;}
+  .price-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:16px;padding:16px 26px;min-width:190px;}
+  .price-card.accent{background:rgba(231,111,81,.28);border-color:rgba(231,111,81,.5);}
+  .price-card .label{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.72);font-weight:700;margin-bottom:4px;}
+  .price-card .value{font-family:var(--serif);font-size:28px;font-weight:700;color:#fff;}
+  .price-card .value small{font-size:13px;font-weight:500;color:rgba(255,255,255,.75);}
+  .hero-ctas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;}
+
+  /* ---------- Quick facts strip ---------- */
+  .facts{background:var(--charcoal);color:#fff;padding:20px 0;}
+  .facts .wrap{display:flex;flex-wrap:wrap;justify-content:center;gap:30px;text-align:center;}
+  .fact{display:flex;flex-direction:column;gap:2px;min-width:110px;}
+  .fact i{color:var(--sand);font-size:16px;margin-bottom:4px;}
+  .fact .k{font-size:13px;font-weight:700;}
+  .fact .v{font-size:10.5px;color:rgba(255,255,255,.62);text-transform:uppercase;letter-spacing:.8px;}
+
+  /* ---------- Section divider (rangoli-style dots) ---------- */
+  .divider{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 34px 0;}
+  .divider span{width:6px;height:6px;border-radius:50%;background:var(--sand);opacity:.6;}
+  .divider span:nth-child(2){background:var(--saffron);opacity:1;width:8px;height:8px;}
+  .divider span:nth-child(3){background:var(--sage);}
+
+
+  /* ---------- About the retreat ---------- */
+  .about-wrap{max-width:780px;margin:0 auto;}
+  .about-lead{font-family:var(--serif);font-size:clamp(19px,2.3vw,23px);line-height:1.6;color:var(--charcoal);text-align:center;margin:0 0 8px 0;}
+  .about-lead em{color:var(--saffron);font-style:normal;}
+  .about-quote{margin:34px auto;padding:34px 36px;border-radius:22px;text-align:center;background:linear-gradient(135deg,var(--charcoal),#1d3a47);color:#fff;box-shadow:var(--shadow-lg);}
+  .about-quote .kicker{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--sand);margin-bottom:8px;}
+  .about-quote .q{font-family:var(--serif);font-size:clamp(28px,4.2vw,40px);font-weight:700;color:#ffce9c;line-height:1.2;}
+  .about-quote p{margin:14px auto 0 auto;max-width:520px;color:rgba(255,255,255,.82);font-size:15px;}
+  .about-text p{font-size:16px;color:rgba(38,70,83,.82);margin:0 0 18px 0;}
+  .about-text .term{font-weight:800;letter-spacing:1px;color:var(--saffron);}
+  .about-h3{text-align:center;margin:52px 0 6px 0;font-size:clamp(22px,3vw,28px);}
+  .about-sub{text-align:center;color:rgba(38,70,83,.7);font-size:15px;margin:0 0 22px 0;}
+  .practice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;}
+  .practice{background:var(--card);border-radius:14px;padding:18px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start;border-left:4px solid var(--sage);}
+  .practice .ic{flex:0 0 38px;height:38px;border-radius:10px;background:rgba(138,176,171,.2);color:#3f6760;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .practice.feat{border-left-color:var(--saffron);}
+  .practice.feat .ic{background:var(--saffron);color:#fff;}
+  .practice h4{font-size:15px;margin:0 0 2px 0;}
+  .practice p{margin:0;font-size:13px;color:rgba(38,70,83,.7);line-height:1.5;}
+  .callout{display:flex;gap:22px;align-items:flex-start;background:var(--card);border-radius:20px;padding:28px 30px;box-shadow:var(--shadow);border-top:5px solid var(--sage);margin-top:22px;}
+  .callout.warm{border-top-color:#c6447e;background:linear-gradient(135deg,#fff,#fff4f8);}
+  .callout .big-ic{flex:0 0 56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--sage),var(--saffron));color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;}
+  .callout.warm .big-ic{background:linear-gradient(135deg,#c6447e,var(--saffron));}
+  .callout h3{font-size:20px;margin-bottom:8px;}
+  .callout p{margin:0 0 12px 0;font-size:15px;color:rgba(38,70,83,.8);}
+  .callout p:last-child{margin-bottom:0;}
+  .who-chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;background:rgba(138,176,171,.18);color:#3f6760;border-radius:999px;padding:6px 14px;}
+  .intent-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .intent-list li{display:flex;gap:12px;align-items:flex-start;background:var(--card);padding:15px 17px;border-radius:12px;box-shadow:var(--shadow);font-size:14.5px;color:rgba(38,70,83,.85);}
+  .intent-list i{color:var(--saffron);margin-top:5px;}
+  .about-close{max-width:640px;margin:34px auto 0 auto;text-align:center;font-size:16px;color:rgba(38,70,83,.82);}
+  .about-close .final{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--charcoal);margin-top:18px;}
+  .stay-meta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:22px;}
+  .stay-meta span{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;background:var(--card);border-radius:999px;padding:10px 18px;box-shadow:var(--shadow);}
+  .stay-meta i{color:var(--saffron);}
+  .stay-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .stay-opt{background:var(--card);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);border-bottom:4px solid var(--sage);}
+  .stay-opt.upgrade{border-bottom-color:var(--saffron);}
+  .stay-opt .badge{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;padding:4px 12px;border-radius:999px;background:rgba(138,176,171,.2);color:#3f6760;margin-bottom:10px;}
+  .stay-opt.upgrade .badge{background:rgba(231,111,81,.14);color:#b1492f;}
+  .stay-opt h4{font-size:19px;margin-bottom:6px;}
+  .stay-opt .price{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--saffron);margin-bottom:8px;}
+  .stay-opt p{margin:0;font-size:14px;color:rgba(38,70,83,.75);}
+  @media(max-width:700px){.intent-list,.stay-grid{grid-template-columns:1fr;}.callout{flex-direction:column;padding:24px 22px;}.about-quote{padding:28px 22px;}}
+
+  /* ---------- Holi spotlight ---------- */
+  .holi-feature{display:grid;grid-template-columns:1.05fr 1fr;border-radius:26px;overflow:hidden;box-shadow:var(--shadow-lg);background:#fffaf2;position:relative;}
+  .holi-feature::before{content:'';position:absolute;left:0;right:0;top:0;height:7px;z-index:3;background:linear-gradient(90deg,#c6447e,var(--saffron),var(--sand),#f2d54a,var(--sage),#4fb3c9,#7a5cc7);}
+  .holi-mosaic{display:grid;min-height:520px;position:relative;background:#fff;}
+  .holi-mosaic > div{background-size:cover;background-position:center;position:relative;}
+  .holi-sticker{position:absolute;left:18px;bottom:18px;z-index:2;width:92px;height:92px;border-radius:50%;background:linear-gradient(135deg,#c6447e,var(--saffron));color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;line-height:1.2;border:3px solid #fff;box-shadow:0 8px 20px rgba(198,68,126,.45);transform:rotate(-8deg);}
+  .holi-sticker b{font-family:var(--serif);font-size:20px;letter-spacing:0;text-transform:none;}
+  .holi-content{padding:44px 38px 34px 38px;position:relative;background:radial-gradient(circle at 100% 0%,rgba(198,68,126,.20),transparent 42%),radial-gradient(circle at 0% 100%,rgba(79,179,201,.20),transparent 42%),radial-gradient(circle at 100% 100%,rgba(244,162,97,.30),transparent 45%),#fffaf2;}
+  .holi-daytag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;padding:6px 14px;border-radius:30px;margin-bottom:14px;background:rgba(198,68,126,.12);color:#a3336a;border:1px solid rgba(198,68,126,.3);}
+  .holi-content h3{font-size:28px;line-height:1.2;background:linear-gradient(90deg,#c6447e,var(--saffron) 55%,#d98b2b);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .holi-content > p{font-size:15px;color:rgba(38,70,83,.8);margin:0 0 22px 0;}
+  .holi-timeline{list-style:none;margin:0 0 22px 0;padding:0 0 0 32px;position:relative;display:grid;gap:12px;}
+  .holi-timeline::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,#c6447e,var(--saffron),var(--sand),#4fb3c9);border-radius:2px;}
+  .holi-timeline li{position:relative;display:flex;gap:12px;align-items:baseline;font-size:14px;color:rgba(38,70,83,.82);}
+  .holi-timeline li::before{content:'';position:absolute;left:-32px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--dot,var(--saffron));border:3px solid #fffaf2;box-shadow:0 0 0 1px var(--dot,var(--saffron));}
+  .holi-timeline .t{flex:0 0 72px;font-weight:800;color:var(--charcoal);font-size:13px;}
+  .holi-timeline li.peak{font-family:var(--serif);font-weight:700;font-size:17px;color:#a3336a;}
+  .holi-timeline li.peak .t{font-family:var(--sans);color:#a3336a;}
+  .holi-timeline li.peak::before{width:20px;height:20px;left:-35px;top:4px;box-shadow:0 0 0 2px var(--dot),0 0 14px var(--dot);}
+  .holi-perks{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;}
+  .holi-perk{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;padding:7px 13px;border-radius:999px;background:#fff;color:var(--charcoal);border:1.5px solid var(--c,var(--saffron));box-shadow:0 2px 8px rgba(0,0,0,.04);}
+  .holi-perk i{color:var(--c,var(--saffron));}
+  .color-strip{display:flex;height:8px;border-radius:999px;overflow:hidden;margin:22px 0 0 0;}
+  .color-strip span{flex:1;}
+
+  /* ---------- Hosts ---------- */
+  .hosts-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;}
+  .host-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:30px;text-align:center;border-bottom:4px solid var(--sage);}
+  .host-badge{width:96px;height:96px;margin:0 auto 16px auto;border-radius:50%;background:linear-gradient(135deg,var(--sage),var(--saffron));display:flex;align-items:center;justify-content:center;color:#fff;font-size:30px;border:3px solid #fff;box-shadow:0 6px 16px rgba(38,70,83,.14);}
+  .host-role{font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--saffron);margin-bottom:4px;}
+  .host-name{font-family:var(--serif);font-size:20px;font-weight:700;}
+  .host-lang{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--charcoal);background:rgba(138,176,171,.15);padding:4px 12px;border-radius:999px;margin-top:8px;}
+  .host-bio{font-size:14px;color:rgba(38,70,83,.75);margin-top:14px;text-align:left;}
+  .placeholder-note{margin-top:16px;background:#fff6ea;border:1px dashed var(--sand);border-radius:10px;padding:12px 14px;font-size:12.5px;color:#8a5a1f;display:flex;gap:8px;text-align:left;}
+  .placeholder-note i{margin-top:2px;flex:0 0 auto;}
+
+  /* ---------- Itinerary ---------- */
+  .itin-filters{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:30px;}
+  .filter-btn{border:1.5px solid rgba(38,70,83,.15);background:#fff;color:var(--charcoal);opacity:.75;font-size:13px;font-weight:700;padding:9px 18px;border-radius:30px;cursor:pointer;transition:all .15s ease;}
+  .filter-btn:hover{border-color:var(--saffron);opacity:1;}
+  .filter-btn.active{background:var(--charcoal);border-color:var(--charcoal);color:#fff;opacity:1;}
+  .day-list{display:grid;gap:14px;max-width:820px;margin:0 auto;}
+  .day-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;border-left:4px solid var(--sage);}
+  .day-card.is-holi{border-left-color:var(--saffron);}
+  .day-head{display:flex;align-items:center;gap:16px;padding:18px 26px;cursor:pointer;user-select:none;}
+  .day-num{flex:0 0 48px;height:48px;border-radius:50%;background:rgba(138,176,171,.15);background-size:cover;background-position:center;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;font-weight:700;color:var(--charcoal);}
+  .day-card.is-holi .day-num{background-color:var(--saffron);color:#fff;}
+  .day-num.photo{flex-basis:60px;height:60px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.85),0 0 10px rgba(0,0,0,.5);border:2.5px solid #fff;box-shadow:0 3px 10px rgba(38,70,83,.3);}
+  .day-num small{font-size:7.5px;font-style:normal;font-weight:800;letter-spacing:.4px;text-transform:uppercase;opacity:.75;}
+  .day-inline-img{display:block;width:100%;max-width:420px;height:190px;object-fit:cover;border-radius:12px;margin:4px 0 16px 0;box-shadow:var(--shadow-lg);}
+  .day-head-text{flex:1;min-width:0;}
+  .day-title{font-family:var(--serif);font-weight:700;font-size:16.5px;color:var(--charcoal);}
+  .day-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;}
+  .tag{font-size:10px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:rgba(38,70,83,.06);color:rgba(38,70,83,.7);}
+  .tag.yoga{background:rgba(138,176,171,.2);color:#3f6760;}
+  .tag.culture{background:rgba(244,162,97,.18);color:#9a5417;}
+  .tag.adventure{background:rgba(38,70,83,.1);color:var(--charcoal);}
+  .tag.holi{background:var(--saffron);color:#fff;}
+  .day-chevron{color:var(--saffron);transition:transform .2s ease;flex:0 0 auto;font-size:14px;}
+  .day-card.open .day-chevron{transform:rotate(180deg);}
+  .day-body{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+  .day-body-inner{padding:0 26px 22px 84px;color:rgba(38,70,83,.78);font-size:14.5px;}
+  .day-card[data-hidden="true"]{display:none;}
+  .day-date{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--saffron);margin-bottom:2px;}
+  .day-intro{margin:0 0 12px 0;}
+  .sched{list-style:none;margin:0;padding:0;}
+  .sched li{display:grid;grid-template-columns:150px 1fr;gap:14px;padding:8px 0;border-bottom:1px dashed rgba(38,70,83,.12);font-size:14px;line-height:1.5;}
+  .sched li:last-child{border-bottom:0;}
+  .sched .t{font-weight:700;color:var(--charcoal);white-space:nowrap;}
+  .sched li.hl .a{font-weight:700;color:var(--charcoal);}
+  .sched li.hl .t{color:var(--saffron);}
+  .sched .a small{display:block;font-weight:400;color:rgba(38,70,83,.62);font-size:12.5px;}
+  @media(max-width:640px){.sched li{grid-template-columns:1fr;gap:0;}}
+
+  /* ---------- Included / not included ---------- */
+  .incl-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .incl-card{border-radius:var(--radius);padding:28px;background:var(--card);box-shadow:var(--shadow);border-bottom:4px solid var(--sage);}
+  .incl-card.no{border-bottom-color:var(--saffron);}
+  .incl-card h3{font-size:17px;display:flex;align-items:center;gap:10px;}
+  .incl-card.yes h3 i{color:#3f6760;}
+  .incl-card.no h3 i{color:var(--saffron);}
+  .incl-card ul{list-style:none;margin:14px 0 0 0;padding:0;display:grid;gap:10px;}
+  .incl-card li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:rgba(38,70,83,.78);}
+  .incl-card.yes li i{color:#3f6760;}
+  .incl-card.no li i{color:var(--saffron);}
+  .incl-card .note{margin-top:16px;font-size:12.5px;font-weight:700;color:#9a4a2f;background:#fff4ee;border:1px solid rgba(231,111,81,.25);padding:10px 12px;border-radius:10px;}
+
+  /* ---------- Pricing calculator ---------- */
+  .calc-wrap{display:grid;grid-template-columns:1.1fr .9fr;background:var(--card);border-radius:20px;box-shadow:var(--shadow-lg);overflow:hidden;}
+  .calc-left{padding:36px;}
+  .calc-right{padding:36px;background:var(--charcoal);color:#fff;}
+  .field-label{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:rgba(38,70,83,.6);margin-bottom:10px;display:block;}
+  .spots-control{display:flex;align-items:center;gap:16px;margin-bottom:28px;}
+  .spots-btn{width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(38,70,83,.15);background:#fff;font-size:17px;font-weight:700;cursor:pointer;color:var(--charcoal);}
+  .spots-btn:hover{border-color:var(--saffron);color:var(--saffron);}
+  .spots-count{font-family:var(--serif);font-size:28px;font-weight:700;min-width:40px;text-align:center;}
+  .toggle-group{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;}
+  .toggle-opt{border:1.5px solid rgba(38,70,83,.15);border-radius:14px;padding:18px;cursor:pointer;transition:all .15s ease;}
+  .toggle-opt:hover{border-color:var(--sage);}
+  .toggle-opt.active{border-color:var(--saffron);background:rgba(231,111,81,.06);box-shadow:0 0 0 3px rgba(231,111,81,.1);}
+  .toggle-opt .opt-label{font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--saffron);margin-bottom:6px;}
+  .toggle-opt .opt-title{font-family:var(--serif);font-weight:700;font-size:15px;color:var(--charcoal);margin-bottom:4px;}
+  .toggle-opt .opt-sub{font-size:12.5px;color:rgba(38,70,83,.65);}
+  .calc-note{font-size:12.5px;color:rgba(38,70,83,.65);margin-top:18px;line-height:1.6;}
+  .summary-row{display:flex;justify-content:space-between;align-items:baseline;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.12);font-size:14px;}
+  .summary-row .l{color:rgba(255,255,255,.68);}
+  .summary-row .v{font-weight:700;}
+  .summary-row.total{border-bottom:none;padding-top:18px;}
+  .summary-row.total .l{color:#fff;font-weight:700;font-size:15px;}
+  .summary-row.total .v{font-family:var(--serif);font-size:25px;}
+  .due-today-box{background:rgba(231,111,81,.22);border:1px solid rgba(231,111,81,.4);border-radius:12px;padding:16px 18px;margin:18px 0;}
+  .due-today-box .l{font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:800;color:#ffce9c;}
+  .due-today-box .v{font-family:var(--serif);font-size:27px;font-weight:700;margin-top:2px;}
+  .check-row{display:flex;gap:10px;align-items:flex-start;margin:20px 0;font-size:12.5px;color:rgba(255,255,255,.82);line-height:1.6;}
+  .check-row input{margin-top:3px;flex:0 0 auto;width:16px;height:16px;accent-color:var(--saffron);}
+  .confirm-panel{display:none;background:rgba(138,176,171,.16);border:1px solid rgba(138,176,171,.5);border-radius:12px;padding:16px 18px;margin-top:16px;font-size:13px;color:#2f5650;}
+  .confirm-panel i{color:#3f6760;}
+  .confirm-panel.show{display:block;}
+
+  /* ---------- Responsibilities ---------- */
+  .resp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+  .resp-card{background:var(--card);border-radius:14px;padding:22px;box-shadow:var(--shadow);}
+  .resp-card .ic{width:38px;height:38px;border-radius:10px;background:rgba(138,176,171,.18);color:#3f6760;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:12px;}
+  .resp-card h4{font-family:var(--serif);font-size:15px;margin-bottom:6px;}
+  .resp-card p{font-size:13.5px;color:rgba(38,70,83,.72);margin:0;}
+  .resp-disclaimer{margin-top:28px;background:#fff;border:1px solid rgba(38,70,83,.1);border-radius:14px;padding:20px 24px;font-size:13px;color:rgba(38,70,83,.72);}
+  .resp-disclaimer strong{color:var(--charcoal);}
+
+  /* ---------- FAQ — native details/summary, matches the live site's .practice-item pattern ---------- */
+  .faq-list{display:grid;gap:12px;max-width:760px;margin:0 auto;}
+  .faq-item{background:var(--card);border-radius:14px;box-shadow:var(--shadow);border-left:4px solid var(--sage);overflow:hidden;}
+  .faq-item summary{list-style:none;cursor:pointer;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:var(--serif);font-weight:700;font-size:15.5px;color:var(--charcoal);}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary .faq-toggle{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:rgba(138,176,171,.18);color:var(--charcoal);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;}
+  .faq-item[open] summary .faq-toggle{background:var(--saffron);color:#fff;}
+  .faq-item[open] summary .faq-toggle::before{content:'\2212';}
+  .faq-item:not([open]) summary .faq-toggle::before{content:'+';}
+  .faq-item p{margin:0;padding:0 24px 20px 24px;font-size:14px;color:rgba(38,70,83,.75);}
+
+  /* ---------- Contact bar ---------- */
+  .contact-bar{max-width:640px;margin:36px auto 0 auto;background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:28px 32px;text-align:center;}
+  .contact-bar h3{font-size:18px;margin-bottom:6px;}
+  .contact-bar p{font-size:13.5px;color:rgba(38,70,83,.7);margin-bottom:18px;}
+  .contact-row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;}
+  .contact-chip{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--charcoal);background:rgba(138,176,171,.12);border:1px solid rgba(138,176,171,.3);border-radius:30px;padding:10px 18px;text-decoration:none;}
+  .contact-chip:hover{background:rgba(138,176,171,.2);}
+  .contact-chip i{color:var(--saffron);}
+  .contact-note{margin-top:14px;font-size:11.5px;color:rgba(38,70,83,.5);}
+
+  /* ---------- Location map ---------- */
+  .map-wrap{max-width:760px;margin:36px auto 0 auto;}
+  .map-label{text-align:center;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:rgba(38,70,83,.55);margin-bottom:14px;}
+  .map-frame{border-radius:16px;overflow:hidden;box-shadow:var(--shadow);border:1px solid rgba(38,70,83,.08);}
+  .map-frame iframe{display:block;width:100%;height:280px;border:0;}
+  .map-caption{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:12px;font-size:13px;color:rgba(38,70,83,.7);}
+  .map-caption i{color:var(--saffron);}
+  .airport-maps{margin-top:40px;}
+  .airport-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .airport-grid .map-frame iframe{height:200px;}
+  .airport-grid .map-caption{font-size:12.5px;margin-top:10px;}
+  .map-drivetime{display:flex;align-items:center;gap:6px;justify-content:center;margin-top:4px;font-size:11.5px;font-weight:700;color:var(--sage);}
+  .map-drivetime i{font-size:10.5px;}
+
+  footer{background:var(--charcoal);color:rgba(255,255,255,.65);padding:36px 0;text-align:center;font-size:13px;}
+  footer a{color:#fff;text-decoration:underline;}
+  .namaste-text{font-style:italic;color:var(--sand);font-size:1.05em;margin-top:6px;}
+
+  @media(max-width:860px){
+    .holi-feature,.hosts-grid,.incl-grid,.resp-grid,.airport-grid{grid-template-columns:1fr;}
+    .holi-mosaic{min-height:340px;}
+    .holi-content{padding:34px 24px 28px 24px;}
+    .calc-wrap{grid-template-columns:1fr;}
+    .day-body-inner{padding-left:26px;}
+  }
+  @media(max-width:640px){
+    .draft-banner{font-size:11.5px;padding:8px 14px;}
+    .topbar .wrap{height:auto;flex-wrap:wrap;gap:10px;padding-top:12px;padding-bottom:12px;}
+    .brand{font-size:13px;}
+    .brand img{width:24px;height:24px;}
+    .back-link span{display:none;}
+    .back-link{padding:8px;border-radius:50%;background:rgba(38,70,83,.06);}
+    .topbar-cta{gap:8px;order:3;width:100%;}
+    .topbar .btn-sm{flex:1;padding:11px 14px;}
+    .hero{padding:46px 0 56px 0;}
+    .hero-panel{padding:36px 22px;}
+    .hero-price-row{flex-direction:column;align-items:stretch;}
+    .price-card{min-width:0;}
+  }
+</style>
+</head>
+<body>
+
+<div class="draft-banner">🛠️ DRAFT PREVIEW — not linked from the live site, not indexed, no live payments. <span>Review with CVP before this goes to production.</span></div>
+
+<div class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../../../yoga.html"><img src="../../../img/icons/cvpnew-removebg-preview.png" alt=""> CVP Properties 4.0</a>
+    <div class="topbar-cta">
+      <a class="back-link" href="../../../yoga.html"><i class="fa-solid fa-arrow-left"></i> <span>Back to Yoga page</span></a>
+      <a class="btn btn-sm" href="#reserve"><i class="fa-solid fa-om"></i> Book Retreat ($500 Deposit)</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="wrap">
+    <div class="hero-panel">
+      <svg class="mandala-corner tl" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="80" cy="80" r="70" stroke="currentColor" stroke-width="1" fill="none"/>
+        <circle cx="80" cy="80" r="52" stroke="currentColor" stroke-width="1" fill="none"/>
+        <circle cx="80" cy="80" r="34" stroke="currentColor" stroke-width="1" fill="none"/>
+        <g stroke="currentColor" stroke-width="1" fill="none">
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(0 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(30 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(60 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(90 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(120 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(150 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(180 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(210 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(240 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(270 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(300 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(330 80 80)"/>
+        </g>
+      </svg>
+      <svg class="mandala-corner br" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="80" cy="80" r="70" stroke="currentColor" stroke-width="1" fill="none"/>
+        <circle cx="80" cy="80" r="52" stroke="currentColor" stroke-width="1" fill="none"/>
+        <circle cx="80" cy="80" r="34" stroke="currentColor" stroke-width="1" fill="none"/>
+        <g stroke="currentColor" stroke-width="1" fill="none">
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(0 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(30 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(60 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(90 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(120 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(150 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(180 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(210 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(240 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(270 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(300 80 80)"/>
+          <ellipse cx="80" cy="18" rx="5" ry="14" transform="rotate(330 80 80)"/>
+        </g>
+      </svg>
+      <i class="fa-solid fa-om hero-icon"></i>
+      <span class="hero-eyebrow">Rishikesh, India · March 2027</span>
+      <h1>Sacred Ganges Awakening &amp; Joyful Holi Retreat</h1>
+      <p class="hero-sub">An 11-day immersion in Himalayan yoga, Ganges-side ritual, and the full-color joy of Holi — hosted at the sacred Parmarth Niketan ashram on the banks of the Ganges.</p>
+
+      <div class="hero-chips">
+        <span class="hero-chip"><i class="fa-solid fa-calendar-days"></i> 11 Days / 10 Nights</span>
+        <span class="hero-chip"><i class="fa-solid fa-palette"></i> Includes Sacred Holi Celebration</span>
+        <span class="hero-chip"><i class="fa-solid fa-person-praying"></i> All Levels Welcome</span>
+      </div>
+
+      <div class="hero-price-row">
+        <div class="price-card">
+          <div class="label">Total Package</div>
+          <div class="value">$2,000 <small>USD / person</small></div>
+        </div>
+        <div class="price-card accent">
+          <div class="label">Reserve Today</div>
+          <div class="value">$500 <small>non-refundable deposit</small></div>
+        </div>
+      </div>
+
+      <div class="hero-ctas">
+        <a href="#reserve" class="btn"><i class="fa-solid fa-lock"></i> Reserve Your Spot</a>
+        <a href="#itinerary" class="btn btn-light">View Full Itinerary</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="facts">
+  <div class="wrap">
+    <div class="fact"><i class="fa-solid fa-plane-arrival"></i><span class="k">Delhi or Dehradun</span><span class="v">Arrival Cities</span></div>
+    <div class="fact"><i class="fa-solid fa-calendar-days"></i><span class="k">Mar 17 – 27, 2027</span><span class="v">11 Days / 10 Nights</span></div>
+    <div class="fact"><i class="fa-solid fa-droplet"></i><span class="k">Day 6 · Mar 22, 2027</span><span class="v">Rangwali Holi</span></div>
+    <div class="fact"><i class="fa-solid fa-spa"></i><span class="k">Vedanta · Hatha · Nada Yoga</span><span class="v">Daily Practice</span></div>
+  </div>
+</div>
+
+<!-- ============ ABOUT THE RETREAT ============ -->
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <svg class="lotus-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M24 40C24 40 10 34 10 22C10 22 18 24 24 32C30 24 38 22 38 22C38 34 24 40 24 40Z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M24 40C24 40 16 30 16 18C16 18 21 22 24 28C27 22 32 18 32 18C32 30 24 40 24 40Z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M24 40V28" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+      <span class="eyebrow">About This Retreat</span>
+      <h2>More Than a Journey to India</h2>
+    </div>
+
+    <div class="about-wrap">
+      <p class="about-lead">This won’t be just a trip to India, or just an introduction to yoga and spiritual practices. I want to guide you through a <em>deep immersion into the wisdom of Vedanta</em> — one of the most important spiritual and philosophical teachings of India.</p>
+
+      <div class="about-quote">
+        <div class="kicker">The central question of Vedanta</div>
+        <div class="q">Who am I, really?</div>
+        <p>Not my body, not my thoughts, not my emotions, not my social roles — and not even the personality I’m used to identifying with. Who am I beyond all of this?</p>
+      </div>
+
+      <div class="about-text">
+        <p><span class="term">VEDANTA</span> is the ancient knowledge of our true nature — of the soul, of God, and of the nature of all existence. It invites us to explore the most important question of human life.</p>
+        <p>This knowledge makes life considerably easier. Very often we look for support in the outer world, trying to find happiness through relationships, achievements, recognition, and material stability. But Vedanta turns our attention inward — toward understanding our true nature, and recognizing what in us stays unchanged despite all the changes of the outer world.</p>
+        <p>It is a path to inner freedom, harmony, peace, and a deeper understanding of life.</p>
+        <p>During the retreat, a true spiritual immersion awaits us in the sacred atmosphere of the <strong>Parmarth Niketan</strong> ashram, on the banks of the Ganga at the foot of the Himalayas. We won’t only study philosophy — we’ll join knowledge with practice.</p>
+      </div>
+
+      <h3 class="about-h3">What We’ll Practice Together</h3>
+      <p class="about-sub">Knowledge and practice, woven into every day.</p>
+      <div class="practice-grid">
+        <div class="practice feat"><span class="ic"><i class="fa-solid fa-book-open"></i></span><div><h4>Study of Vedanta</h4><p>Exploring the true nature of the Self.</p></div></div>
+        <div class="practice"><span class="ic"><i class="fa-solid fa-spa"></i></span><div><h4>Hatha Yoga</h4></div></div>
+        <div class="practice"><span class="ic"><i class="fa-solid fa-wind"></i></span><div><h4>Pranayama &amp; Meditation</h4></div></div>
+        <div class="practice"><span class="ic"><i class="fa-solid fa-comments"></i></span><div><h4>Satsangs</h4><p>Spiritual conversations.</p></div></div>
+        <div class="practice"><span class="ic"><i class="fa-solid fa-music"></i></span><div><h4>Nada Yoga</h4><p>The healing power of sound, with Margarita.</p></div></div>
+        <div class="practice"><span class="ic"><i class="fa-solid fa-bell"></i></span><div><h4>Sound Healing</h4><p>With an invited Indian master.</p></div></div>
+        <div class="practice"><span class="ic"><i class="fa-solid fa-star"></i></span><div><h4>Shakti Practices</h4></div></div>
+        <div class="practice"><span class="ic"><i class="fa-solid fa-fire-flame-curved"></i></span><div><h4>Sacred Yagya &amp; Ganga Aarti</h4><p>Morning yagya, evening aarti.</p></div></div>
+      </div>
+
+      <div class="callout">
+        <span class="big-ic"><i class="fa-solid fa-music"></i></span>
+        <div>
+          <h3>Nada Yoga — the Yoga of Sound</h3>
+          <p>Nada Yoga is an ancient practice that uses sound, voice, mantras, and attentive listening as tools to explore our inner space and deepen meditation.</p>
+          <p>In the Indian tradition, sound is seen not only as a physical phenomenon but as a subtle manifestation of energy — a way to calm the mind, develop concentration, release inner tension, and turn attention from the outer world toward inner silence.</p>
+          <span class="who-chip"><i class="fa-solid fa-microphone-lines"></i> With Margarita — professional singer &amp; student of Gurnimit Singh, the finest Nada Yoga teacher</span>
+        </div>
+      </div>
+
+      <div class="callout warm">
+        <span class="big-ic"><i class="fa-solid fa-palette"></i></span>
+        <div>
+          <h3>The Celebration of Holi</h3>
+          <p>A special and beautiful part of the retreat will be the celebration of Holi — a festival of love, joy, unity, and the triumph of light.</p>
+          <p>It means a great deal to me that this immersion takes place in Rishikesh, in a place where spiritual life is part of every single day.</p>
+        </div>
+      </div>
+
+      <h3 class="about-h3">My Intention for You</h3>
+      <p class="about-sub">I want to create a space where you can:</p>
+      <ul class="intent-list">
+        <li><i class="fa-solid fa-circle-check"></i> Understand yourself and your true nature more deeply</li>
+        <li><i class="fa-solid fa-circle-check"></i> See your thoughts, emotions, and life patterns in a new way</li>
+        <li><i class="fa-solid fa-circle-check"></i> Learn to find inner support that doesn’t depend on outer circumstances</li>
+        <li><i class="fa-solid fa-circle-check"></i> Loosen the attachments and identifications that take away inner freedom</li>
+        <li><i class="fa-solid fa-circle-check"></i> Discover a deeper understanding of God and the spiritual nature of life</li>
+        <li><i class="fa-solid fa-circle-check"></i> Feel more silence, love, presence, and harmony within</li>
+      </ul>
+
+      <div class="about-close">
+        <p>Most importantly — to take home not just new knowledge, but the experience of touching something far greater than your usual idea of yourself. I don’t want only to talk about the spiritual path, but to create the conditions in which each of you can explore it through your own experience.</p>
+        <p class="final">A time for yourself. For the soul. For silence. For a deep spiritual experience.</p>
+      </div>
+
+      <h3 class="about-h3">Dates &amp; Accommodation</h3>
+      <div class="stay-meta">
+        <span><i class="fa-solid fa-calendar-days"></i> March 17 – 27, 2027</span>
+        <span><i class="fa-solid fa-location-dot"></i> Parmarth Niketan, Rishikesh</span>
+      </div>
+      <div class="stay-grid">
+        <div class="stay-opt">
+          <span class="badge">Included in the $2,000 package</span>
+          <h4>Shared room · 3 guests</h4>
+          <div class="price">Included</div>
+          <p>Triple-occupancy room at the Parmarth Niketan ashram for all 10 nights, shared with fellow retreat guests — right inside the ashram, steps from every session.</p>
+        </div>
+        <div class="stay-opt upgrade">
+          <span class="badge">Optional upgrade</span>
+          <h4>Single room · hotel next to the ashram</h4>
+          <div class="price">+ $500</div>
+          <p>Prefer a room to yourself? A private single room at a hotel right next to the ashram. Please note it is outside the ashram grounds. Price is in addition to the $2,000 package.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOLI SPOTLIGHT ============ -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <svg class="lotus-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M24 40C24 40 10 34 10 22C10 22 18 24 24 32C30 24 38 22 38 22C38 34 24 40 24 40Z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M24 40C24 40 16 30 16 18C16 18 21 22 24 28C27 22 32 18 32 18C32 30 24 40 24 40Z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M24 40V28" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+      <span class="eyebrow">The Heart of the Retreat</span>
+      <h2>Holi at the Ashram: Sacred Color &amp; Celebration</h2>
+      <p>The morning of Holi begins with yoga and a sacred yagya, then the ashram comes alive with color — a celebration shared with the ashram’s students, teachers, and the Guru.</p>
+    </div>
+
+    <div class="holi-feature">
+      <div class="holi-mosaic">
+        <div class="m1" style="background-image:url('img/holi-art.webp')"></div>
+        <span class="holi-sticker">Day 6<b>Mar 22</b></span>
+      </div>
+      <div class="holi-content">
+        <span class="holi-daytag"><i class="fa-solid fa-palette"></i> Day 6 · March 22, 2027</span>
+        <h3>Rangwali Holi — Festival of Colors</h3>
+        <p>A sacred morning of yoga and fire ceremony, then the ashram bursts into color — a celebration shared with the Rishi Kumars (students of the ashram), the Acharyas (teachers of the ashram), and the Guru.</p>
+        <ul class="holi-timeline">
+          <li style="--dot:#4fb3c9"><span class="t">6:00 AM</span><span>Hatha Yoga, Pranayama &amp; Meditation</span></li>
+          <li style="--dot:var(--sage)"><span class="t">8:15 AM</span><span>Sacred Yagya (Vedic fire ceremony)</span></li>
+          <li style="--dot:var(--sand)"><span class="t">9:30 AM</span><span>Breakfast</span></li>
+          <li class="peak" style="--dot:#c6447e"><span class="t">11:00 AM</span><span>The Holi celebration — until 1 PM</span></li>
+          <li style="--dot:var(--saffron)"><span class="t">1:00 PM</span><span>Free time to rest &amp; savor the day</span></li>
+        </ul>
+        <div class="holi-perks">
+          <span class="holi-perk" style="--c:#c6447e"><i class="fa-solid fa-people-group"></i> With Rishi Kumars, Acharyas &amp; Guru</span>
+          <span class="holi-perk" style="--c:#4fb3c9"><i class="fa-solid fa-leaf"></i> Organic herbal gulal</span>
+          <span class="holi-perk" style="--c:var(--saffron)"><i class="fa-solid fa-shirt"></i> White kurta set, yours to keep</span>
+          <span class="holi-perk" style="--c:#7a5cc7"><i class="fa-solid fa-drum"></i> Live kirtan &amp; dhol</span>
+          <span class="holi-perk" style="--c:var(--sand)"><i class="fa-solid fa-utensils"></i> Sattvic Holi thali &amp; thandai</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOSTS ============ -->
+<section class="alt-bg section-photo-sage" style="--bg-photo:url('img/ganga-aarti-1.webp')">
+  <div class="wrap">
+    <div class="section-head">
+      <svg class="lotus-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M24 40C24 40 10 34 10 22C10 22 18 24 24 32C30 24 38 22 38 22C38 34 24 40 24 40Z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M24 40C24 40 16 30 16 18C16 18 21 22 24 28C27 22 32 18 32 18C32 30 24 40 24 40Z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M24 40V28" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+      <span class="eyebrow">Your Guides</span>
+      <h2>Meet Your Host &amp; Translator</h2>
+      <p>Guided practice and local wisdom, made fully accessible — every session is offered with live translation.</p>
+    </div>
+
+    <div class="hosts-grid">
+      <div class="host-card">
+        <div class="host-badge"><i class="fa-solid fa-om"></i></div>
+        <div class="host-role">Lead Guru &amp; Retreat Host</div>
+        <div class="host-name">[Guru's Full Name]</div>
+        <span class="host-lang"><i class="fa-solid fa-language"></i> Teaches in Russian</span>
+        <p class="host-bio">[Placeholder bio — 2–3 sentences on her training lineage, years teaching, certifications (e.g. RYT-500, Ayurveda training), and what guests can expect from her teaching style. CVP to provide final text and a real photo.]</p>
+        <div class="placeholder-note"><i class="fa-solid fa-circle-exclamation"></i> Placeholder content — replace with the Guru's real name, credentials, bio, and photo before production.</div>
+      </div>
+
+      <div class="host-card">
+        <div class="host-badge"><i class="fa-solid fa-comments"></i></div>
+        <div class="host-role">English Translator &amp; Retreat Coordinator</div>
+        <div class="host-name">[Translator's Full Name]</div>
+        <span class="host-lang"><i class="fa-solid fa-language"></i> Russian ⇄ English, live on-site</span>
+        <span class="host-lang"><i class="fa-solid fa-certificate"></i> RYT-200 Certified</span>
+        <p class="host-bio">[Placeholder bio — background, connection to the Guru/ashram, RYT-200 training, and role during the retreat (translating all sessions, answering logistics questions, on-call support, and able to assist/sub in on yoga sessions given her own RYT-200 certification). CVP to provide final text and a real photo.]</p>
+        <div class="placeholder-note"><i class="fa-solid fa-circle-exclamation"></i> Placeholder content — replace with the translator's real name, bio, and photo before production.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ITINERARY ============ -->
+<section id="itinerary">
+  <div class="wrap">
+    <div class="section-head">
+      <svg class="lotus-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M24 40C24 40 10 34 10 22C10 22 18 24 24 32C30 24 38 22 38 22C38 34 24 40 24 40Z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M24 40C24 40 16 30 16 18C16 18 21 22 24 28C27 22 32 18 32 18C32 30 24 40 24 40Z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M24 40V28" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+      <span class="eyebrow">Day by Day</span>
+      <h2>The Full 11-Day Itinerary</h2>
+      <p>Tap any day to see the hour-by-hour timetable. Filter by focus to see just the practice or the culture &amp; ritual.</p>
+    </div>
+
+    <div class="itin-filters">
+      <button class="filter-btn active" data-filter="all">All Days</button>
+      <button class="filter-btn" data-filter="yoga">Yoga &amp; Meditation</button>
+      <button class="filter-btn" data-filter="culture">Culture &amp; Ritual</button>
+      <button class="filter-btn" data-filter="holi"><i class="fa-solid fa-palette"></i> Holi Days</button>
+    </div>
+
+    <div class="day-list" id="dayList">
+
+      <div class="day-card" data-tags="arrival culture">
+        <div class="day-head">
+          <div class="day-num">1<small>Day</small></div>
+          <div class="day-head-text">
+            <div class="day-date">Wednesday, March 17</div>
+            <div class="day-title">Arrival, Orientation &amp; First Ganga Aarti</div>
+            <div class="day-tags"><span class="tag culture">Arrival</span><span class="tag culture">Ganga Aarti</span><span class="tag culture">Meet the Guru</span></div>
+          </div>
+          <i class="fa-solid fa-chevron-down day-chevron"></i>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <ul class="sched">
+            <li><span class="t">12:00 PM</span><span class="a">Check-in &amp; settling into your room</span></li>
+            <li><span class="t">1:00 PM</span><span class="a">Orientation meeting<small>Introductions, ashram rules, the rhythm of the retreat and key details. Setting your intention for the retreat.</small></span></li>
+            <li><span class="t">2:00 PM</span><span class="a">Lunch</span></li>
+            <li><span class="t">3:00 PM</span><span class="a">First ritual dip in the Ganges<small>The Ganga at the foot of the Himalayas is very clean.</small></span></li>
+            <li><span class="t">4:00 PM</span><span class="a">Orientation walk around the Parmarth Niketan grounds</span></li>
+            <li class="hl"><span class="t">5:00 PM</span><span class="a">Ganga Aarti</span></li>
+            <li><span class="t">7:00 – 8:00 PM</span><span class="a">Dinner</span></li>
+            <li class="hl"><span class="t">8:00 PM</span><span class="a">Meeting with Guru Pujya Swamiji</span></li>
+          </ul>
+        </div></div>
+      </div>
+
+      <div class="day-card" data-tags="yoga culture">
+        <div class="day-head">
+          <div class="day-num photo" style="background-image:url('img/ganga-aarti-1.webp')">2–5<small>Days</small></div>
+          <div class="day-head-text">
+            <div class="day-date">March 18 – 21</div>
+            <div class="day-title">The Daily Ashram Rhythm</div>
+            <div class="day-tags"><span class="tag yoga">Hatha Yoga</span><span class="tag yoga">Vedanta</span><span class="tag yoga">Nada Yoga</span><span class="tag culture">Satsang</span><span class="tag culture">Ganga Aarti</span></div>
+          </div>
+          <i class="fa-solid fa-chevron-down day-chevron"></i>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <img class="day-inline-img" src="img/ganga-aarti-fire.webp" alt="Evening aarti ceremony at Parmarth Niketan, Rishikesh">
+          <p class="day-intro">Four days in the same grounding rhythm: practice at sunrise, study and chanting in the late morning, and the Ganga Aarti fire ceremony each evening — chanting,
+          <span class="diya-pair" aria-hidden="true">
+            <svg class="diya-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 30C8 30 14 34 24 34C34 34 40 30 40 30C40 30 36 24 24 24C12 24 8 30 8 30Z" stroke="currentColor" stroke-width="1.5" fill="rgba(231,111,81,.12)"/>
+              <ellipse cx="24" cy="30" rx="4" ry="1.4" fill="currentColor" opacity=".5"/>
+              <path d="M24 22C24 22 21 18 24 13C27 18 24 22 24 22Z" fill="var(--saffron)"/>
+            </svg>
+            <svg class="diya-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 30C8 30 14 34 24 34C34 34 40 30 40 30C40 30 36 24 24 24C12 24 8 30 8 30Z" stroke="currentColor" stroke-width="1.5" fill="rgba(231,111,81,.12)"/>
+              <ellipse cx="24" cy="30" rx="4" ry="1.4" fill="currentColor" opacity=".5"/>
+              <path d="M24 22C24 22 21 18 24 13C27 18 24 22 24 22Z" fill="var(--saffron)"/>
+            </svg>
+          </span>
+          floating diyas, and the river at dusk.</p>
+          <ul class="sched">
+            <li><span class="t">6:00 – 7:00 AM</span><span class="a">Hatha Yoga</span></li>
+            <li><span class="t">7:00 – 7:30 AM</span><span class="a">Pranayama &amp; Meditation</span></li>
+            <li><span class="t">8:15 – 9:00 AM</span><span class="a">Sacred Yagya<small>Traditional Vedic fire ceremony.</small></span></li>
+            <li><span class="t">9:30 – 10:30 AM</span><span class="a">Breakfast</span></li>
+            <li><span class="t">10:45 – 11:45 AM</span><span class="a">“Vedanta” course</span></li>
+            <li><span class="t">11:45 AM – 12:45 PM</span><span class="a">Nada Yoga &amp; Mantra Chanting</span></li>
+            <li><span class="t">1:00 – 2:30 PM</span><span class="a">Group lunch at a restaurant</span></li>
+            <li><span class="t">3:00 – 4:00 PM</span><span class="a">Satsang</span></li>
+            <li><span class="t">4:00 – 5:00 PM</span><span class="a">Free time</span></li>
+            <li class="hl"><span class="t">5:00 PM</span><span class="a">Ganga Aarti</span></li>
+            <li><span class="t">7:00 – 8:00 PM</span><span class="a">Dinner</span></li>
+            <li class="hl"><span class="t">8:30 – 9:30 PM</span><span class="a">Immersion into feminine nature through intuitive dance</span></li>
+          </ul>
+        </div></div>
+      </div>
+
+      <div class="day-card is-holi" data-tags="culture holi">
+        <div class="day-head">
+          <div class="day-num photo" style="background-image:url('img/holi-crowd.webp')">6<small>Holi Day</small></div>
+          <div class="day-head-text">
+            <div class="day-date">Monday, March 22</div>
+            <div class="day-title">Holi Celebration with the Ashram Community</div>
+            <div class="day-tags"><span class="tag holi">Signature Day</span><span class="tag culture">Full Day</span></div>
+          </div>
+          <i class="fa-solid fa-chevron-down day-chevron"></i>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <ul class="sched">
+            <li><span class="t">6:00 – 7:00 AM</span><span class="a">Hatha Yoga</span></li>
+            <li><span class="t">7:00 – 7:30 AM</span><span class="a">Pranayama &amp; Meditation</span></li>
+            <li><span class="t">8:15 – 9:00 AM</span><span class="a">Sacred Yagya</span></li>
+            <li><span class="t">9:30 – 10:30 AM</span><span class="a">Breakfast</span></li>
+            <li class="hl"><span class="t">11:00 AM – 1:00 PM</span><span class="a">Holi celebration<small>Celebrated together with the Rishi Kumars (students of the ashram), the Acharyas (teachers of the ashram) and the Guru.</small></span></li>
+            <li><span class="t">From 1:00 PM</span><span class="a">Free time</span></li>
+          </ul>
+        </div></div>
+      </div>
+
+      <div class="day-card" data-tags="yoga culture">
+        <div class="day-head">
+          <div class="day-num photo" style="background-image:url('img/sound-healing.webp')">7<small>Day</small></div>
+          <div class="day-head-text">
+            <div class="day-date">Tuesday, March 23</div>
+            <div class="day-title">Sound Healing Day</div>
+            <div class="day-tags"><span class="tag yoga">Sound Healing</span><span class="tag yoga">Vedanta</span><span class="tag culture">Ganga Aarti</span></div>
+          </div>
+          <i class="fa-solid fa-chevron-down day-chevron"></i>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <img class="day-inline-img" src="img/sound-healing.webp" alt="Singing bowls and gong prepared for a sound healing session">
+          <ul class="sched">
+            <li><span class="t">6:00 – 7:00 AM</span><span class="a">Hatha Yoga</span></li>
+            <li><span class="t">7:00 – 7:30 AM</span><span class="a">Pranayama &amp; Meditation</span></li>
+            <li><span class="t">8:15 – 9:00 AM</span><span class="a">Sacred Yagya</span></li>
+            <li><span class="t">9:30 – 10:30 AM</span><span class="a">Breakfast</span></li>
+            <li><span class="t">10:45 – 11:45 AM</span><span class="a">“Vedanta” course</span></li>
+            <li><span class="t">11:45 AM – 12:45 PM</span><span class="a">Nada Yoga &amp; Mantra Chanting</span></li>
+            <li><span class="t">1:00 – 2:30 PM</span><span class="a">Lunch</span></li>
+            <li class="hl"><span class="t">3:00 – 4:00 PM</span><span class="a">Sound Healing<small>Singing bowls and gong.</small></span></li>
+            <li><span class="t">4:00 – 5:00 PM</span><span class="a">Free time</span></li>
+            <li class="hl"><span class="t">5:00 PM</span><span class="a">Ganga Aarti</span></li>
+            <li><span class="t">7:00 – 8:00 PM</span><span class="a">Dinner</span></li>
+            <li><span class="t">8:30 PM</span><span class="a">Free time</span></li>
+          </ul>
+        </div></div>
+      </div>
+
+      <div class="day-card" data-tags="yoga culture">
+        <div class="day-head">
+          <div class="day-num photo" style="background-image:url('img/hatha-vinyasa.png')">8–10<small>Days</small></div>
+          <div class="day-head-text">
+            <div class="day-date">March 24 – 26</div>
+            <div class="day-title">Awakening Shakti</div>
+            <div class="day-tags"><span class="tag yoga">Hatha Yoga</span><span class="tag yoga">Mantra</span><span class="tag culture">Intuitive Dance</span><span class="tag culture">Ganga Aarti</span></div>
+          </div>
+          <i class="fa-solid fa-chevron-down day-chevron"></i>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <ul class="sched">
+            <li><span class="t">6:00 – 7:00 AM</span><span class="a">Hatha Yoga</span></li>
+            <li><span class="t">7:00 – 7:30 AM</span><span class="a">Pranayama &amp; Meditation</span></li>
+            <li><span class="t">8:15 – 9:00 AM</span><span class="a">Sacred Yagya</span></li>
+            <li><span class="t">9:30 – 10:30 AM</span><span class="a">Breakfast</span></li>
+            <li><span class="t">10:45 – 11:45 AM</span><span class="a">“Vedanta” course</span></li>
+            <li><span class="t">11:45 AM – 12:45 PM</span><span class="a">Nada Yoga &amp; Mantra Chanting</span></li>
+            <li><span class="t">1:00 – 2:30 PM</span><span class="a">Group lunch at a restaurant</span></li>
+            <li><span class="t">3:00 – 4:00 PM</span><span class="a">Satsang</span></li>
+            <li><span class="t">4:00 – 5:00 PM</span><span class="a">Free time</span></li>
+            <li class="hl"><span class="t">5:00 PM</span><span class="a">Ganga Aarti</span></li>
+            <li><span class="t">7:00 – 8:00 PM</span><span class="a">Dinner</span></li>
+            <li class="hl"><span class="t">8:30 – 9:30 PM</span><span class="a">Awakening Shakti — feminine power<small>Through sacred mantras and intuitive dance.</small></span></li>
+            <li><span class="t">9:30 PM</span><span class="a">Rest</span></li>
+          </ul>
+        </div></div>
+      </div>
+
+      <div class="day-card" data-tags="arrival culture">
+        <div class="day-head">
+          <div class="day-num">11<small>Day</small></div>
+          <div class="day-head-text">
+            <div class="day-date">Saturday, March 27</div>
+            <div class="day-title">Closing Yagya &amp; Departure</div>
+            <div class="day-tags"><span class="tag culture">Sacred Yagya</span><span class="tag culture">Departure</span></div>
+          </div>
+          <i class="fa-solid fa-chevron-down day-chevron"></i>
+        </div>
+        <div class="day-body"><div class="day-body-inner">
+          <ul class="sched">
+            <li><span class="t">8:15 – 9:00 AM</span><span class="a">Sacred Yagya</span></li>
+            <li><span class="t">9:00 – 10:00 AM</span><span class="a">Room check-out</span></li>
+            <li><span class="t">10:00 AM</span><span class="a">Free time &amp; departure for the airport</span></li>
+          </ul>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ INCLUDED / NOT INCLUDED ============ -->
+<section class="alt-bg">
+  <div class="wrap">
+    <div class="section-head">
+      <svg class="lotus-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M24 40C24 40 10 34 10 22C10 22 18 24 24 32C30 24 38 22 38 22C38 34 24 40 24 40Z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M24 40C24 40 16 30 16 18C16 18 21 22 24 28C27 22 32 18 32 18C32 30 24 40 24 40Z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M24 40V28" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+      <span class="eyebrow">The Fine Print, Simplified</span>
+      <h2>What's Included &amp; What's Not</h2>
+    </div>
+    <div class="incl-grid">
+      <div class="incl-card yes">
+        <h3><i class="fa-solid fa-circle-check"></i> Included</h3>
+        <ul>
+          <li><i class="fa-solid fa-check"></i> 10 nights’ accommodation at Parmarth Niketan ashram in a shared 3-person room (single room at a nearby hotel: +$500)</li>
+          <li><i class="fa-solid fa-check"></i> All yoga, meditation &amp; workshop sessions led by your host</li>
+          <li><i class="fa-solid fa-check"></i> Live Russian ⇄ English translation throughout</li>
+          <li><i class="fa-solid fa-check"></i> Day 6 Holi celebration: organic gulal, kurta set, music &amp; Holi thali</li>
+          <li><i class="fa-solid fa-check"></i> Daily Sacred Yagya, Vedanta course, Nada Yoga &amp; mantra chanting, satsang and a sound healing session</li>
+          <li><i class="fa-solid fa-check"></i> Ground transfers between Delhi/Dehradun airport and the ashram</li>
+        </ul>
+      </div>
+      <div class="incl-card no">
+        <h3><i class="fa-solid fa-circle-xmark"></i> Not Included</h3>
+        <ul>
+          <li><i class="fa-solid fa-xmark"></i> <strong>All meals</strong> (food is not included in the package price)</li>
+          <li><i class="fa-solid fa-xmark"></i> International &amp; domestic flights to/from India</li>
+          <li><i class="fa-solid fa-xmark"></i> Indian visa &amp; any entry/health requirements</li>
+          <li><i class="fa-solid fa-xmark"></i> Travel insurance (strongly recommended — see below)</li>
+          <li><i class="fa-solid fa-xmark"></i> Personal expenses, shopping &amp; optional extra treatments</li>
+          <li><i class="fa-solid fa-xmark"></i> Gratuities for local guides &amp; ashram staff</li>
+        </ul>
+        <div class="note">Meals are not included. The area around the ashram has many sattvic cafés and restaurants — your host and translator will help you find great, easy options daily.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING CALCULATOR ============ -->
+<section id="reserve" class="section-photo-warm" style="--bg-photo:url('img/ganga-aarti-fire.webp')">
+  <div class="wrap">
+    <div class="section-head">
+      <svg class="lotus-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M24 40C24 40 10 34 10 22C10 22 18 24 24 32C30 24 38 22 38 22C38 34 24 40 24 40Z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M24 40C24 40 16 30 16 18C16 18 21 22 24 28C27 22 32 18 32 18C32 30 24 40 24 40Z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M24 40V28" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+      <span class="eyebrow">Reserve Your Spot</span>
+      <h2>Pricing &amp; Deposit Calculator</h2>
+      <p>Choose how many spots you'd like, and how you'd like to pay.</p>
+    </div>
+
+    <div class="calc-wrap">
+      <div class="calc-left">
+        <label class="field-label">Number of Spots</label>
+        <div class="spots-control">
+          <button class="spots-btn" id="spotsMinus" type="button">−</button>
+          <div class="spots-count" id="spotsCount">1</div>
+          <button class="spots-btn" id="spotsPlus" type="button">+</button>
+        </div>
+
+        <label class="field-label">Payment Option</label>
+        <div class="toggle-group">
+          <div class="toggle-opt active" id="optA" data-opt="A">
+            <div class="opt-label">Option A</div>
+            <div class="opt-title">Reserve Spot Today</div>
+            <div class="opt-sub">Pay the $500 deposit now. Balance due 45 days before departure.</div>
+          </div>
+          <div class="toggle-opt" id="optB" data-opt="B">
+            <div class="opt-label">Option B</div>
+            <div class="opt-title">Pay in Full Today</div>
+            <div class="opt-sub">Pay the full $2,000 now (includes the $500 deposit).</div>
+          </div>
+        </div>
+
+        <p class="calc-note">
+          The $500 USD deposit per person is <strong>non-refundable</strong> and secures your spot on the retreat.
+          Whichever option you choose, the remaining balance is always due in full no later than <strong>45 days before departure</strong>
+          (around <strong>February 5, 2027</strong>, for the March 22, 2027 Holi date).
+        </p>
+
+        <div class="check-row" style="color:rgba(38,70,83,.75);">
+          <input type="checkbox" id="agreeCheck">
+          <label for="agreeCheck">I understand and agree that the $500 USD deposit per person is strictly non-refundable to secure my spot, and the remaining $1,500 USD balance is due 45 days prior to departure.</label>
+        </div>
+
+        <button class="btn btn-block" id="continueBtn" disabled>
+          <i class="fa-solid fa-lock"></i> Continue to Secure Checkout
+        </button>
+        <div class="confirm-panel" id="confirmPanel">
+          <i class="fa-solid fa-circle-info"></i>
+          <strong>Draft mode:</strong> this is a preview of the reservation flow. No payment has been taken.
+          Real checkout (Stripe) will be connected before this page goes live.
+        </div>
+      </div>
+
+      <div class="calc-right">
+        <div class="summary-row"><span class="l">Spots selected</span><span class="v" id="sumSpots">1</span></div>
+        <div class="summary-row"><span class="l">Price per person</span><span class="v">$2,000.00</span></div>
+        <div class="summary-row"><span class="l">Package total</span><span class="v" id="sumTotal">$2,000.00</span></div>
+
+        <div class="due-today-box">
+          <div class="l">Due Today</div>
+          <div class="v" id="dueToday">$500.00</div>
+        </div>
+        <div class="summary-row">
+          <span class="l">Balance due (45 days before departure)</span>
+          <span class="v" id="dueLater">$1,500.00</span>
+        </div>
+        <div class="summary-row total">
+          <span class="l">Total Package Price</span>
+          <span class="v" id="sumTotal2">$2,000.00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESPONSIBILITIES ============ -->
+<section class="alt-bg">
+  <svg class="peacock-feather" viewBox="0 0 120 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M60 258C60 258 22 182 22 112C22 54 60 12 60 12C60 12 98 54 98 112C98 182 60 258 60 258Z" fill="none" stroke="var(--charcoal)" stroke-width="1.4"/>
+    <circle cx="60" cy="72" r="22" fill="none" stroke="var(--saffron)" stroke-width="1.4"/>
+    <circle cx="60" cy="72" r="10" fill="var(--sand)" opacity=".5"/>
+    <line x1="60" y1="258" x2="60" y2="12" stroke="var(--charcoal)" stroke-width="1.1" opacity=".7"/>
+  </svg>
+  <div class="wrap">
+    <div class="section-head">
+      <svg class="lotus-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M24 40C24 40 10 34 10 22C10 22 18 24 24 32C30 24 38 22 38 22C38 34 24 40 24 40Z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M24 40C24 40 16 30 16 18C16 18 21 22 24 28C27 22 32 18 32 18C32 30 24 40 24 40Z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M24 40V28" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+      <span class="eyebrow">Good to Know</span>
+      <h2>Responsibilities &amp; Your Wellbeing</h2>
+      <p>Plain-language summary — no legal jargon. A full written waiver will be provided to sign before departure.</p>
+    </div>
+
+    <div class="resp-grid">
+      <div class="resp-card">
+        <div class="ic"><i class="fa-solid fa-heart-pulse"></i></div>
+        <h4>Your Health &amp; Fitness</h4>
+        <p>This retreat includes physical activity — yoga from sunrise, a full daily schedule, and Holi festivities. By joining, you're confirming you're in good enough health to take part, and you'll check with your doctor first if you have any concerns.</p>
+      </div>
+      <div class="resp-card">
+        <div class="ic"><i class="fa-solid fa-passport"></i></div>
+        <h4>Travel Documents</h4>
+        <p>Your visa, passport validity, vaccinations, and any entry requirements for India are your responsibility to sort out before you travel. We're happy to point you to resources, but we can't guarantee entry.</p>
+      </div>
+      <div class="resp-card">
+        <div class="ic"><i class="fa-solid fa-umbrella"></i></div>
+        <h4>Travel Insurance</h4>
+        <p>We strongly recommend travel insurance that covers trip cancellation, medical emergencies, and evacuation. It's not included in the package price, and it's genuinely important for international travel.</p>
+      </div>
+      <div class="resp-card">
+        <div class="ic"><i class="fa-solid fa-cloud-sun-rain"></i></div>
+        <h4>Things Outside Our Control</h4>
+        <p>Weather, flight delays, local events, or other circumstances beyond our control may occasionally change small parts of the itinerary. If that happens, we'll adapt and keep you informed — the spirit of the retreat stays the same.</p>
+      </div>
+      <div class="resp-card">
+        <div class="ic"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+        <h4>Deposits &amp; Balances</h4>
+        <p>The $500 deposit is non-refundable once paid — it holds your spot and covers our upfront booking costs. The remaining balance is due 45 days before departure, however you chose to pay at checkout.</p>
+      </div>
+      <div class="resp-card">
+        <div class="ic"><i class="fa-solid fa-people-group"></i></div>
+        <h4>Respect &amp; Conduct</h4>
+        <p>This is a shared, intimate group experience in a sacred space. We ask everyone to be respectful of the local culture, the ashram, fellow guests, and the Holi color-throwing (consent first — and wear clothes you don't mind staining!).</p>
+      </div>
+    </div>
+
+    <div class="resp-disclaimer">
+      <strong>Please note:</strong> this page is a plain-language summary for planning purposes only, and it isn't a legal
+      document. Before departure, every guest will review and sign a full written waiver and release of liability that
+      spells out these terms in detail. If anything above is unclear, just ask — we're glad to walk through it with you.
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <svg class="lotus-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M24 40C24 40 10 34 10 22C10 22 18 24 24 32C30 24 38 22 38 22C38 34 24 40 24 40Z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M24 40C24 40 16 30 16 18C16 18 21 22 24 28C27 22 32 18 32 18C32 30 24 40 24 40Z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M24 40V28" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+      <span class="eyebrow">Questions, Answered</span>
+      <h2>Frequently Asked Questions</h2>
+      <p>The things most people ask before booking an international retreat.</p>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>What's the cancellation and refund policy?<span class="faq-toggle"></span></summary>
+        <p>The $500 USD deposit per person is non-refundable once paid — it's what secures your spot and covers our upfront booking costs. The remaining balance is due 45 days before departure; if you cancel before that date, the balance you've paid (beyond the deposit) is refundable. After that 45-day window, the full payment becomes non-refundable, which is exactly why we recommend travel insurance that covers trip cancellation.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Do I need a visa to visit India?<span class="faq-toggle"></span></summary>
+        <p>Most travelers need a visa to enter India — many nationalities can apply for an e-Visa online in advance. Requirements vary by country, so please check your nearest Indian consulate or the official Indian e-Visa portal well before your trip, and apply early. This is your responsibility as a guest; we're happy to point you to resources but can't guarantee entry.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What fitness or yoga level do I need?<span class="faq-toggle"></span></summary>
+        <p>All levels are welcome, including complete beginners. Poses can be modified for every practice. The one thing to know: days start early (Hatha Yoga at 6:00 AM) and the schedule is full, so some stamina for long sitting and gentle movement helps — if you have any concerns, let us know and we'll talk them through.</p>
+      </details>
+      <details class="faq-item">
+        <summary>I'm traveling solo — will I have a roommate?<span class="faq-toggle"></span></summary>
+        <p>Solo travelers are very welcome. The $2,000 package covers a shared three-person room at the Parmarth Niketan ashram, with fellow retreat guests. If you'd prefer a room of your own, a private single room at a hotel right next to the ashram is available for an additional $500 — please note it is outside the ashram grounds.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What should I pack?<span class="faq-toggle"></span></summary>
+        <p>Light, breathable layers for warm days and a warmer layer for cool mountain evenings; modest clothing for temple visits (shoulders and knees covered); comfortable shoes for walking around the ashram; and at least one outfit you genuinely don't mind ruining for Holi. We'll send a full packing list once you've booked.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What's the weather like in Rishikesh in March?<span class="faq-toggle"></span></summary>
+        <p>Generally mild and dry — warm, sunny days in the 70s–80s°F (low-to-mid 20s°C), and noticeably cooler mornings and evenings, especially by the river. It's a comfortable time of year to visit, but layers are still a good idea.</p>
+      </details>
+    </div>
+
+    <div class="map-wrap">
+      <div class="map-label">Where You'll Be</div>
+      <div class="map-frame">
+        <iframe src="https://www.google.com/maps?q=Rishikesh,+Uttarakhand,+India&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map of Rishikesh, Uttarakhand, India"></iframe>
+      </div>
+      <p class="map-caption"><i class="fa-solid fa-location-dot"></i> Rishikesh, Uttarakhand, India — on the banks of the Ganges, in the Himalayan foothills</p>
+
+      <div class="airport-maps">
+        <div class="map-label">Getting There — Fly Into Either Airport</div>
+        <div class="airport-grid">
+          <div>
+            <div class="map-frame">
+              <iframe src="https://www.google.com/maps?q=Indira+Gandhi+International+Airport,+New+Delhi&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map of Indira Gandhi International Airport (DEL), New Delhi"></iframe>
+            </div>
+            <p class="map-caption"><i class="fa-solid fa-plane-arrival"></i> Delhi (DEL) — Indira Gandhi Int'l</p>
+            <p class="map-drivetime"><i class="fa-solid fa-car"></i> ~4.5 hrs drive to Rishikesh</p>
+          </div>
+          <div>
+            <div class="map-frame">
+              <iframe src="https://www.google.com/maps?q=Dehradun+Airport+Jolly+Grant&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map of Dehradun Airport (DED), Jolly Grant"></iframe>
+            </div>
+            <p class="map-caption"><i class="fa-solid fa-plane-arrival"></i> Dehradun (DED) — closer, fewer flights</p>
+            <p class="map-drivetime"><i class="fa-solid fa-car"></i> ~1 hr drive to Rishikesh</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-bar">
+      <h3>Still have a question?</h3>
+      <p>Happy to help before you commit to anything — reach out any time.</p>
+      <div class="contact-row">
+        <a class="contact-chip" href="tel:+15184059055"><i class="fa-solid fa-phone"></i> Call Us</a>
+        <a class="contact-chip" href="mailto:retreats@cvpproperties.com"><i class="fa-solid fa-envelope"></i> retreats@cvpproperties.com</a>
+      </div>
+      <p class="contact-note">Placeholder contact — CVP to confirm the retreats inbox is live before this goes to production.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>CVP Properties 4.0 LLC · Draft preview page, not yet published to cvpproperties.com</p>
+    <p class="namaste-text">🙏 Namaste</p>
+    <p style="margin-top:14px;">Questions about this draft? Reply in the Claude session and we'll keep refining it before launch.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // ---- Itinerary accordion ----
+  document.querySelectorAll('.day-head').forEach(head=>{
+    head.addEventListener('click', ()=>{
+      const card = head.closest('.day-card');
+      const body = card.querySelector('.day-body');
+      const isOpen = card.classList.contains('open');
+      if(isOpen){
+        card.classList.remove('open');
+        body.style.maxHeight = null;
+      } else {
+        card.classList.add('open');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // ---- Itinerary filters ----
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  filterBtns.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      filterBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      document.querySelectorAll('.day-card').forEach(card=>{
+        const tags = card.dataset.tags.split(' ');
+        const show = f === 'all' || tags.includes(f);
+        card.dataset.hidden = show ? 'false' : 'true';
+      });
+    });
+  });
+
+  // ---- Pricing calculator ----
+  const PRICE = 2000, DEPOSIT = 500;
+  let spots = 1, option = 'A';
+
+  const spotsCountEl = document.getElementById('spotsCount');
+  const sumSpots = document.getElementById('sumSpots');
+  const sumTotal = document.getElementById('sumTotal');
+  const sumTotal2 = document.getElementById('sumTotal2');
+  const dueToday = document.getElementById('dueToday');
+  const dueLater = document.getElementById('dueLater');
+  const optA = document.getElementById('optA');
+  const optB = document.getElementById('optB');
+  const agreeCheck = document.getElementById('agreeCheck');
+  const continueBtn = document.getElementById('continueBtn');
+  const confirmPanel = document.getElementById('confirmPanel');
+
+  function money(n){ return '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+
+  function render(){
+    const total = PRICE * spots;
+    const today = option === 'A' ? DEPOSIT * spots : total;
+    const later = total - today;
+    spotsCountEl.textContent = spots;
+    sumSpots.textContent = spots;
+    sumTotal.textContent = money(total);
+    sumTotal2.textContent = money(total);
+    dueToday.textContent = money(today);
+    dueLater.textContent = money(later);
+    continueBtn.disabled = !agreeCheck.checked;
+  }
+
+  document.getElementById('spotsMinus').addEventListener('click', ()=>{ spots = Math.max(1, spots-1); render(); });
+  document.getElementById('spotsPlus').addEventListener('click', ()=>{ spots = Math.min(10, spots+1); render(); });
+
+  function setOption(opt){
+    option = opt;
+    optA.classList.toggle('active', opt==='A');
+    optB.classList.toggle('active', opt==='B');
+    render();
+  }
+  optA.addEventListener('click', ()=>setOption('A'));
+  optB.addEventListener('click', ()=>setOption('B'));
+  agreeCheck.addEventListener('change', render);
+
+  continueBtn.addEventListener('click', ()=>{
+    if(agreeCheck.checked){
+      confirmPanel.classList.add('show');
+      continueBtn.textContent = '✓ Reservation Request Received';
+      continueBtn.disabled = true;
+    }
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>

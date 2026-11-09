@@ -1,0 +1,201 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
+
+/**
+ * CVP Properties 4.0: shared top menu and logo (used on every page)
+ * Loaded after emerald-forest-light.css. Remove the <link> to go back to the old menu.
+ */
+
+:root {
+  --clr-primary: #1f8a7e;
+  --clr-primary-dark: #166a60;
+  --clr-deep-green: #0f3b36;
+  --clr-accent: #15303a;
+  --gold: #c9a24a;
+  --gold-dark: #9a7728;
+  --gold-soft: #f2e7c9;
+  --shadow-lg: 0 24px 60px rgba(21, 48, 58, .14);
+}
+
+html { scroll-padding-top: 84px; }
+
+/* ===== Navigation: clean, solid, always legible ===== */
+#navigation {
+  left: 0;
+  right: 0;
+  background: rgba(251, 249, 245, .94);
+  backdrop-filter: saturate(1.4) blur(14px);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  border-radius: 0;
+  border-bottom: 1px solid rgba(21, 48, 58, .08);
+  box-shadow: none;
+}
+#navigation .container,
+#navigation.animated-header .container { min-height: 76px; }
+.navbar-brand a { font-size: 17px; letter-spacing: -.2px; }
+
+
+/* ===== Top menu and logo ===== */
+#navigation {
+  transition: background .35s ease, box-shadow .35s ease, border-color .35s ease;
+}
+#navigation .container,
+#navigation.animated-header .container { min-height: 80px; }
+
+/* logo lockup: icon in a white tile + two-line wordmark */
+.navbar-brand a { gap: 12px; text-decoration: none; }
+.navbar-brand a img#logocvp {
+  width: 46px;
+  height: 46px;
+  padding: 7px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(9, 30, 28, .18);
+  object-fit: contain;
+}
+.brand-text { display: flex; flex-direction: column; line-height: 1; }
+.brand-text b {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 27px;
+  letter-spacing: 3px;
+  line-height: .9;
+  color: var(--clr-accent);
+}
+.brand-text small {
+  margin-top: 5px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 10.5px;
+  letter-spacing: 2.8px;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+}
+
+/* links */
+.navbar-inverse .navbar-nav { gap: 6px; }
+.navbar-inverse .navbar-nav > li > a {
+  position: relative;
+  padding: 12px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: .1px;
+  text-transform: none;
+  color: var(--clr-accent);
+  background: transparent;
+}
+.navbar-inverse .navbar-nav > li > a::after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 6px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--gold);
+  opacity: 1;
+  width: auto;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .3s ease;
+}
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus,
+.navbar-inverse .navbar-nav > li.current > a { color: var(--clr-primary-dark); background: transparent; }
+.navbar-inverse .navbar-nav > li > a:hover::after,
+.navbar-inverse .navbar-nav > li > a:focus::after,
+.navbar-inverse .navbar-nav > li.current > a::after { transform: scaleX(1); }
+
+/* call-to-action button */
+.navbar-inverse .navbar-nav > li:last-child { margin-left: 10px; }
+.navbar-inverse .navbar-nav > li:last-child > a {
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: #1c1608;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(201, 162, 74, .32);
+  transition: background .25s, transform .25s, box-shadow .25s;
+}
+.navbar-inverse .navbar-nav > li:last-child > a::after { display: none; }
+.navbar-inverse .navbar-nav > li:last-child > a:hover,
+.navbar-inverse .navbar-nav > li:last-child > a:focus {
+  background: #d8b45d;
+  color: #1c1608;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(201, 162, 74, .42);
+}
+
+/* at the very top: no bar, just a soft fade from the top of the photo so the links stay readable */
+#navigation.animated-header {
+  background: linear-gradient(180deg, rgba(8, 28, 26, .62) 0%, rgba(8, 28, 26, .3) 62%, rgba(8, 28, 26, 0) 100%);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom-color: transparent;
+}
+#navigation.animated-header .navbar-nav > li > a,
+#navigation.animated-header .brand-text b,
+#navigation.animated-header .brand-text small { text-shadow: 0 1px 8px rgba(5, 20, 18, .55); }
+#navigation.animated-header .brand-text b { color: #fff; }
+#navigation.animated-header .brand-text small { color: var(--gold-soft); }
+#navigation.animated-header .navbar-nav > li:not(:last-child) > a { color: #fff; font-weight: 600; }
+#navigation.animated-header .navbar-nav > li:not(:last-child) > a:hover,
+#navigation.animated-header .navbar-nav > li.current:not(:last-child) > a { color: #fff; }
+
+/* once scrolled: cream bar with a soft shadow */
+#navigation:not(.animated-header) { box-shadow: 0 8px 30px rgba(21, 48, 58, .08); }
+#navigation:not(.animated-header) .container { min-height: 72px; }
+
+/* phone menu */
+@media (max-width: 991px) {
+  .navbar-inverse .navbar-toggle {
+    border: 1.5px solid rgba(21, 48, 58, .25);
+    border-radius: 12px;
+    background: transparent;
+  }
+  .navbar-inverse .navbar-toggle .icon-bar { background: var(--clr-accent); }
+  #navigation.animated-header .navbar-toggle { border-color: rgba(255, 255, 255, .6); }
+  #navigation.animated-header .navbar-toggle .icon-bar { background: #fff; }
+  .navbar-collapse.in, .navbar-collapse.collapsing {
+    background: #fff;
+    border-radius: 18px;
+    margin: 10px 0 14px;
+    padding: 10px;
+    box-shadow: var(--shadow-lg);
+  }
+  #navigation.animated-header .navbar-collapse .navbar-nav > li:not(:last-child) > a { color: var(--clr-accent); }
+  .navbar-inverse .navbar-nav > li > a::after { left: 14px; right: auto; width: 28px; bottom: 6px; }
+  .navbar-inverse .navbar-nav > li:last-child { margin: 8px 0 2px; }
+  .navbar-inverse .navbar-nav > li:last-child > a { text-align: center; }
+  .brand-text b { font-size: 22px; letter-spacing: 2.4px; }
+}
+
+@media (max-width: 991px) {
+  #navigation .navbar-collapse { flex: 0 0 100%; width: 100%; }
+  .navbar-brand a { gap: 10px; }
+  .navbar-brand a img#logocvp { width: 40px; height: 40px; padding: 6px; border-radius: 12px; }
+  .brand-text small { letter-spacing: 1.8px; font-size: 9px; margin-top: 4px; }
+  #navigation .container { padding-left: 16px; padding-right: 16px; }
+}
+
+@media (max-width: 991px) {
+  #navigation .navbar-header { width: 100%; flex-direction: row-reverse; justify-content: space-between; }
+  #navigation .navbar-toggle { margin: 0; float: none; }
+}
+
+@media (max-width: 991px) {
+  #navigation .navbar-header .navbar-brand { margin: 0 auto 0 0 !important; }
+  #navigation .navbar-header .navbar-toggle { margin: 0 0 0 auto; }
+}
+
+/* keep the header inside the screen on every page (Bootstrap adds negative margins) */
+@media (max-width: 991px) {
+  #navigation .container { box-sizing: border-box; padding-left: 16px; padding-right: 16px; }
+  #navigation .navbar-header { margin-left: 0; margin-right: 0; width: 100%; }
+  #navigation .navbar-collapse { margin-left: 0; margin-right: 0; }
+}
+
+/* open phone menu: dark text on a white panel, so no text shadow */
+@media (max-width: 991px) {
+  #navigation .navbar-collapse .navbar-nav > li > a { text-shadow: none; }
+}
