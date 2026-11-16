@@ -212,6 +212,9 @@
   .guides{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:860px;margin:0 auto;}
   .guide{background:#fff;border-radius:24px;padding:30px;box-shadow:var(--shadow);text-align:center;border-top:5px solid var(--marigold);}
   .guide .av{width:84px;height:84px;border-radius:50%;margin:0 auto 14px auto;background:linear-gradient(135deg,var(--marigold),var(--coral));color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;border:4px solid var(--ivory);box-shadow:var(--shadow);}
+  .guides.one{grid-template-columns:1fr;max-width:420px;}
+  .guide .av.photo{width:190px;height:190px;background:var(--ivory);padding:0;overflow:hidden;border-width:5px;border-color:var(--marigold);}
+  .guide .av.photo img{width:100%;height:100%;object-fit:cover;display:block;}
   .guide .role{font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--coral-ink);}
   .guide .nm{font-family:var(--serif);font-size:21px;font-weight:700;margin:4px 0 8px 0;}
   .guide .tag{display:inline-block;background:rgba(38,70,57,.07);border-radius:999px;padding:3px 12px;font-size:12.5px;font-weight:500;margin:2px;}
@@ -408,6 +411,7 @@
 <!-- Yoga-page look for this retreat (delete these 2 lines to go back to the old design) -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=Tiro+Devanagari+Hindi&display=swap">
 <link rel="stylesheet" href="retreat-yoga-theme.css">
+<link rel="stylesheet" href="retreat-video.css">
 </head>
 <body>
 
@@ -562,6 +566,57 @@
   </div>
 </section>
 
+<!-- ============ INSIDE THE ASHRAM (VIDEO) ============ -->
+<section class="bg-aqua flow w3 ashram" id="ashram" aria-labelledby="ashramTitle">
+  <div class="wrap ashram-grid">
+    <div class="ashram-stage" id="ashramStage">
+      <div class="lyr p1"><span class="blob b1"></span></div>
+      <div class="lyr p2"><span class="blob b2"></span><span class="ring"></span></div>
+      <div class="lyr p3">
+        <div class="ashram-video-shape" id="ashramShape">
+          <img class="poster" src="video/rishikesh-poster-640.webp" srcset="video/rishikesh-poster-640.webp 720w, video/rishikesh-poster.webp 1280w" sizes="(max-width:900px) 92vw, 600px" alt="" width="1280" height="720" decoding="async">
+          <video id="ashramLoop" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true" data-src="video/loop-720.mp4"></video>
+          <div class="ashram-tag"><span class="live"></span><span>Parmarth Niketan<small>Rishikesh, on the banks of the Ganga</small></span></div>
+        </div>
+      </div>
+      <div class="lyr p4">
+        <span class="petal" style="--x:-3%;--y:8%;--s:38px;--d:9s;--dx:16px;--dy:-26px;--sw:5s"><svg viewBox="0 0 40 40"><path d="M20 2C33 10 35 28 20 38 5 28 7 10 20 2Z" fill="#f4b63f"/><path d="M20 6C20 18 20 28 20 36" stroke="#e8871e" stroke-width="1.4" fill="none"/></svg></span>
+        <span class="petal" style="--x:90%;--y:6%;--s:30px;--d:11s;--dl:-3s;--dx:-18px;--dy:20px;--sw:7s"><svg viewBox="0 0 40 40"><path d="M20 2C33 10 35 28 20 38 5 28 7 10 20 2Z" fill="#e8871e"/><path d="M20 6C20 18 20 28 20 36" stroke="#c8442a" stroke-width="1.4" fill="none"/></svg></span>
+        <span class="petal" style="--x:-5%;--y:70%;--s:34px;--d:10s;--dl:-5s;--dx:20px;--dy:-14px;--sw:6s"><svg viewBox="0 0 40 40"><path d="M20 2C33 10 35 28 20 38 5 28 7 10 20 2Z" fill="#3f9a73"/><path d="M20 6C20 18 20 28 20 36" stroke="#264639" stroke-width="1.4" fill="none"/></svg></span>
+        <span class="petal" style="--x:46%;--y:-6%;--s:26px;--d:12s;--dl:-7s;--dx:-12px;--dy:18px;--sw:8s"><svg viewBox="0 0 40 40"><path d="M20 2C33 10 35 28 20 38 5 28 7 10 20 2Z" fill="#f8c85f"/><path d="M20 6C20 18 20 28 20 36" stroke="#e8871e" stroke-width="1.4" fill="none"/></svg></span>
+        <span class="petal" style="--x:70%;--y:96%;--s:30px;--d:9s;--dl:-2s;--dx:-16px;--dy:-18px;--sw:6s"><svg viewBox="0 0 40 40"><path d="M20 2C33 10 35 28 20 38 5 28 7 10 20 2Z" fill="#c8442a"/><path d="M20 6C20 18 20 28 20 36" stroke="#6b1f2a" stroke-width="1.4" fill="none"/></svg></span>
+        <button type="button" class="ashram-play" id="ashramPlay" aria-label="Play the full Rishikesh video tour with sound" aria-haspopup="dialog">
+          <svg class="txt" viewBox="0 0 138 138" aria-hidden="true"><defs><path id="vtp" d="M69,69 m-53,0 a53,53 0 1,1 106,0 a53,53 0 1,1 -106,0"/></defs><text><textPath href="#vtp" textLength="326" lengthAdjust="spacing">Watch with sound · Rishikesh ·</textPath></text></svg>
+          <span class="core"><i class="fa-solid fa-play"></i></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="ashram-copy">
+      <span class="pill">Inside the Ashram</span>
+      <h2 id="ashramTitle">Walk through <em>Parmarth Niketan</em> before you arrive</h2>
+      <p>Take a quiet look around the place that will be your home for the retreat: the entrance gate, the sacred fire, the lawn where morning yoga happens, the paths through the gardens, and the evening aarti and kirtan on the banks of the Ganga. Press play for the full tour, with sound.</p>
+      <div class="perks">
+        <span class="perk" style="--c:var(--coral)"><i class="fa-solid fa-fire-flame-curved"></i> Sacred fire (yagya)</span>
+        <span class="perk" style="--c:#3f9a73"><i class="fa-solid fa-spa"></i> Morning yoga on the lawn</span>
+        <span class="perk" style="--c:#2a7fc4"><i class="fa-solid fa-water"></i> Ganga aarti &amp; kirtan</span>
+      </div>
+      <ul class="ashram-chaps" aria-label="Jump to a part of the tour">
+        <li><button type="button" data-t="0"><b>0:00</b> The gate</button></li>
+        <li><button type="button" data-t="5"><b>0:05</b> Sacred yagya</button></li>
+        <li><button type="button" data-t="25"><b>0:25</b> Yoga lawn</button></li>
+        <li><button type="button" data-t="32"><b>0:32</b> The grounds</button></li>
+        <li><button type="button" data-t="64"><b>1:04</b> Ganga aarti</button></li>
+        <li><button type="button" data-t="75"><b>1:15</b> Kirtan</button></li>
+      </ul>
+      <div class="ashram-cta">
+        <button type="button" class="btn" id="ashramOpen" aria-haspopup="dialog">Watch the full tour (1:30) <span class="arr"><i class="fa-solid fa-play"></i></span></button>
+        <a class="btn ghost" href="#packages">Apply for the Retreat</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ A DAY IN RISHIKESH ============ -->
 <section class="bg-forest flow w3" id="day">
   <div class="wrap">
@@ -589,24 +644,22 @@
   <div class="wrap">
     <div class="sec-head">
       <span class="pill">Your Guides</span>
-      <h2>Host &amp; translator</h2>
+      <h2>Meet your guide</h2>
       <p>Every session is offered with live Russian ⇄ English translation.</p>
     </div>
-    <div class="guides">
+    <div class="guides one">
       <div class="guide">
-        <div class="av"><i class="fa-solid fa-om"></i></div>
-        <div class="role">Lead Guru &amp; Retreat Host</div>
-        <div class="nm">[Guru’s Full Name]</div>
-        <span class="tag"><i class="fa-solid fa-language"></i> Teaches in Russian</span> <span class="tag"><i class="fa-solid fa-certificate"></i> RYT-500</span>
-        <div class="note"><i class="fa-solid fa-circle-exclamation"></i> Placeholder: add real name, credentials, bio and photo before production.</div>
+        <div class="av photo"><img src="img/guide-kseniya.webp" alt="Krishna (Kseniya), your retreat guide, hands in prayer position" width="480" height="480" loading="lazy" decoding="async"></div>
+        <div class="role">Retreat Guide &amp; Host</div>
+        <div class="nm">Krishna (Kseniya)</div>
+        <span class="tag"><i class="fa-solid fa-language"></i> Russian ⇄ English</span>
       </div>
+      <!-- Translator card removed until a real name and photo are available:
       <div class="guide">
         <div class="av"><i class="fa-solid fa-comments"></i></div>
         <div class="role">English Translator &amp; Coordinator</div>
         <div class="nm">[Translator’s Full Name]</div>
-        <span class="tag">Russian ⇄ English</span> <span class="tag"><i class="fa-solid fa-certificate"></i> RYT-200</span>
-        <div class="note"><i class="fa-solid fa-circle-exclamation"></i> Placeholder: add real name, bio and photo before production.</div>
-      </div>
+      </div> -->
     </div>
   </div>
 </section>
@@ -1094,6 +1147,8 @@ R('.stay-text h2', {distance:'26px', duration:800, delay:80, ...E});
 R('.stay-text > p', {distance:'26px', duration:800, delay:160, ...E});
 document.querySelectorAll('.stay-facts li').forEach((el, i) => R(el, {direction:'left', distance:'28px', duration:700, delay:240 + i * 110, ...E}));
 R('#holi .holi-stage', {direction:'right', distance:'40px', duration:900, ...E});
+R('#ashram .ashram-stage', {direction:'right', distance:'40px', duration:1000, ...E});
+R('#ashram .ashram-copy > *', {distance:'24px', duration:800, delay:140, ...E});
 R('#holi .holi .pill', {distance:'22px', duration:700, delay:80, ...E});
 R('#holi .holi h2', {distance:'26px', duration:800, delay:160, ...E});
 R('#holi .holi > div:not(.holi-stage) > p', {distance:'26px', duration:800, delay:240, ...E});
@@ -1174,5 +1229,24 @@ document.querySelectorAll('.chk').forEach((el, i) => R(el, {distance:'28px', dur
   box.addEventListener('touchend', function(e){ if(x0 === null) return; var dx = e.changedTouches[0].clientX - x0; if(Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1)); x0 = null; }, {passive:true});
 })();
 </script>
+<!-- Full video player (opens from the "Inside the Ashram" section) -->
+<div class="vm" id="vm" role="dialog" aria-modal="true" aria-labelledby="vmTitle" hidden>
+  <div class="vm-card">
+    <button type="button" class="vm-x" id="vmClose" aria-label="Close the video"><i class="fa-solid fa-xmark"></i></button>
+    <div class="vm-frame">
+      <video id="vmVideo" controls playsinline preload="none" poster="video/rishikesh-poster.webp" data-1080="video/tour-1080-h264.mp4" data-720="video/tour-720-h264.mp4"></video>
+    </div>
+    <div class="vm-head"><h3 id="vmTitle">A walk through Parmarth Niketan</h3><span>Rishikesh · 1:30</span></div>
+    <div class="vm-chaps" role="group" aria-label="Chapters">
+      <button type="button" data-t="0">The gate</button>
+      <button type="button" data-t="5">Sacred yagya</button>
+      <button type="button" data-t="25">Yoga lawn</button>
+      <button type="button" data-t="32">The grounds</button>
+      <button type="button" data-t="64">Ganga aarti</button>
+      <button type="button" data-t="75">Kirtan</button>
+    </div>
+  </div>
+</div>
+<script src="retreat-video.js" defer></script>
 </body>
 </html>

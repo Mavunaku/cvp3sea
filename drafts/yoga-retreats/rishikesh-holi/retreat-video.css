@@ -1,0 +1,337 @@
+/* ==========================================================================
+   "Step inside the ashram" video section
+   Organic, slowly-breathing shapes around a looping video that opens into a
+   full player with sound. Delete the <link> to this file (and the section) to remove it.
+   ========================================================================== */
+
+.ashram { position: relative; overflow: hidden; }
+.ashram .wrap { position: relative; z-index: 1; }
+.ashram-grid {
+  display: grid;
+  grid-template-columns: 1.12fr .88fr;
+  gap: 64px;
+  align-items: center;
+}
+
+/* ---------- the stage ---------- */
+.ashram-stage {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  aspect-ratio: 1 / .82;
+  perspective: 1200px;
+  --tx: 0; --ty: 0;                 /* set by pointer parallax (see retreat-video.js) */
+}
+.ashram-stage .lyr { position: absolute; inset: 0; pointer-events: none; transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
+.ashram-stage .ashram-video-shape,
+.ashram-stage .ashram-play { pointer-events: auto; }
+
+/* two soft organic shapes sitting behind the video, each breathing on its own clock */
+.ashram-stage .blob {
+  position: absolute;
+  inset: 0;
+  border-radius: 58% 42% 55% 45% / 48% 56% 44% 52%;
+  will-change: border-radius, transform;
+}
+.ashram-stage .blob.b1 {
+  transform: translate(-4%, 5%) scale(1.02);
+  background: linear-gradient(140deg, #f4b63f 0%, #e8871e 48%, #c8442a 100%);
+  opacity: .9;
+  animation: blobA 15s ease-in-out infinite alternate, blobSpin 60s linear infinite;
+}
+.ashram-stage .blob.b2 {
+  transform: translate(5%, -4%) scale(.98);
+  background: linear-gradient(200deg, #2fa99a 0%, #16828c 55%, #264639 100%);
+  opacity: .62;
+  mix-blend-mode: multiply;
+  animation: blobB 19s ease-in-out infinite alternate-reverse, blobSpin 80s linear infinite reverse;
+}
+.ashram-stage .ring {
+  position: absolute;
+  inset: -3%;
+  border: 1.5px dashed rgba(200, 68, 42, .55);
+  border-radius: 46% 54% 50% 50% / 55% 45% 55% 45%;
+  animation: blobB 23s ease-in-out infinite alternate, blobSpin 120s linear infinite;
+}
+
+/* the video itself lives in a shape whose outline slowly morphs */
+.ashram-video-shape {
+  position: absolute;
+  inset: 3%;
+  overflow: hidden;
+  border-radius: 52% 48% 46% 54% / 56% 44% 56% 44%;
+  background: #1d3a2f url('video/rishikesh-poster-640.webp') center / cover no-repeat;
+  box-shadow: 0 34px 80px rgba(60, 20, 10, .38), 0 0 0 6px rgba(255, 247, 232, .96);
+  animation: blobC 17s ease-in-out infinite alternate;
+  cursor: pointer;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+}
+.ashram-video-shape video,
+.ashram-video-shape .poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.04);
+  transition: transform 1.2s cubic-bezier(.2, .7, .2, 1), opacity .9s ease;
+}
+/* the still picture always sits underneath; the video fades in on top only once it really has frames */
+.ashram-video-shape .poster { opacity: 1; }
+.ashram-video-shape video { opacity: 0; }
+.ashram-video-shape.is-playing video { opacity: 1; }
+.ashram-video-shape:hover video,
+.ashram-video-shape:hover .poster { transform: scale(1.09); }
+
+/* warm glaze so every scene sits in the page's palette */
+.ashram-video-shape::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(244, 182, 63, .22), transparent 55%),
+    linear-gradient(180deg, rgba(38, 70, 57, 0) 52%, rgba(20, 8, 4, .55) 100%);
+}
+
+/* caption chip inside the video */
+.ashram-tag {
+  position: absolute;
+  z-index: 3;
+  left: 13%;
+  bottom: 12%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff7e8;
+  font: 600 13px/1.2 'Inter', system-ui, sans-serif;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, .55);
+  pointer-events: none;
+}
+.ashram-tag .live {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: #f4b63f;
+  box-shadow: 0 0 0 0 rgba(244, 182, 63, .7);
+  animation: pulseDot 2.2s infinite;
+}
+.ashram-tag small { display: block; font-weight: 400; letter-spacing: .04em; text-transform: none; opacity: .9; margin-top: 3px; font-size: 12.5px; }
+
+/* the round "watch with sound" badge: rotating text around a play button */
+.ashram-play {
+  position: absolute;
+  z-index: 4;
+  right: -1%;
+  bottom: 4%;
+  width: 138px;
+  height: 138px;
+  border: 0;
+  padding: 0;
+  border-radius: 50%;
+  background: #fff7e8;
+  color: #6b1f2a;
+  cursor: pointer;
+  box-shadow: 0 18px 40px rgba(60, 20, 10, .32);
+  transition: transform .35s cubic-bezier(.2, .7, .2, 1), box-shadow .35s;
+  -webkit-tap-highlight-color: transparent;
+}
+.ashram-play:hover { transform: scale(1.07) rotate(-3deg); box-shadow: 0 24px 50px rgba(200, 68, 42, .4); }
+.ashram-play:focus-visible { outline: 3px solid #e8871e; outline-offset: 4px; }
+.ashram-play svg.txt { position: absolute; inset: 0; width: 100%; height: 100%; animation: blobSpin 22s linear infinite; }
+.ashram-play svg.txt text { font: 600 11.2px 'Inter', system-ui, sans-serif; letter-spacing: .21em; fill: #6b1f2a; text-transform: uppercase; }
+.ashram-play .core {
+  position: absolute;
+  inset: 31px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f8c85f, #e8871e);
+  color: #3a1405;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  padding-left: 3px;
+}
+.ashram-play .core::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  border: 2px solid rgba(232, 135, 30, .7);
+  animation: ripple 2.6s ease-out infinite;
+}
+
+/* drifting petals & leaves */
+.ashram-stage .petal {
+  position: absolute;
+  z-index: 5;
+  width: var(--s, 34px);
+  height: var(--s, 34px);
+  pointer-events: none;
+  left: var(--x);
+  top: var(--y);
+  opacity: .95;
+  filter: drop-shadow(0 6px 8px rgba(60, 20, 10, .22));
+  animation: drift var(--d, 9s) ease-in-out var(--dl, 0s) infinite alternate;
+}
+.ashram-stage .petal svg { width: 100%; height: 100%; display: block; animation: sway var(--sw, 6s) ease-in-out infinite alternate; }
+
+/* ---------- copy column ---------- */
+.ashram-copy .pill { margin-bottom: 16px; }
+.ashram-copy h2 em { font-style: italic; color: var(--coral, #c8442a); }
+.ashram-copy p { color: var(--muted); font-size: 18px; }
+.ashram-copy .perks { margin-top: 20px; }
+
+.ashram-chaps { margin: 28px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+.ashram-chaps button {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  border: 1.5px solid rgba(107, 31, 42, .22);
+  background: rgba(255, 255, 255, .72);
+  color: #4a1620;
+  border-radius: 999px;
+  padding: 9px 16px 9px 12px;
+  font: 500 14px/1 'Inter', system-ui, sans-serif;
+  cursor: pointer;
+  transition: transform .25s, background .25s, border-color .25s, box-shadow .25s;
+}
+.ashram-chaps button b {
+  font: 600 11.5px/1 'Inter', system-ui, sans-serif;
+  letter-spacing: .06em;
+  color: #fff7e8;
+  background: #6b1f2a;
+  border-radius: 999px;
+  padding: 5px 8px;
+}
+.ashram-chaps button:hover { transform: translateY(-2px); background: #fff; border-color: #e8871e; box-shadow: 0 10px 22px rgba(232, 135, 30, .28); }
+.ashram-chaps button:focus-visible { outline: 3px solid #e8871e; outline-offset: 2px; }
+.ashram-note { margin: 18px 0 0; font-size: 13.5px; color: var(--muted); opacity: .85; }
+.ashram-cta { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 14px; }
+
+/* ---------- full player ---------- */
+html.vm-open { overflow: hidden; }
+.vm {
+  position: fixed;
+  inset: 0;
+  z-index: 3100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 28px 24px;
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgba(232, 135, 30, .18), transparent 70%),
+    rgba(18, 8, 5, .93);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: vmIn .35s ease;
+}
+.vm[hidden] { display: none; }
+@keyframes vmIn { from { opacity: 0; } to { opacity: 1; } }
+.vm-card {
+  position: relative;
+  width: min(1120px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: vmCard .5s cubic-bezier(.2, .8, .2, 1);
+}
+@keyframes vmCard { from { opacity: 0; transform: translateY(24px) scale(.97); } to { opacity: 1; transform: none; } }
+.vm-frame {
+  position: relative;
+  border-radius: 26px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, .6), 0 0 0 1.5px rgba(244, 182, 63, .45);
+}
+.vm-frame video { display: block; width: 100%; max-height: calc(100vh - 190px); background: #000; aspect-ratio: 16 / 9; }
+.vm-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; color: #fff7e8; padding: 0 6px; }
+.vm-head h3 { margin: 0; font: 600 26px/1.15 'Cormorant Garamond', Georgia, serif; color: #fff7e8; }
+.vm-head span { font: 400 14px 'Inter', system-ui, sans-serif; opacity: .72; }
+.vm-chaps { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 2px; }
+.vm-chaps button {
+  border: 1px solid rgba(255, 247, 232, .28);
+  background: rgba(255, 247, 232, .08);
+  color: #fff7e8;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: 500 13.5px/1 'Inter', system-ui, sans-serif;
+  cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s;
+}
+.vm-chaps button:hover, .vm-chaps button.on { background: #f4b63f; color: #3a1405; border-color: #f4b63f; }
+.vm-chaps button:focus-visible { outline: 3px solid #f4b63f; outline-offset: 2px; }
+.vm-x {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  z-index: 3;
+  width: 48px; height: 48px;
+  border: 0; border-radius: 50%;
+  cursor: pointer;
+  background: #fff7e8;
+  color: #6b1f2a;
+  font-size: 19px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, .45);
+  transition: transform .2s, background .2s;
+}
+.vm-x:hover { background: #f4b63f; transform: rotate(90deg); }
+.vm-x:focus-visible { outline: 3px solid #f4b63f; outline-offset: 3px; }
+
+/* ---------- motion ---------- */
+@keyframes blobA {
+  0%   { border-radius: 58% 42% 55% 45% / 48% 56% 44% 52%; }
+  50%  { border-radius: 44% 56% 40% 60% / 58% 42% 58% 42%; }
+  100% { border-radius: 50% 50% 62% 38% / 42% 60% 40% 58%; }
+}
+@keyframes blobB {
+  0%   { border-radius: 46% 54% 50% 50% / 55% 45% 55% 45%; }
+  50%  { border-radius: 60% 40% 48% 52% / 44% 58% 42% 56%; }
+  100% { border-radius: 42% 58% 58% 42% / 52% 48% 60% 40%; }
+}
+@keyframes blobC {
+  0%   { border-radius: 52% 48% 46% 54% / 56% 44% 56% 44%; }
+  33%  { border-radius: 46% 54% 56% 44% / 50% 52% 48% 50%; }
+  66%  { border-radius: 56% 44% 50% 50% / 46% 56% 44% 54%; }
+  100% { border-radius: 48% 52% 44% 56% / 58% 42% 58% 42%; }
+}
+@keyframes blobSpin { to { rotate: 360deg; } }
+@keyframes pulseDot { 70% { box-shadow: 0 0 0 11px rgba(244, 182, 63, 0); } 100% { box-shadow: 0 0 0 0 rgba(244, 182, 63, 0); } }
+@keyframes ripple { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(1.55); opacity: 0; } }
+@keyframes drift { from { translate: 0 0; } to { translate: var(--dx, 14px) var(--dy, -22px); } }
+@keyframes sway { from { rotate: -18deg; } to { rotate: 22deg; } }
+
+/* pointer parallax (desktop only) */
+@media (hover: hover) and (pointer: fine) {
+  .ashram-stage .lyr.p1 { transform: translate(calc(var(--tx) * -14px), calc(var(--ty) * -10px)); }
+  .ashram-stage .lyr.p2 { transform: translate(calc(var(--tx) * 10px), calc(var(--ty) * 8px)); }
+  .ashram-stage .lyr.p3 { transform: translate(calc(var(--tx) * 22px), calc(var(--ty) * 16px)) rotateY(calc(var(--tx) * 4deg)) rotateX(calc(var(--ty) * -4deg)); }
+  .ashram-stage .lyr.p4 { transform: translate(calc(var(--tx) * 34px), calc(var(--ty) * 26px)); }
+}
+
+/* ---------- small screens ---------- */
+@media (max-width: 900px) {
+  .ashram-grid { grid-template-columns: 1fr; gap: 44px; }
+  .ashram-stage { max-width: 520px; }
+  .ashram-copy { text-align: left; }
+  .ashram-play { width: 112px; height: 112px; right: 0; bottom: 2%; }
+  .ashram-play .core { inset: 25px; font-size: 16px; }
+  .ashram-play svg.txt text { font-size: 11.6px; }
+  .vm { padding: 64px 12px 18px; }
+  .vm-x { top: -52px; right: 2px; }
+  .vm-head h3 { font-size: 21px; }
+  .vm-head span { display: none; }
+  .vm-frame { border-radius: 16px; }
+}
+
+/* ---------- reduced motion: keep the shapes still, no autoplay (JS also checks) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ashram-stage .blob, .ashram-stage .ring, .ashram-video-shape, .ashram-play svg.txt,
+  .ashram-play .core::after, .ashram-tag .live, .ashram-stage .petal, .ashram-stage .petal svg { animation: none !important; }
+  .ashram-stage .lyr { transition: none; }
+  .vm, .vm-card { animation: none; }
+}
