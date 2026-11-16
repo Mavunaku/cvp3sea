@@ -335,3 +335,19 @@ html.vm-open { overflow: hidden; }
   .ashram-stage .lyr { transition: none; }
   .vm, .vm-card { animation: none; }
 }
+
+/* Video tour now sits inside the dark "Parmarth Niketan" section: same layout, light text */
+#sanctuary > .ashram { margin-top: 84px; }
+#sanctuary .ashram-copy .pill { background: rgba(255,255,255,.16); color: #fff; border-color: rgba(255,255,255,.45); }
+#sanctuary .ashram-copy h2 { color: #fff; }
+#sanctuary .ashram-copy h2 em { color: #FFD27A; }
+#sanctuary .ashram-copy p { color: rgba(255,255,255,.9); }
+#sanctuary .ashram-copy .btn.ghost { color: #fff; border-color: rgba(255,255,255,.7); background: transparent; }
+@media (max-width: 900px) { #sanctuary > .ashram { margin-top: 56px; } }
+
+/* order inside the Parmarth section: intro, then the tour, then the facts + photos */
+#sanctuary .stay-head { max-width: 1180px; margin: 0 auto 8px; }
+#sanctuary > .ashram { margin-top: 0; }
+#sanctuary .stay-more { margin-top: 84px; }
+#sanctuary .stay-more .stay-facts { margin-top: 0; }
+@media (max-width: 900px) { #sanctuary .stay-more { margin-top: 56px; } }

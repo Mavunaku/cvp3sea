@@ -1,0 +1,11 @@
+/* "A day in Rishikesh": marigold vines and mandalas fill the empty sides (desktop only; the card takes the full width on small screens) */
+#day{position:relative;overflow:hidden;}
+#day > .wrap{position:relative;z-index:1;}
+.day-deco{position:absolute;top:50%;width:min(26vw,470px);pointer-events:none;z-index:0;transform:translateY(-50%);}
+.day-deco svg{display:block;width:100%;height:auto;transform-origin:50% 0;animation:daySway 11s ease-in-out infinite;}
+.day-deco.l{left:0;}
+.day-deco.r{right:0;transform:translateY(-50%) scaleX(-1);}
+.day-deco.r svg{animation-delay:-5s;}
+@keyframes daySway{0%,100%{transform:rotate(-.9deg)}50%{transform:rotate(1deg)}}
+@media (max-width:1180px){.day-deco{display:none;}}
+@media (prefers-reduced-motion:reduce){.day-deco svg{animation:none;}}

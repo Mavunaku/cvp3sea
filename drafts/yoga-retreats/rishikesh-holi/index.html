@@ -212,7 +212,16 @@
   .guides{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:860px;margin:0 auto;}
   .guide{background:#fff;border-radius:24px;padding:30px;box-shadow:var(--shadow);text-align:center;border-top:5px solid var(--marigold);}
   .guide .av{width:84px;height:84px;border-radius:50%;margin:0 auto 14px auto;background:linear-gradient(135deg,var(--marigold),var(--coral));color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;border:4px solid var(--ivory);box-shadow:var(--shadow);}
-  .guides.one{grid-template-columns:1fr;max-width:420px;}
+  .guide .avwrap{position:relative;width:190px;height:190px;margin:0 auto 14px auto;cursor:zoom-in;border-radius:50%;outline:none;}
+  .guide .avwrap .av.photo{margin:0;}
+  .guide .av-zoom{position:absolute;left:50%;top:50%;width:300px;max-width:78vw;height:auto;border-radius:22px;border:5px solid var(--marigold);background:#fff;box-shadow:0 30px 70px rgba(38,20,10,.4);transform:translate(-50%,-50%) scale(.63);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .28s ease,transform .38s cubic-bezier(.2,.8,.2,1),visibility 0s .38s;z-index:30;}
+  .guide .avwrap:hover .av-zoom,.guide .avwrap:focus .av-zoom,.guide .avwrap:focus-visible .av-zoom{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1);transition:opacity .28s ease,transform .38s cubic-bezier(.2,.8,.2,1),visibility 0s;}
+  .guide .avwrap:focus-visible{box-shadow:0 0 0 4px rgba(232,90,60,.5);}
+  .guide:hover,.guide:focus-within{position:relative;z-index:5;}
+  .guide .glinks{margin-top:10px;}
+  .guide a.tag{text-decoration:none;color:inherit;transition:background .2s,color .2s;}
+  .guide a.tag:hover,.guide a.tag:focus-visible{background:var(--marigold);color:#fff;}
+  @media (prefers-reduced-motion:reduce){.guide .av-zoom{transition:none;}}
   .guide .av.photo{width:190px;height:190px;background:var(--ivory);padding:0;overflow:hidden;border-width:5px;border-color:var(--marigold);}
   .guide .av.photo img{width:100%;height:100%;object-fit:cover;display:block;}
   .guide .role{font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--coral-ink);}
@@ -412,6 +421,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=Tiro+Devanagari+Hindi&display=swap">
 <link rel="stylesheet" href="retreat-yoga-theme.css">
 <link rel="stylesheet" href="retreat-video.css">
+<link rel="stylesheet" href="retreat-rooms.css">
+<link rel="stylesheet" href="retreat-day.css">
 </head>
 <body>
 
@@ -421,9 +432,9 @@
 
 <div class="topbar" id="topbar">
   <div class="wrap">
-    <a class="brand" href="../../../index.html" aria-label="CVP Properties 4.0, home">
+    <a class="brand" href="../../../index.html" aria-label="CVP Yoga, home">
       <img src="../../../img/icons/cvpnew-removebg-preview.png" alt="CVP Properties 4.0 company logo">
-      <span class="brand-text"><b>CVP</b><small>Properties 4.0</small></span>
+      <span class="brand-text"><b>CVP</b><small>Yoga</small></span>
     </a>
     <nav class="topnav" aria-label="Main">
       <a href="../../../index.html">Home</a>
@@ -541,33 +552,80 @@
   </div>
 </section>
 
-<!-- ============ HOLI ============ -->
-<section class="bg-holi flow w2" id="holi">
-  <div class="wrap holi">
-    <div class="holi-stage">
-      <div class="holi-img" id="holiImg" role="img" aria-label="Holi at the ashram: color powder, a flute player, and the community celebrating together">
-        <div class="hs on" style="background-image:url('img/opt/holi-art-1200.webp')"></div>
-        <div class="hs" style="background-image:url('img/opt/holi-hero-1400.webp')"></div>
-        <div class="hs" style="background-image:url('img/opt/holi-crowd-1400.webp')"></div>
-      </div>
+<!-- ============ A DAY IN RISHIKESH ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="dayDecoSym" viewBox="0 0 480 1200"><g transform="translate(0 100)"><path d="M330,0 C430,90 240,170 330,260 C420,350 250,430 320,520 C390,610 240,690 320,780 C400,860 270,930 330,1010" fill="none" stroke="#F4B63F" stroke-opacity=".42" stroke-width="2" stroke-linecap="round"/><path d="M0,0 C9,-10 24,-9 29,0 C24,9 9,10 0,0 Z M0,0 L25,0" transform="translate(359.9 55.1) rotate(42)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><path d="M0,0 C9,-10 24,-10 30,0 C24,10 9,10 0,0 Z M0,0 L26,0" transform="translate(345.2 108.7) rotate(165)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><path d="M0,0 C7,-8 20,-8 25,0 C20,8 7,8 0,0 Z M0,0 L21,0" transform="translate(316.8 161.9) rotate(63)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><path d="M0,0 C10,-11 26,-10 32,0 C26,10 10,11 0,0 Z M0,0 L28,0" transform="translate(305.7 215.7) rotate(124)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><path d="M0,0 C8,-9 21,-8 26,0 C21,8 8,9 0,0 Z M0,0 L22,0" transform="translate(339.9 271.2) rotate(6)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><path d="M0,0 C9,-10 23,-9 29,0 C23,9 9,10 0,0 Z M0,0 L24,0" transform="translate(356.6 325.9) rotate(154)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><path d="M0,0 C9,-10 23,-9 29,0 C23,9 9,10 0,0 Z M0,0 L24,0" transform="translate(338.0 379.4) rotate(62)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><path d="M0,0 C8,-9 20,-8 26,0 C20,8 8,9 0,0 Z M0,0 L22,0" transform="translate(311.5 432.6) rotate(164)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><path d="M0,0 C10,-11 26,-10 33,0 C26,10 10,11 0,0 Z M0,0 L28,0" transform="translate(304.0 486.7) rotate(26)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><path d="M0,0 C9,-11 25,-10 31,0 C25,10 9,11 0,0 Z M0,0 L27,0" transform="translate(333.2 542.3) rotate(118)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><path d="M0,0 C7,-8 20,-8 25,0 C20,8 7,8 0,0 Z M0,0 L21,0" transform="translate(336.3 596.7) rotate(50)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><path d="M0,0 C9,-10 24,-10 30,0 C24,10 9,10 0,0 Z M0,0 L25,0" transform="translate(316.2 650.0) rotate(168)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><path d="M0,0 C7,-8 19,-8 24,0 C19,8 7,8 0,0 Z M0,0 L21,0" transform="translate(297.5 703.3) rotate(54)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><path d="M0,0 C9,-10 23,-9 29,0 C23,9 9,10 0,0 Z M0,0 L24,0" transform="translate(304.5 757.7) rotate(119)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><path d="M0,0 C10,-11 26,-10 33,0 C26,10 10,11 0,0 Z M0,0 L28,0" transform="translate(340.9 809.6) rotate(13)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><path d="M0,0 C10,-11 27,-11 33,0 C27,11 10,11 0,0 Z M0,0 L28,0" transform="translate(344.8 857.4) rotate(155)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><path d="M0,0 C10,-11 26,-10 32,0 C26,10 10,11 0,0 Z M0,0 L27,0" transform="translate(328.7 904.4) rotate(64)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><path d="M0,0 C10,-11 27,-11 33,0 C27,11 10,11 0,0 Z M0,0 L28,0" transform="translate(314.4 951.6) rotate(147)" fill="#F4B63F" fill-opacity=".16" stroke="#F4B63F" stroke-opacity=".42" stroke-width="1" stroke-linejoin="round"/><g transform="translate(330 0)" fill="#F4B63F" fill-opacity=".2" stroke="#F4B63F" stroke-opacity=".62" stroke-width="1.5" stroke-linejoin="round"><path d="M0,0 C-15,-14 -15,-42 0,-62 C15,-42 15,-14 0,0 Z" transform="rotate(-72) scale(0.78)"/><path d="M0,0 C-15,-14 -15,-42 0,-62 C15,-42 15,-14 0,0 Z" transform="rotate(72) scale(0.78)"/><path d="M0,0 C-15,-14 -15,-42 0,-62 C15,-42 15,-14 0,0 Z" transform="rotate(-40) scale(0.95)"/><path d="M0,0 C-15,-14 -15,-42 0,-62 C15,-42 15,-14 0,0 Z" transform="rotate(40) scale(0.95)"/><path d="M0,0 C-15,-14 -15,-42 0,-62 C15,-42 15,-14 0,0 Z" transform="rotate(0) scale(1.1)"/><path d="M-30,6 C-14,14 14,14 30,6" fill="none" stroke-opacity=".5"/></g><g transform="translate(330 1010)" fill="#F4B63F" fill-opacity=".2" stroke="#F4B63F" stroke-opacity=".62" stroke-width="1.5" stroke-linejoin="round"><path d="M0,0 C-15,-14 -15,-42 0,-62 C15,-42 15,-14 0,0 Z" transform="rotate(-72) scale(0.78)"/><path d="M0,0 C-15,-14 -15,-42 0,-62 C15,-42 15,-14 0,0 Z" transform="rotate(72) scale(0.78)"/><path d="M0,0 C-15,-14 -15,-42 0,-62 C15,-42 15,-14 0,0 Z" transform="rotate(-40) scale(0.95)"/><path d="M0,0 C-15,-14 -15,-42 0,-62 C15,-42 15,-14 0,0 Z" transform="rotate(40) scale(0.95)"/><path d="M0,0 C-15,-14 -15,-42 0,-62 C15,-42 15,-14 0,0 Z" transform="rotate(0) scale(1.1)"/><path d="M-30,6 C-14,14 14,14 30,6" fill="none" stroke-opacity=".5"/></g></g></symbol></defs></svg>
+<section class="bg-forest flow w3" id="day">
+  <div class="day-deco l" aria-hidden="true"><svg viewBox="0 0 480 1200"><use href="#dayDecoSym"/></svg></div>
+  <div class="day-deco r" aria-hidden="true"><svg viewBox="0 0 480 1200"><use href="#dayDecoSym"/></svg></div>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="pill">The Program</span>
+      <h2>A day in Rishikesh</h2>
+      <p>Pick a day to see the hour-by-hour timetable.</p>
     </div>
-    <div>
-      <span class="pill" style="margin-bottom:16px">Day 6 · Rangwali Holi</span>
-      <h2>A sacred morning, then <em>a burst of color</em></h2>
-      <p>The day opens with yoga and a sacred yagya. At 11 AM the ashram comes alive with color as you celebrate Holi with the Rishi Kumars (students of the ashram), the Acharyas (teachers) and the Guru. It is a festival of love, joy, unity and the triumph of light.</p>
-      <div class="perks">
-        <span class="perk" style="--c:#c6447e"><i class="fa-solid fa-people-group"></i> With the ashram community</span>
-        <span class="perk" style="--c:#4fb3c9"><i class="fa-solid fa-leaf"></i> Organic herbal gulal</span>
-        <span class="perk" style="--c:var(--coral)"><i class="fa-solid fa-shirt"></i> White kurta, yours to keep</span>
-        <span class="perk" style="--c:#2a7fc4"><i class="fa-solid fa-drum"></i> Live kirtan &amp; dhol</span>
-        <span class="perk" style="--c:var(--turmeric)"><i class="fa-solid fa-utensils"></i> Holi thali</span>
+    <div class="day-pills" id="dayPills" role="group" aria-label="Choose a day"></div>
+    <div class="day-card">
+      <div class="day-top">
+        <svg class="mandala"><use href="#mandala"/></svg>
+        <div class="when" id="dayWhen"></div>
+        <h3 id="dayTitle"></h3>
+        <p id="dayBlurb"></p>
+      </div>
+      <ul class="rows" id="dayRows"></ul>
+    </div>
+    <div class="legend"><span><i style="background:var(--marigold)"></i>Morning</span><span><i style="background:var(--turmeric)"></i>Afternoon</span><span><i style="background:var(--coral)"></i>Evening</span></div>
+  </div>
+</section>
+
+<!-- ============ GUIDES ============ -->
+<section class="bg-sun flow w1" id="guides">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="pill">Your Hosts</span>
+      <h2>Meet your hosts</h2>
+      <p>Every session is offered with live Russian ⇄ English translation.</p>
+    </div>
+    <div class="guides">
+      <div class="guide">
+        <div class="avwrap" tabindex="0" aria-label="Krishna (Kseniya): hover or tap the photo to enlarge">
+          <div class="av photo"><img src="img/guide-kseniya.webp" alt="Krishna (Kseniya), your retreat guide, hands in prayer position" width="480" height="480" loading="lazy" decoding="async"></div>
+          <img class="av-zoom" src="img/guide-kseniya-lg.webp" alt="" aria-hidden="true" width="640" height="878" loading="lazy" decoding="async">
+        </div>
+        <div class="role">Retreat Guide &amp; Host</div>
+        <div class="nm">Krishna (Kseniya)</div>
+        <span class="tag"><i class="fa-solid fa-language"></i> Teaches in Russian</span>
+        <div class="glinks">
+          <a class="tag" href="https://www.instagram.com/smalkokseniya/" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i> @smalkokseniya</a>
+          <a class="tag" href="https://lifeimpulse.online/main" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> Life Impulse</a>
+        </div>
+      </div>
+      <div class="guide">
+        <div class="avwrap" tabindex="0" aria-label="Valentina Paulsen: hover or tap the photo to enlarge">
+          <div class="av photo"><img src="img/guide-valentina.webp" alt="Valentina Paulsen, your English translator and coordinator, smiling at sunset on the water" width="480" height="480" loading="lazy" decoding="async"></div>
+          <img class="av-zoom" src="img/guide-valentina-lg.webp" alt="" aria-hidden="true" width="640" height="853" loading="lazy" decoding="async">
+        </div>
+        <div class="role">English Translator &amp; Coordinator</div>
+        <div class="nm">Valentina Paulsen</div>
+        <span class="tag"><i class="fa-solid fa-language"></i> Russian ⇄ English</span>
+        <div class="glinks">
+          <a class="tag" href="https://www.instagram.com/valeavu/" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i> @valeavu</a>
+          <a class="tag" href="./"><i class="fa-solid fa-globe"></i> Yoga Retreats</a>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ INSIDE THE ASHRAM (VIDEO) ============ -->
-<section class="bg-aqua flow w3 ashram" id="ashram" aria-labelledby="ashramTitle">
+<!-- ============ PARMARTH NIKETAN: ABOUT + VIDEO TOUR ============ -->
+<section class="bg-peacock flow w2" id="sanctuary">
+  <div class="wrap">
+    <div class="stay-head stay-text">
+      <span class="pill">About Parmarth Niketan</span>
+      <h2>Parmarth Niketan, <em>your home on the Ganga</em></h2>
+      <p>One of Rishikesh’s best-known ashrams, on the bank of the Ganga in Swarg Ashram, near Ram Jhula. The river, the yoga hall, the yagya and the evening aarti are all within a few steps.</p>
+    </div>
+  </div>
+  <div class="ashram" id="ashram" role="region" aria-labelledby="ashramTitle">
   <div class="wrap ashram-grid">
     <div class="ashram-stage" id="ashramStage">
       <div class="lyr p1"><span class="blob b1"></span></div>
@@ -594,8 +652,8 @@
 
     <div class="ashram-copy">
       <span class="pill">Inside the Ashram</span>
-      <h2 id="ashramTitle">Walk through <em>Parmarth Niketan</em> before you arrive</h2>
-      <p>Take a quiet look around the place that will be your home for the retreat: the entrance gate, the sacred fire, the lawn where morning yoga happens, the paths through the gardens, and the evening aarti and kirtan on the banks of the Ganga. Press play for the full tour, with sound.</p>
+      <h2 id="ashramTitle">Walk through it <em>before you arrive</em></h2>
+      <p>Take a quiet look around: the entrance gate, the sacred fire, the lawn where morning yoga happens, the paths through the gardens, and the evening aarti and kirtan on the banks of the Ganga. Press play for the full tour, with sound.</p>
       <div class="perks">
         <span class="perk" style="--c:var(--coral)"><i class="fa-solid fa-fire-flame-curved"></i> Sacred fire (yagya)</span>
         <span class="perk" style="--c:#3f9a73"><i class="fa-solid fa-spa"></i> Morning yoga on the lawn</span>
@@ -615,63 +673,10 @@
       </div>
     </div>
   </div>
-</section>
-
-<!-- ============ A DAY IN RISHIKESH ============ -->
-<section class="bg-forest flow w3" id="day">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="pill">The Program</span>
-      <h2>A day in Rishikesh</h2>
-      <p>Pick a day to see the hour-by-hour timetable.</p>
-    </div>
-    <div class="day-pills" id="dayPills" role="group" aria-label="Choose a day"></div>
-    <div class="day-card">
-      <div class="day-top">
-        <svg class="mandala"><use href="#mandala"/></svg>
-        <div class="when" id="dayWhen"></div>
-        <h3 id="dayTitle"></h3>
-        <p id="dayBlurb"></p>
-      </div>
-      <ul class="rows" id="dayRows"></ul>
-    </div>
-    <div class="legend"><span><i style="background:var(--marigold)"></i>Morning</span><span><i style="background:var(--turmeric)"></i>Afternoon</span><span><i style="background:var(--coral)"></i>Evening</span></div>
   </div>
-</section>
-
-<!-- ============ GUIDES ============ -->
-<section class="bg-rose flow w1" id="guides">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="pill">Your Guides</span>
-      <h2>Meet your guide</h2>
-      <p>Every session is offered with live Russian ⇄ English translation.</p>
-    </div>
-    <div class="guides one">
-      <div class="guide">
-        <div class="av photo"><img src="img/guide-kseniya.webp" alt="Krishna (Kseniya), your retreat guide, hands in prayer position" width="480" height="480" loading="lazy" decoding="async"></div>
-        <div class="role">Retreat Guide &amp; Host</div>
-        <div class="nm">Krishna (Kseniya)</div>
-        <span class="tag"><i class="fa-solid fa-language"></i> Russian ⇄ English</span>
-      </div>
-      <!-- Translator card removed until a real name and photo are available:
-      <div class="guide">
-        <div class="av"><i class="fa-solid fa-comments"></i></div>
-        <div class="role">English Translator &amp; Coordinator</div>
-        <div class="nm">[Translator’s Full Name]</div>
-      </div> -->
-    </div>
-  </div>
-</section>
-
-<!-- ============ SANCTUARY ============ -->
-<section class="bg-peacock flow w2" id="sanctuary">
-  <div class="wrap">
+  <div class="wrap stay-more">
     <div class="stay">
       <div class="stay-text">
-        <span class="pill">Where you’ll stay</span>
-        <h2>Parmarth Niketan, <em>your home on the Ganga</em></h2>
-        <p>One of Rishikesh’s best-known ashrams, on the bank of the Ganga in Swarg Ashram, near Ram Jhula. The river, the yoga hall, the yagya and the evening aarti are all within a few steps.</p>
         <ul class="stay-facts">
           <li><span class="ico"><i class="fa-solid fa-water"></i></span><div><b>On the Ganga</b>Right on the river, in Swarg Ashram</div></li>
           <li><span class="ico"><i class="fa-solid fa-mountain"></i></span><div><b>Himalayan foothills</b>Forested hills all around Rishikesh</div></li>
@@ -702,7 +707,37 @@
         <p class="gal-note"><span>More ashram photos (grounds, ghat, yoga hall) to be added</span></p>
       </div>
     </div>
+  </div>
+</section>
 
+<!-- ============ HOLI ============ -->
+<section class="bg-holi flow w2" id="holi">
+  <div class="wrap holi">
+    <div class="holi-stage">
+      <div class="holi-img" id="holiImg" role="img" aria-label="Holi at the ashram: color powder, a flute player, and the community celebrating together">
+        <div class="hs on" style="background-image:url('img/opt/holi-art-1200.webp')"></div>
+        <div class="hs" style="background-image:url('img/opt/holi-hero-1400.webp')"></div>
+        <div class="hs" style="background-image:url('img/opt/holi-crowd-1400.webp')"></div>
+      </div>
+    </div>
+    <div>
+      <span class="pill" style="margin-bottom:16px">Day 6 · Rangwali Holi</span>
+      <h2>A sacred morning, then <em>a burst of color</em></h2>
+      <p>The day opens with yoga and a sacred yagya. At 11 AM the ashram comes alive with color as you celebrate Holi with the Rishi Kumars (students of the ashram), the Acharyas (teachers) and the Guru. It is a festival of love, joy, unity and the triumph of light.</p>
+      <div class="perks">
+        <span class="perk" style="--c:#c6447e"><i class="fa-solid fa-people-group"></i> With the ashram community</span>
+        <span class="perk" style="--c:#4fb3c9"><i class="fa-solid fa-leaf"></i> Organic herbal gulal</span>
+        <span class="perk" style="--c:var(--coral)"><i class="fa-solid fa-shirt"></i> White kurta, yours to keep</span>
+        <span class="perk" style="--c:#2a7fc4"><i class="fa-solid fa-drum"></i> Live kirtan &amp; dhol</span>
+        <span class="perk" style="--c:var(--turmeric)"><i class="fa-solid fa-utensils"></i> Holi thali</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROOMS & GETTING THERE ============ -->
+<section class="bg-peacock flow w2" id="rooms">
+  <div class="wrap">
     <div class="rooms-head">
       <h3>Your rooms</h3>
       <p>Two ways to stay. Both cover all 10 nights and the full program.</p>
@@ -715,6 +750,11 @@
           <span class="loc in"><i class="fa-solid fa-om"></i> Inside the ashram</span>
           <h4>Shared room · 3 guests</h4>
           <p>A triple-occupancy room inside Parmarth Niketan itself, shared with two fellow retreat guests. You wake up on the grounds, a few steps from the morning yoga, the yagya and the Ganga, and you’re part of the ashram’s daily rhythm from the first day to the last.</p>
+          <div class="amen" aria-label="Room amenities">
+            <span><i class="fa-regular fa-snowflake" aria-hidden="true"></i> Air Conditioning</span>
+            <span><i class="fa-solid fa-fan" aria-hidden="true"></i> Ceiling Fan</span>
+            <span><i class="fa-solid fa-toilet" aria-hidden="true"></i> Western Toilet</span>
+          </div>
           <ul>
             <li><i class="fa-solid fa-circle"></i> 3 guests per room</li>
             <li><i class="fa-solid fa-circle"></i> Inside the ashram grounds, all 10 nights</li>
@@ -726,18 +766,35 @@
       </article>
 
       <article class="room">
-        <div class="rph r2"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#mandala"/></svg><i class="fa-solid fa-door-closed"></i><small>Photo to be added</small></div>
+        <div class="rgal" id="rgal" data-lb-title="Green Hotel, private queen room">
+          <button type="button" class="rg-main" id="rgMainBtn" aria-label="Enlarge photo">
+            <img id="rgMain" src="img/hotel/bed.webp" alt="Queen bed with wood headboard, wall lamps and curtains in the private room at Green Hotel" width="1000" height="684" decoding="async">
+            <span class="rg-zoom" aria-hidden="true"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+          </button>
+          <span class="rg-cap" id="rgCap">Queen room</span>
+          <div class="rg-thumbs" role="group" aria-label="Room photos">
+            <button type="button" class="on" aria-label="Queen room" aria-pressed="true" data-src="img/hotel/bed.webp" data-lg="img/hotel/bed-lg.webp" data-cap="Queen room" data-alt="Queen bed with wood headboard, wall lamps and curtains in the private room at Green Hotel"><img src="img/hotel/bed-t.webp" alt="" width="240" height="160" loading="lazy"></button>
+            <button type="button" aria-label="Room with TV and wardrobe" aria-pressed="false" data-src="img/hotel/tv.webp" data-lg="img/hotel/tv-lg.webp" data-cap="TV, wardrobe &amp; tea tray" data-alt="Room with a wall-mounted TV, tea tray, wardrobe and a teal bed runner"><img src="img/hotel/tv-t.webp" alt="" width="240" height="160" loading="lazy"></button>
+            <button type="button" aria-label="Bathroom" aria-pressed="false" data-src="img/hotel/bath.webp" data-lg="img/hotel/bath-lg.webp" data-cap="Bathroom" data-alt="Marble-tiled bathroom with a shower, wash basin and towels"><img src="img/hotel/bath-t.webp" alt="" width="240" height="160" loading="lazy"></button>
+            <button type="button" aria-label="Green Hotel from the street" aria-pressed="false" data-src="img/hotel/outside.webp" data-lg="img/hotel/outside-lg.webp" data-cap="Green Hotel" data-alt="The front of Green Hotel on the street, with mountains behind"><img src="img/hotel/outside-t.webp" alt="" width="240" height="160" loading="lazy"></button>
+          </div>
+        </div>
         <div class="room-body">
           <span class="loc out"><i class="fa-solid fa-hotel"></i> Not in the ashram</span>
-          <h4>Private single room · hotel</h4>
-          <p>A room entirely to yourself, for quiet, solitude and uninterrupted rest. It is at a hotel right next to the ashram, <b>outside the ashram grounds</b>. You still join every session at Parmarth Niketan, then retreat to your own space.</p>
+          <h4>Private queen room · Green Hotel</h4>
+          <p>A queen-bed room entirely to yourself, for quiet, solitude and uninterrupted rest. It is at Green Hotel, right next to the ashram, <b>outside the ashram grounds</b>. You still join every session at Parmarth Niketan, then retreat to your own space.</p>
+          <div class="amen" aria-label="Room amenities">
+            <span><i class="fa-regular fa-snowflake" aria-hidden="true"></i> Air Conditioning</span>
+            <span><i class="fa-solid fa-fan" aria-hidden="true"></i> Ceiling Fan</span>
+            <span><i class="fa-solid fa-toilet" aria-hidden="true"></i> Western Toilet</span>
+          </div>
           <ul>
             <li><i class="fa-solid fa-circle"></i> 1 guest, a room of your own</li>
-            <li><i class="fa-solid fa-circle"></i> At a hotel next to the ashram, not inside it</li>
-            <li><i class="fa-solid fa-circle"></i> Same full program as everyone else</li>
-            <li><i class="fa-solid fa-circle"></i> All 10 nights</li>
+            <li><i class="fa-solid fa-circle"></i> Queen bed, TV and wardrobe</li>
+            <li><i class="fa-solid fa-circle"></i> Bathroom with shower, tea &amp; coffee tray</li>
+            <li><i class="fa-solid fa-circle"></i> At Green Hotel next to the ashram, not inside it</li>
+            <li><i class="fa-solid fa-circle"></i> Same full program as everyone else, all 10 nights</li>
           </ul>
-          <div class="rnote"><i class="fa-solid fa-circle-exclamation"></i> To add: hotel name, room photos &amp; details.</div>
         </div>
       </article>
     </div>
@@ -778,7 +835,7 @@
         <div class="fld"><span>Room</span></div>
         <div class="seg" id="roomSeg">
           <button type="button" data-pkg="shared" aria-pressed="true"><b>Shared · $2,000</b><em>3 guests, inside the ashram</em></button>
-          <button type="button" data-pkg="private" aria-pressed="false"><b>Private · $2,500</b><em>Single room at a hotel, not in the ashram</em></button>
+          <button type="button" data-pkg="private" aria-pressed="false"><b>Private · $2,500</b><em>Queen room at Green Hotel, not in the ashram</em></button>
         </div>
 
         <div class="fld"><span>Number of spots</span></div>
@@ -835,7 +892,7 @@
       <details class="note" style="--c:#F1A024"><summary><span class="ic"><i class="fa-solid fa-person-praying"></i></span><span><span class="q">What level of yoga do I need?</span><span class="t">All levels welcome, beginners included. Men are welcome too.</span></span><span class="chev"><i class="fa-solid fa-chevron-down"></i></span></summary>
         <p class="a">All levels are welcome, including complete beginners, and poses can be modified. Men are also warmly welcome to take part in everything, including the Shakti evenings. Days start early (Hatha Yoga at 6:00 AM) and the schedule is full, so some stamina for long sitting and gentle movement helps.</p></details>
       <details class="note" style="--c:#c6447e"><summary><span class="ic"><i class="fa-solid fa-user"></i></span><span><span class="q">Traveling solo?</span><span class="t">Very welcome. Share a room, or take one of your own.</span></span><span class="chev"><i class="fa-solid fa-chevron-down"></i></span></summary>
-        <p class="a">Solo travelers are very welcome. The $2,000 package is a shared three-person room at the ashram with fellow guests. For a room of your own, a private single room at a hotel next to the ashram is +$500, for $2,500 in total. Note that this room is not in the ashram: the hotel is outside the ashram grounds.</p></details>
+        <p class="a">Solo travelers are very welcome. The $2,000 package is a shared three-person room at the ashram with fellow guests. For a room of your own, a private queen room at Green Hotel next to the ashram is +$500, for $2,500 in total. Note that this room is not in the ashram: the hotel is outside the ashram grounds.</p></details>
       <details class="note" style="--c:#2a9db0"><summary><span class="ic"><i class="fa-solid fa-plane-arrival"></i></span><span><span class="q">Which airport?</span><span class="t">Delhi (4.5&nbsp;h drive) or Dehradun (1&nbsp;h drive).</span></span><span class="chev"><i class="fa-solid fa-chevron-down"></i></span></summary>
         <p class="a"><strong>Delhi (DEL)</strong> has the most flights and is about 4.5 hours’ drive from Rishikesh. <strong>Dehradun (DED)</strong> is closer, about 1 hour away, with fewer flights. <a href="https://www.google.com/maps?q=Rishikesh,+Uttarakhand,+India" target="_blank" rel="noopener">Open Rishikesh in Maps</a>.</p></details>
       <details class="note" style="--c:#2e8a5e"><summary><span class="ic"><i class="fa-solid fa-bowl-food"></i></span><span><span class="q">Food &amp; dietary needs</span><span class="t">Meals aren’t included. Many light sattvic cafés are nearby.</span></span><span class="chev"><i class="fa-solid fa-chevron-down"></i></span></summary>
@@ -1038,7 +1095,7 @@
       'Email: ' + $('fEmail').value.trim(),
       'Phone / WhatsApp: ' + ($('fPhone').value.trim() || '(not provided)'),
       '',
-      'Room: ' + (pkg==='shared' ? 'Shared (3 guests, inside the ashram)' : 'Private (single room at a hotel, not in the ashram)'),
+      'Room: ' + (pkg==='shared' ? 'Shared (3 guests, inside the ashram)' : 'Private (queen room at Green Hotel, not in the ashram)'),
       'Spots: ' + spots,
       'Price per person: ' + money(per),
       'Total: ' + money(total),
@@ -1077,7 +1134,7 @@
           name: $('fName').value.trim(),
           email: $('fEmail').value.trim(),
           to_email: $('fEmail').value.trim(),
-          room: pkg==='shared' ? 'Shared room (3 guests, inside the ashram)' : 'Private room (single room at a hotel, not in the ashram)',
+          room: pkg==='shared' ? 'Shared room (3 guests, inside the ashram)' : 'Private room (queen room at Green Hotel, not in the ashram)',
           spots: String(spots),
           total: money(total),
           pay_plan: pay==='full' ? 'Pay in full after the call (' + money(total) + ')' : 'Deposit after the call (' + money(dep) + '), balance ' + money(total-dep) + ' due 45 days before departure',
@@ -1247,6 +1304,14 @@ document.querySelectorAll('.chk').forEach((el, i) => R(el, {distance:'28px', dur
     </div>
   </div>
 </div>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Room photos" hidden>
+  <button type="button" class="lb-x" id="lbClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+  <button type="button" class="lb-nav lb-prev" id="lbPrev" aria-label="Previous photo"><i class="fa-solid fa-chevron-left"></i></button>
+  <figure class="lb-fig"><img id="lbImg" src="" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button type="button" class="lb-nav lb-next" id="lbNext" aria-label="Next photo"><i class="fa-solid fa-chevron-right"></i></button>
+</div>
 <script src="retreat-video.js" defer></script>
+<script src="retreat-rooms.js" defer></script>
 </body>
 </html>
+

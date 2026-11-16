@@ -15,7 +15,7 @@
   --shadow-lg:0 30px 60px -28px rgba(107,31,42,.45);
   --serif:'Cormorant Garamond','Playfair Display',Georgia,serif;
   --sans:'Inter','Outfit',system-ui,sans-serif;
-  --paisley:url(../../../img/yoga/paisley.svg);
+  --paisley:url(img/paisley-organic.svg);
 }
 body{font-family:var(--sans);font-size:16.5px;color:var(--ink);
   background-color:var(--ivory);
@@ -93,8 +93,8 @@ h2::after,.rooms-head h3::after{content:'';display:block;width:150px;height:26px
 .flow{--wh:0px;-webkit-mask:none;mask:none;}
 .contact.flow,footer.flow{padding-top:56px;}
 section{padding:92px 0;}
-.bg-sun,.bg-aqua{background:linear-gradient(rgba(255,247,232,.93),rgba(255,247,232,.93)),var(--paisley) 0 0/190px 190px,var(--ivory);}
-.bg-rose,.bg-saffron{background:linear-gradient(rgba(255,247,232,.9),rgba(255,247,232,.9)),var(--paisley) 0 0/170px 170px,linear-gradient(180deg,#fbeccc 0%,#fff3df 100%);}
+.bg-sun,.bg-aqua{background:linear-gradient(rgba(255,247,232,.93),rgba(255,247,232,.93)),var(--paisley) 0 0/480px 480px,var(--ivory);}
+.bg-rose,.bg-saffron{background:linear-gradient(rgba(255,247,232,.9),rgba(255,247,232,.9)),var(--paisley) 30px 60px/480px 480px,linear-gradient(180deg,#fbeccc 0%,#fff3df 100%);}
 .bg-holi{background:radial-gradient(circle at 4% 100%,rgba(244,182,63,.6),transparent 34%),linear-gradient(115deg,#f4b63f 0%,#e8871e 34%,#c8442a 70%,#6b1f2a 100%);}
 .bg-forest{background:radial-gradient(circle at 92% 6%,rgba(244,182,63,.26),transparent 40%),linear-gradient(160deg,#3a1a12,#4d2118 55%,#6b1f2a);}
 .bg-peacock{background:radial-gradient(circle at 10% 0%,rgba(244,182,63,.26),transparent 38%),linear-gradient(135deg,#4a1d22,#6b1f2a 55%,#8a3418);}
@@ -134,10 +134,10 @@ section{padding:92px 0;}
 .fld input,.fld textarea,.stepper{background:#fffdf8;}
 
 /* ---------- contact + footer (same footer as /yoga) ---------- */
-.contact{background:linear-gradient(rgba(36,16,9,.92),rgba(36,16,9,.92)),var(--paisley) 0 0/160px 160px,#241009;color:#fff7e8;}
+.contact{background:linear-gradient(to bottom,#241009 0,rgba(36,16,9,0) 90px),linear-gradient(to top,#241009 0,rgba(36,16,9,0) 90px),radial-gradient(ellipse 70% 90% at 12% 0%,rgba(232,135,30,.10),transparent 60%),linear-gradient(rgba(36,16,9,.88),rgba(36,16,9,.88)),var(--paisley) 0 0/480px 480px,#241009;color:#fff7e8;}
 .contact h3{font-size:36px;font-weight:600;color:#fff;}
 .contact .chips a:hover{background:var(--marigold);color:#3a1405;}
-#footer.site-footer{background:linear-gradient(rgba(36,16,9,.94),rgba(36,16,9,.94)),var(--paisley) 0 0/160px 160px,#241009;padding:64px 0 0;text-align:left;color:rgba(255,247,232,.7);font-size:14px;}
+#footer.site-footer{background:linear-gradient(to bottom,#241009 0,rgba(36,16,9,0) 90px),radial-gradient(ellipse 60% 80% at 92% 100%,rgba(200,68,42,.09),transparent 60%),linear-gradient(rgba(36,16,9,.88),rgba(36,16,9,.88)),var(--paisley) 90px 40px/480px 480px,#241009;padding:64px 0 0;text-align:left;color:rgba(255,247,232,.7);font-size:14px;}
 .site-footer .footer-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.1);}
 .site-footer .footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px;font-weight:700;font-size:18px;color:#fff;text-decoration:none;}
 .site-footer .footer-logo img{width:36px;height:36px;}

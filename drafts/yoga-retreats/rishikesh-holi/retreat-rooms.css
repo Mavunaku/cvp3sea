@@ -1,0 +1,42 @@
+/* Private-room photo gallery (Green Hotel) + lightbox */
+.room .rgal{position:relative;aspect-ratio:16/9;background:#2a1a12;overflow:hidden;}
+.rg-main{all:unset;box-sizing:border-box;position:absolute;inset:0;cursor:zoom-in;display:block;}
+.rg-main img{width:100%;height:100%;object-fit:cover;object-position:50% 60%;display:block;transition:transform .7s cubic-bezier(.2,.7,.2,1),opacity .25s ease;}
+.rg-main:hover img{transform:scale(1.05);}
+.rg-main:focus-visible{outline:3px solid #fff;outline-offset:-6px;}
+.rg-main img.swap{opacity:0;}
+.rg-zoom{position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.42);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;opacity:0;transform:scale(.85);transition:opacity .25s,transform .25s;pointer-events:none;}
+.rg-main:hover .rg-zoom,.rg-main:focus-visible .rg-zoom{opacity:1;transform:none;}
+.rg-cap{position:absolute;left:14px;bottom:12px;font:500 12px var(--sans);color:#fff;background:rgba(0,0,0,.42);border-radius:999px;padding:4px 12px;pointer-events:none;}
+.rg-thumbs{position:absolute;right:10px;bottom:10px;display:flex;gap:6px;}
+.rg-thumbs button{all:unset;box-sizing:border-box;width:46px;height:31px;border-radius:7px;overflow:hidden;cursor:pointer;border:2px solid rgba(255,255,255,.55);opacity:.82;transition:transform .2s,opacity .2s,border-color .2s;}
+.rg-thumbs button img{width:100%;height:100%;object-fit:cover;display:block;}
+.rg-thumbs button:hover{opacity:1;transform:translateY(-2px);}
+.rg-thumbs button.on{border-color:var(--marigold);opacity:1;}
+.rg-thumbs button:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:3200;background:rgba(20,8,4,.93);display:flex;align-items:center;justify-content:center;padding:56px 70px;animation:lbIn .25s ease;}
+.lb[hidden]{display:none;}
+@keyframes lbIn{from{opacity:0}to{opacity:1}}
+html.lb-open{overflow:hidden;}
+.lb-fig{margin:0;max-width:100%;max-height:100%;display:flex;flex-direction:column;align-items:center;gap:12px;}
+.lb-fig img{max-width:100%;max-height:calc(100vh - 150px);border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.6);object-fit:contain;background:#1b0f09;}
+.lb-fig figcaption{color:rgba(255,247,232,.9);font:500 15px var(--sans);letter-spacing:.02em;text-align:center;}
+.lb-x,.lb-nav{all:unset;box-sizing:border-box;position:absolute;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:background .2s;}
+.lb-x:hover,.lb-nav:hover{background:rgba(255,255,255,.26);}
+.lb-x:focus-visible,.lb-nav:focus-visible{outline:2px solid var(--marigold);outline-offset:2px;}
+.lb-x{top:16px;right:18px;}
+.lb-prev{left:16px;top:50%;margin-top:-23px;}
+.lb-next{right:16px;top:50%;margin-top:-23px;}
+@media (max-width:700px){
+  .lb{padding:64px 12px 40px;}
+  .lb-prev{left:8px;top:auto;bottom:10px;margin:0;}
+  .lb-next{right:8px;top:auto;bottom:10px;margin:0;}
+}
+@media (prefers-reduced-motion:reduce){.lb{animation:none;}.rg-main img{transition:none;}}
+
+/* amenity chips */
+.room .amen{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px 0;}
+.room .amen span{display:inline-flex;align-items:center;gap:8px;background:rgba(38,70,57,.07);border-radius:999px;padding:7px 14px;font-size:13.5px;font-weight:500;color:var(--tulsi);}
+.room .amen i{color:#1B5E8C;font-size:14px;}
