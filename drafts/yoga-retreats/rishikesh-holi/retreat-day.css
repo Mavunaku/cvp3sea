@@ -2,10 +2,10 @@
 #day{position:relative;overflow:hidden;}
 #day > .wrap{position:relative;z-index:1;}
 .day-deco{position:absolute;top:50%;width:min(26vw,470px);pointer-events:none;z-index:0;transform:translateY(-50%);}
-.day-deco svg{display:block;width:100%;height:auto;transform-origin:50% 0;animation:daySway 11s ease-in-out infinite;}
+.day-deco svg{display:block;width:100%;height:auto;overflow:visible;}
 .day-deco.l{left:0;}
 .day-deco.r{right:0;transform:translateY(-50%) scaleX(-1);}
-.day-deco.r svg{animation-delay:-5s;}
-@keyframes daySway{0%,100%{transform:rotate(-.9deg)}50%{transform:rotate(1deg)}}
 @media (max-width:1180px){.day-deco{display:none;}}
-@media (prefers-reduced-motion:reduce){.day-deco svg{animation:none;}}
+
+/* the vine is a light thread: retreat-day.js bends the line and the leaves follow it when the pointer brushes past */
+.day-deco .vine{will-change:d;}
