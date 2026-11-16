@@ -419,3 +419,8 @@ body.page-yoga .retreat-cta .btn-yoga, body.page-yoga .retreat-cta .btn-yoga-sec
   body.page-yoga .retreat-body { padding: 36px 28px 40px; }
   body.page-yoga .retreat-body h2 { font-size: 32px; }
 }
+
+/* header brand: "Yoga" centered under "CVP" (trailing letter-spacing is cancelled with padding so it looks truly centered) */
+body.page-yoga .brand-text { align-items: center; }
+body.page-yoga .brand-text b { padding-left: 2.4px; }
+body.page-yoga .brand-text small { padding-left: 1.8px; }
