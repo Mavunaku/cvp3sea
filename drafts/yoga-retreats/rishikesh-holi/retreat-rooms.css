@@ -40,3 +40,33 @@ html.lb-open{overflow:hidden;}
 .room .amen{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px 0;}
 .room .amen span{display:inline-flex;align-items:center;gap:8px;background:rgba(38,70,57,.07);border-radius:999px;padding:7px 14px;font-size:13.5px;font-weight:500;color:var(--tulsi);}
 .room .amen i{color:#1B5E8C;font-size:14px;}
+
+/* Hosts: three cards, short headline + expandable story */
+.guides.three{grid-template-columns:repeat(3,1fr);max-width:1120px;align-items:start;gap:26px;}
+.guide .gtag{margin:0 0 12px;font-size:14px;line-height:1.45;color:var(--muted,#6b5a4e);font-weight:500;}
+.guide .av.photo.ph{background:linear-gradient(135deg,var(--marigold),var(--coral));color:#fff;display:flex;align-items:center;justify-content:center;font-size:54px;}
+.guide .avwrap[aria-hidden="true"]{cursor:default;}
+.gbio{margin-top:16px;text-align:left;border-top:1px dashed rgba(201,138,27,.4);padding-top:14px;}
+.gbio summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font:600 13.5px var(--sans);color:var(--coral-ink,#9a3a24);padding:8px 14px;border-radius:999px;background:rgba(232,90,60,.09);width:max-content;margin:0 auto;transition:background .2s;}
+.gbio summary::-webkit-details-marker{display:none;}
+.gbio summary::after{content:'+';font-size:17px;line-height:1;transition:transform .25s;}
+.gbio[open] summary::after{content:'–';}
+.gbio summary:hover{background:rgba(232,90,60,.18);}
+.gbio summary:focus-visible{outline:2px solid var(--coral);outline-offset:2px;}
+.gbio ul{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px;}
+.gbio li{position:relative;padding-left:20px;font-size:14.5px;line-height:1.5;color:var(--tulsi);}
+.gbio li::before{content:'';position:absolute;left:2px;top:.6em;width:7px;height:7px;border-radius:50%;background:var(--marigold);}
+.gbio .gquote{margin:16px 0 0;padding:12px 14px;border-left:3px solid var(--marigold);background:#fff6e3;border-radius:0 12px 12px 0;font-style:italic;font-size:14.5px;line-height:1.55;color:var(--tulsi);}
+@media (max-width:1000px){.guides.three{grid-template-columns:1fr;max-width:520px;}}
+
+/* "Find us & getting there" now lives on the light "Before you board" section */
+#faq .rooms-head{color:var(--tulsi,#264639);margin:6px auto 26px;}
+#faq .rooms-head h3{color:var(--maroon,#6b1f2a);}
+#faq .rooms-head h3::after{background-image:url(../../../img/yoga/lotus-divider.svg);}
+#faq .rooms-head p{color:var(--muted,#6b5a4e);}
+#faq .mapbox{margin-bottom:46px;}
+#faq .mapframe{border-color:#fff;}
+#faq .mapcap{color:var(--tulsi,#264639);}
+#faq .mapcap i{color:var(--coral,#e85a3c);}
+#faq .drive{color:var(--coral-ink,#9a3a24);}
+#faq .notes-hint{text-align:center;margin:0 0 20px;font-size:15px;color:var(--muted,#6b5a4e);}
